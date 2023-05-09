@@ -1,0 +1,376 @@
+windows_min_Celeste,windows_min_Celeste,macos_min_Celeste,macos_min_Celeste,linux_min_Celeste,linux_min_Celeste
+операционная система,windows 7,операционная система,"lion 10.7.5, 32/",операционная система,"glibc 2.17+, 32/"
+процессор,intel core i3 m380,процессор,intel core i3 m380,процессор,intel core i3 m380
+оперативная память,2 gb,оперативная память,2 gb,оперативная память,2 gb
+видео карта,intel hd 4000,видео карта,opengl 3.0+ (2.1 with arb extensions acceptable),видео карта,opengl 3.0+ (2.1 with arb extensions acceptable)
+directx,version 10,диск,1200 mb,диск,1200 mb
+,,,,,
+windows_min_ATLAS,windows_min_ATLAS
+операционная система,windows 7/8.1/10 ( versions)
+процессор,intel core i5-2400 / amd fx-8320
+оперативная память,4 gb
+видео карта,nvidia gtx 770 2gb / amd radeon hd 7870 2gb
+диск,120 gb
+,
+windows_min_Broforce,windows_min_Broforce,macos_min_Broforce,macos_min_Broforce,macos_req_Broforce,macos_req_Broforce,linux_min_Broforce,linux_min_Broforce,linux_req_Broforce,linux_req_Broforce
+операционная система,windows vista,операционная система,os 10.6+,операционная система,os 10.6+,операционная система,ubuntu 12.04,операционная система,—
+процессор,intel core™ duo or faster,процессор,2.8 ghz intel core 2 duo,процессор,3.1 ghz intel core 2 duo,процессор,intel core™ duo or faster,процессор,—
+оперативная память,4 gb,оперативная память,8 gb,оперативная память,2 gb,оперативная память,8 gb,оперативная память,—
+видео карта,opengl 3.0 compliant video card,диск,150 mb,диск,150 mb,дополнительно,gamepad highly recommended.,дополнительно,—
+диск,1300 mb,дополнительно,gamepad highly recommended.,дополнительно,gamepad highly recommended.,,,,
+,,,,,,,,,
+windows_min_Killing Floor,windows_min_Killing Floor,windows_req_Killing Floor,windows_req_Killing Floor,macos_min_Killing Floor,macos_min_Killing Floor,macos_req_Killing Floor,macos_req_Killing Floor,linux_min_Killing Floor,linux_min_Killing Floor,linux_req_Killing Floor,linux_req_Killing Floor
+операционная система,windows xp/vista,операционная система,windows xp/vista,операционная система,"os x version leopard 10.5.8, snow leopard 10.6.3, .",операционная система,—,операционная система,"ubuntu 12.04 lts, fully updated",операционная система,"ubuntu 12.04 lts, fully updated"
+процессор,1.2 ghz,процессор,2.4 ghz,процессор,intel mac,процессор,—,процессор,1.2 ghz,процессор,2.4 ghz
+оперативная память,1 gb,оперативная память,2 gb,видео карта,nvidia or ati gpu (intel gpus unsupported),видео карта,—,оперативная память,1 gb,оперативная память,2 gb
+видео карта,64 mb dx9 compliant,видео карта,128 mb dx9 compliant with ps 2.0 support,,,,,видео карта,"nvidia, ati, or intel gpu with hardware-accelerated drivers",видео карта,"nvidia, ati, or intel gpu with hardware-accelerated drivers"
+диск,2 gb free hard drive space,диск,2 gb free hard drive space,,,,,диск,2 gb free hard drive space,диск,2 gb free hard drive space
+,,,,,,,,,,,
+windows_min_Getting Over It with Bennett Foddy,windows_min_Getting Over It with Bennett Foddy,windows_req_Getting Over It with Bennett Foddy,windows_req_Getting Over It with Bennett Foddy,macos_min_Getting Over It with Bennett Foddy,macos_min_Getting Over It with Bennett Foddy,macos_req_Getting Over It with Bennett Foddy,macos_req_Getting Over It with Bennett Foddy,linux_min_Getting Over It with Bennett Foddy,linux_min_Getting Over It with Bennett Foddy,linux_req_Getting Over It with Bennett Foddy,linux_req_Getting Over It with Bennett Foddy
+операционная система,windows vista,операционная система,windows 10,операционная система,macos 10.9,операционная система,macos 10.11,операционная система,ubuntu 12.04+ or steamos,операционная система,ubuntu 12.04+ or steamos
+процессор,2 ghz dual core cpu,процессор,2.5 ghz dual core cpu,процессор,2 ghz dual core cpu,процессор,2.5 ghz dual core cpu,процессор,2 ghz dual core cpu,процессор,2.5 ghz dual core cpu
+оперативная память,2 gb,оперативная память,4 gb,оперативная память,2 gb,оперативная память,4 gb,оперативная память,2 gb,оперативная память,4 gb
+видео карта,intel hd graphics 4000,видео карта,geforce gtx 970 / radeon rx470,видео карта,intel hd graphics 4000,видео карта,geforce gtx 970 / radeon rx470,видео карта,intel hd graphics 4000,видео карта,geforce gtx 970 / radeon rx470
+directx,version 11,directx,version 11,сеть,широкополосное подключение,сеть,широкополосное подключение,сеть,широкополосное подключение,сеть,широкополосное подключение
+сеть,широкополосное подключение,сеть,широкополосное подключение,диск,2 gb,диск,2 gb,диск,2 gb,диск,2 gb
+,,,,,,,,,,,
+windows_min_Katana ZERO,windows_min_Katana ZERO,windows_req_Katana ZERO,windows_req_Katana ZERO
+операционная система,mac os x 10.11 or higher,операционная система,mac os x 10.11 or higher
+процессор,intel core i5-3210m (2 * 2500),процессор,intel core i5-5350u (2 * 1800)
+оперативная память,4 gb,оперативная память,4 gb
+видео карта,intel hd graphics 530,видео карта,intel hd graphics 6000
+directx,version 10,directx,—
+диск,200 mb,диск,200 mb
+,,,
+windows_min_It Takes Two,windows_min_It Takes Two,windows_req_It Takes Two,windows_req_It Takes Two
+операционная система,windows 8.1 or windows 10,операционная система,windows 8.1 or windows 10
+процессор,intel core i3-2100t or amd fx 6100,процессор,intel core i5 3570k or amd ryzen 3 1300x
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,nvidia geforce gtx 660 or amd r7 260x,видео карта,nvidia geforce gtx 980 or amd r9 290x
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+,,,
+windows_min_Far Cry® 4,windows_min_Far Cry® 4,windows_req_Far Cry® 4,windows_req_Far Cry® 4
+операционная система,windows 7 (sp1) / windows 8 / windows 8.1 / ( only),операционная система,windows 7 (sp1) / windows 8 / windows 8.1 / ( only)
+процессор,2.6 ghz intel core™ i5-750 or 3.2 ghz amd phenom™ ii x4 955,процессор,2.5 ghz intel core™ i5-2400s or 4.0 ghz amd fx-8350
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,nvidia geforce gtx 460 or amd radeon hd5850 (1 gb vram),видео карта,nvidia geforce gtx 680 or amd radeon r9 290x (2 gb vram)
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,30 gb,диск,30 gb
+звуковая карта,directx-compatible (5.1 surround sound recommended),звуковая карта,directx-compatible (5.1 surround sound recommended)
+,,,
+windows_min_Pummel Party,windows_min_Pummel Party
+операционная система,windows 7
+процессор,dual core 2.4ghz
+оперативная память,3 gb
+видео карта,geforce 8800 gt / amd hd 6850 / intel hd graphics 4400 or above
+directx,version 11
+сеть,широкополосное подключение
+,
+windows_min_SPORE™,windows_min_SPORE™
+операционная система,microsoft windows xp with service pack 1 and vista
+процессор,2.0 ghz intel pentium 4
+оперативная память,512 mb (768 mb for vista)
+видео карта,"128 mb video card, with support for pixel shader 2.0"
+directx,the latest version of directx 9.0c or higher
+,
+windows_min_Resident Evil 7 Biohazard,windows_min_Resident Evil 7 Biohazard,windows_req_Resident Evil 7 Biohazard,windows_req_Resident Evil 7 Biohazard
+операционная система,"windows 7, 8, 8.1, 10",операционная система,"windows 7, 8, 8.1, 10"
+процессор,"intel core™ i5-4460, 2.70ghz or amd fx™-6300",процессор,intel core™ i7 3770 3.4ghz or amd equivalent
+оперативная память,8 gb,оперативная память,8 gb
+видео карта,nvidia geforce gtx 760 or amd radeon™ r7 260x with 2gb video,видео карта,nvidia geforce gtx 1060 with 3gb vram
+directx,version 11,directx,version 11
+диск,24 gb,диск,24 gb
+звуковая карта,directsound compatible (must support directx 9.0c or higher),звуковая карта,directsound compatible (must support directx 9.0c or higher)
+,,,
+windows_min_Alien: Isolation,windows_min_Alien: Isolation,windows_req_Alien: Isolation,windows_req_Alien: Isolation,macos_min_Alien: Isolation,macos_min_Alien: Isolation,macos_req_Alien: Isolation,macos_req_Alien: Isolation,linux_min_Alien: Isolation,linux_min_Alien: Isolation,linux_req_Alien: Isolation,linux_req_Alien: Isolation
+операционная система,windows 7 (32bit),операционная система,windows 7 (64bit),операционная система,macos 10.10.4,операционная система,—,операционная система,"ubuntu 14.04, steamos",операционная система,"ubuntu 14.04, steamos"
+процессор,3.16ghz intel core 2 duo e8500,процессор,"amd: phenom ii x4 955 - 4 core, 3.2 ghz or intel: core 2 quad q9650 - 4 core, 3.0 ghz",процессор,2ghz intel core i5,процессор,—,процессор,2.6ghz intel i3,процессор,3.2ghz+ intel i7 quad core
+оперативная память,4 gb,оперативная память,8 gb,оперативная память,4 gb,оперативная память,—,оперативная память,4 gb,оперативная память,8 gb
+видео карта,1gb (amd radeon hd 5550 or nvidia geforce gt 430),видео карта,2gb (amd gpu: amd radeon r9 200 series or nvidia gpu: nvidia geforce gtx660),видео карта,"1gb amd 5750, 1gb nvidia 650m, 1.5 gb intel iris pro 5200 (see notes for more details)",видео карта,—,видео карта,nvidia 6xx series (driver version: 355.11),видео карта,nvidia 970 (driver version: 355.11)
+directx,version 11,directx,version 11,диск,35 gb,диск,—,диск,35 gb,диск,35 gb
+сеть,широкополосное подключение,сеть,широкополосное подключение,дополнительно,"the game is supported on the following macs. to check your mac model and when it was released, select about this mac from the apple menu on your menu bar. * all 13” macbook pros ...  released since 2016 * all 15” macbook pros released since mid 2012 with a 1gb graphics card * all 21.5” imacs released since late 2013 (models with an intel hd5000 graphics card are not supported.) * all 27” imacs released since mid 2010 with a 1gb graphics card * all mac pros released since late 2009 please note for your computer to meet the minimum requirements it must match all elements of the listed spec. for more detailed specifications check the feral website.  еще",дополнительно,—,дополнительно,note: amd and intel graphics cards are not currently supported by alien: isolation. game requires at least opengl 4.3,дополнительно,note: amd and intel graphics cards are not currently supported by alien: isolation.
+,,,,,,,,,,,
+windows_min_Rising Storm 2: Vietnam,windows_min_Rising Storm 2: Vietnam,windows_req_Rising Storm 2: Vietnam,windows_req_Rising Storm 2: Vietnam
+операционная система,"windows 7 sp1, windows 8.1, windows 10 ( versions only)",операционная система,"windows 7 sp1, windows 8.1, windows 10 ( versions only)"
+процессор,intel core i3 @ 2.5ghz or amd phenom @ 2.5ghz,процессор,intel core i5 @ 3.2ghz or amd @ 4.0ghz
+оперативная память,4 gb,оперативная память,6 gb
+видео карта,nvidia geforce gtx 460 or ati radeon hd 5850,видео карта,nvidia geforce gtx 760 or amd r9 270x
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,60 gb,диск,60 gb
+,,,
+windows_min_Remnant: From the Ashes,windows_min_Remnant: From the Ashes,windows_req_Remnant: From the Ashes,windows_req_Remnant: From the Ashes
+операционная система,windows 7 / 8 / 10,операционная система,windows 7 / 8 / 10
+процессор,intel core i3-7350k (4.20 ghz),процессор,intel core i5-4590 (3.70 ghz)
+оперативная память,8 gb,оперативная память,8 gb
+видео карта,amd radeon rx 470,видео карта,nvidia geforce gtx 970
+,,,
+windows_min_Resident Evil 3,windows_min_Resident Evil 3,windows_req_Resident Evil 3,windows_req_Resident Evil 3
+операционная система,"windows 7, 8.1, 10",операционная система,windows 10
+процессор,intel core™ i5-4460 or amd fx™-6300,процессор,intel core™ i7-3770 or amd fx™-9590
+оперативная память,8 gb,оперативная память,8 gb
+видео карта,nvidia geforce gtx 760 or amd radeon™ r7 260x with 2gb video,видео карта,nvidia geforce gtx 1060 or amd radeon™ rx 480 with 3gb vram
+directx,version 11,directx,version 12
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,45 gb,диск,45 gb
+,,,
+windows_min_A Plague Tale: Innocence,windows_min_A Plague Tale: Innocence,windows_req_A Plague Tale: Innocence,windows_req_A Plague Tale: Innocence
+операционная система,windows 7/8/10 (s),операционная система,windows 7/8/10 (s)
+процессор,intel core i3-2120 (3.3 ghz)/amd fx-4100 x4 (3.6 ghz),процессор,intel core i5-4690 (3.5 ghz)/amd fx-8300 (3.3 ghz)
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,"2 gb, geforce gtx 660 / radeon hd 7870",видео карта,"4 gb, geforce gtx 970 / radeon rx 480"
+,,,
+windows_min_Yakuza 0,windows_min_Yakuza 0
+операционная система,windows 7 64bit
+процессор,intel core i5-3470 |; amd fx-6300
+оперативная память,4 gb
+видео карта,nvidia geforce gtx 560 |; amd radeon hd 6870
+,
+windows_min_Brothers - A Tale of Two Sons,windows_min_Brothers - A Tale of Two Sons
+операционная система,windows xp sp3
+процессор,2.4 ghz dual core
+оперативная память,2 gb
+видео карта,nvidia geforce 8600 / ati radeon hd 2600
+directx,version 9.0
+диск,2 gb
+,
+windows_min_DRAGON BALL FighterZ,windows_min_DRAGON BALL FighterZ,windows_req_DRAGON BALL FighterZ,windows_req_DRAGON BALL FighterZ
+операционная система,windows 7/8/10 ( os required),операционная система,windows 7/8/10 ( os required)
+процессор,"amd fx-4350, 4.2 ghz / intel core i5-3470, 3.20 ghz",процессор,"amd ryzen 5 1400, 3.2 ghz / intel core i7-3770, 3.40 ghz"
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,"radeon hd 6870, 1 gb / geforce gtx 650 ti, 1 gb",видео карта,"radeon hd 7870, 2 gb / geforce gtx 660, 2 gb"
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,6 gb,диск,6 gb
+,,,
+windows_min_Call of Duty: World at War,windows_min_Call of Duty: World at War
+операционная система,windows xp/vista/7
+процессор,pentium 4 @ 3 ghz/amd 64 3200+
+оперативная память,512 mb (1 gb for vista)
+диск,8 gb free
+directx version,directx 9.0c
+звуковая карта,on-board
+,
+windows_min_Life is Strange: Before the Storm,windows_min_Life is Strange: Before the Storm,windows_req_Life is Strange: Before the Storm,windows_req_Life is Strange: Before the Storm,macos_min_Life is Strange: Before the Storm,macos_min_Life is Strange: Before the Storm,macos_req_Life is Strange: Before the Storm,macos_req_Life is Strange: Before the Storm,linux_min_Life is Strange: Before the Storm,linux_min_Life is Strange: Before the Storm,linux_req_Life is Strange: Before the Storm,linux_req_Life is Strange: Before the Storm
+операционная система,windows 7 or above ( operating system required),операционная система,windows 10,операционная система,macos 10.13.5,операционная система,—,операционная система,ubuntu 18.04,операционная система,ubuntu 18.04
+процессор,intel core i3-2100 (3.1ghz) or amd phenom x4 945 (3.0ghz),процессор,intel core i3-6100 (3.7ghz) or amd athlon x4 845 (3.5ghz),процессор,2.0ghz intel core i5,процессор,—,процессор,intel core i3-4130t @ 2.90ghz,процессор,intel core i5-6500 @ 3.2ghz
+оперативная память,3 gb,оперативная память,6 gb,оперативная память,8 gb,оперативная память,—,оперативная память,4 gb,оперативная память,8 gb
+видео карта,amd radeon r7 250 or nvidia geforce gtx 650,видео карта,amd radeon rx 460 or nvidia geforce 1050,видео карта,"1gb nvidia 650m, 2gb amd radeon r9 m290, intel iris 5100 (see notes for more details).",видео карта,—,видео карта,"2gb nvidia gtx 680, 2gb amd r9 27",видео карта,"4gb nvidia gtx 970, 4gb amd rx 470"
+directx,version 11,directx,version 11,диск,28 gb,диск,—,диск,28 gb,диск,28 gb
+диск,14 gb,диск,14 gb,дополнительно,"the game is supported on the following macs. to check your mac model and when it was released, select about this mac from the apple menu on your menu bar. * all mac minis since ...  late 2014 * all 13” macbook pros released since 2013 * all 15"" macbook pros released since mid 2012 with a 1gb graphics card (1) * all 21.5” imacs released since late 2013 * all 27” imacs released since late 2013 (2) * all 27"" imac pro's * all mac pros released since late 2013 1. mid 2015 models with an amd radeon r9 m370x are not supported. 2. late 2012 models with nvidia 675 or nvidia 680 graphics are also supported. ——— the following macs are capable of running the game but do not consistently meet the standards required for official support. * all mac mini's since late 2012 * all macbooks released since early 2015 * all macbook airs released since mid 2012 * all 13"" macbook pros released since mid 2012 * all 21.5” imacs released since early 2013 ——— please note for your computer to meet the minimum requirements it must match all elements of the listed system requirements. for more detailed specifications check the feral website.  еще",дополнительно,—,дополнительно,"* amd gpus require mesa driver 18.1.6, nvidia cards require driver 396.54 . * intel gpus are not supported at time of release.",дополнительно,"* amd gpus require mesa driver 18.1.6, nvidia cards require driver 396.54 . * intel gpus are not supported at time of release."
+,,,,,,,,,,,
+windows_min_Wolfenstein: The New Order,windows_min_Wolfenstein: The New Order,windows_req_Wolfenstein: The New Order,windows_req_Wolfenstein: The New Order
+операционная система,windows 7/windows 8,операционная система,—
+процессор,intel core i7 amd,процессор,—
+оперативная память,4 gb,оперативная память,—
+видео карта,"geforce 460, ati radeon hd 6850",видео карта,—
+диск,50 gb,диск,—
+,,,
+windows_min_Battlefield: Bad Company™ 2,windows_min_Battlefield: Bad Company™ 2,windows_req_Battlefield: Bad Company™ 2,windows_req_Battlefield: Bad Company™ 2
+операционная система,windows xp,операционная система,windows vista or windows 7
+процессор,core 2 duo @ 2.0ghz,процессор,intel core 2 quad or higher
+оперативная память,2gb,оперативная память,2gb
+видео карта,256 mb video card (geforce 7800 gt / ati x1900),видео карта,512 mb video card (geforce gtx 260/ ati radeon 4870)
+directx,"directx 9, 10, and 11 support",directx,—
+диск,15 gb,диск,—
+,,,
+windows_min_INSIDE,windows_min_INSIDE,windows_req_INSIDE,windows_req_INSIDE
+операционная система,mac os x 10.13 (high sierra),операционная система,mac os x 10.15.7 (catalina)
+процессор,2.0 ghz dual i5,процессор,3.1 ghz 4core intel i7
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,intel iris pro 5200 1536 mb or amd radeon r9 m370x 2gb or metal-capable equivalent,видео карта,radeon pro 560 4 gb or metal-capable equivalent
+directx,version 9.0c,directx,version 11
+диск,3 gb,диск,3 gb
+,,,
+windows_min_Assassin's Creed 2 Deluxe Edition,windows_min_Assassin's Creed 2 Deluxe Edition,windows_req_Assassin's Creed 2 Deluxe Edition,windows_req_Assassin's Creed 2 Deluxe Edition
+операционная система,"only os x version leopard 10.5.8, snow leopard 10.6.3.",операционная система,—
+процессор,intel core 2 duo 3.06 ghz,процессор,intel core i5 2.66ghz
+оперативная память,3gb,оперативная память,4gb
+видео карта,256 mb dedicated shader model 3.0 or higher (see supported list),видео карта,"512 mb dedicated - ati radeon hd 4850, nvidia geforce gt120"
+directx,directx 9.0,directx,directx 9.0
+диск,9gb,диск,—
+звуковая карта,directx 9.0 –compliant sound card,звуковая карта,5.1 sound card
+supported peripherals,"keyboard, mouse, optional controller",supported peripherals,"keyboard, mouse, joystick optional (xbox 360 controller for windows recommended)"
+периферия,"mouse, keyboard",периферия,—
+,,,
+windows_min_Total War: WARHAMMER,windows_min_Total War: WARHAMMER,windows_req_Total War: WARHAMMER,windows_req_Total War: WARHAMMER,macos_min_Total War: WARHAMMER,macos_min_Total War: WARHAMMER,macos_req_Total War: WARHAMMER,macos_req_Total War: WARHAMMER,linux_min_Total War: WARHAMMER,linux_min_Total War: WARHAMMER,linux_req_Total War: WARHAMMER,linux_req_Total War: WARHAMMER
+операционная система,windows 7 64bit,операционная система,windows 7/8.1/10 64bit,операционная система,macos 10.12.4 (10.13.6 recommended),операционная система,—,операционная система,"ubuntu 16.10, steamos 2.0",операционная система,ubuntu 18.04
+процессор,intel core™ 2 duo 3.0ghz,процессор,intel core™ i5-4570 3.20ghz,процессор,2.0ghz intel core i5,процессор,—,процессор,"3.4ghz intel core i3-4130, 3.5ghz amd fx6300",процессор,3.4 ghz intel core i7-4770
+оперативная память,3 gb,оперативная память,8 gb,оперативная память,8 gb,оперативная память,—,оперативная память,4 gb,оперативная память,8 gb
+видео карта,(directx 11) amd radeon hd 5770 1024mb |; nvidia gts 450 1024mb |; intel hd4000 @720p,видео карта,(directx 11) amd radeon r9 270x 2048mb |; nvidia geforce gtx 760 2048mb @1080p,видео карта,"2gb nvidia 680mx, 2gb amd r9 m290, 1.5gb intel iris graphics 540 (see notes for more details)",видео карта,—,видео карта,"1gb nvidia 650ti (driver version 367.28), 2gb amd r9 270 (mesa 13.0.1 driver compiled using llvm 3.9)",видео карта,"4gb nvidia 970 (driver version 396.24), 4gb amd rx 480 (mesa 18.1.5)"
+directx,version 11,directx,version 11,диск,37 gb,диск,—,диск,29 gb,диск,35 gb
+диск,35 gb,диск,35 gb,дополнительно,"the game is officially supported on the following macs. to check your mac model and when it was released, select about this mac from the apple menu on your menu bar. * all 13"" macbook ...  pros released since 2016 * all 15"" macbook pros released since late 2013 with a 2.3ghz * all 21.5"" imacs released since late 2017 * all 27"" imacs released since late 2013 (1) * models with a nvidia gt 755m graphics card are not officially supported) * all 27"" imac pros released since late 2017 * all mac pros released since late 2013 1. late 2012 models with a 2gb nvidia 680mx graphics card are also supported. please note for your computer to meet the minimum requirements it must match all elements of the listed spec. for more detailed specifications check the feral website. ——— the following macs are capable of running the game but do not consistently meet the standards required for official support. * all 13"" macbook pros released since late 2013 * all 15"" macbook pros released since late 2012 with at least 1gb vram * all 21.5"" imacs released since late 2013 with a 2.3ghz . ———  еще",дополнительно,—,дополнительно,amd gpu's are not supported on steam os. intel gpu's are not supported at time of release.,дополнительно,amd gpu's are not supported on steam os. intel gpu's are not supported at time of release.
+,,,,,,,,,,,
+windows_min_World War 3,windows_min_World War 3,windows_req_World War 3,windows_req_World War 3
+операционная система,windows 10 (x64),операционная система,windows 10 (x64)
+процессор,intel core i3-4340k / amd fx-6300,процессор,intel core i5 2500k / amd ryzen r5 1600x
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,geforce gtx 670/ gtx 1650 or amd radeon hd 7950,видео карта,geforce gtx 1060 or amd radeon r9 390 / amd rx 580
+directx,version 11,directx,version 12
+сеть,широкополосное подключение,сеть,широкополосное подключение
+,,,
+windows_min_Red Dead Online,windows_min_Red Dead Online,windows_req_Red Dead Online,windows_req_Red Dead Online
+операционная система,windows 7 - service pack 1 (6.1.7601),операционная система,windows 10 - april 2018 update (v1803)
+процессор,intel core™ i5-2500k / amd fx-6300,процессор,intel core™ i7-4770k / amd ryzen 5 1500x
+видео карта,nvidia geforce gtx 770 2gb / amd radeon r9 280 3gb,видео карта,nvidia geforce gtx 1060 6gb / amd radeon rx 480 4gb
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,150 gb,диск,150 gb
+,,,
+windows_min_Torchlight II,windows_min_Torchlight II,macos_min_Torchlight II,macos_min_Torchlight II,linux_min_Torchlight II,linux_min_Torchlight II
+операционная система,windows xp sp3/vista/windows 7,операционная система,"mac os x 10.8, 10.9, 10.10",операционная система,"ubuntu 12.04 lts (or similar, debian-based distro)"
+процессор,x86-compatible 1.4ghz or faster,процессор,"intel core 2 duo, 2.0ghz or faster",процессор,"x86 / x86_64-compatible, 2.0ghz"
+оперативная память,1gb system,оперативная память,2gb system,оперативная память,2gb system
+диск,1.7gb free space (subject to change),диск,1.7gb free space (subject to change) on a case-insensitive volume,диск,1.7gb free space (subject to change)
+видео карта,directx compatible 3d graphics card with at least 256mb of addressable memory.,видео карта,opengl 2.0 compatible 3d graphics card with at least 256mb of addressable memory (ati radeon x1600 or nvidia equivalent),видео карта,opengl 2.0 compatible 3d graphics card* with at least 256 mb of addressable memory (ati radeon x1600 or nvidia equivalent)
+directx,9.0c,интернет,a broadband internet connection (for steam download and online multiplayer) - online multiplayer requires a free runic account,интернет,a broadband internet connection (for steam download and online multiplayer) - online multiplayer requires a free runic account
+,,,,,
+windows_min_Barotrauma,windows_min_Barotrauma,windows_req_Barotrauma,windows_req_Barotrauma,macos_min_Barotrauma,macos_min_Barotrauma,macos_req_Barotrauma,macos_req_Barotrauma,linux_min_Barotrauma,linux_min_Barotrauma,linux_req_Barotrauma,linux_req_Barotrauma
+операционная система,windows 7/8.1/10 ( versions),операционная система,windows 7/8.1/10 ( versions),операционная система,osx 10.15,операционная система,osx 10.15,операционная система,ubuntu 18.04 lts,операционная система,ubuntu 18.04 lts
+процессор,dual core 2.4 ghz,процессор,quad core 3.0 ghz,процессор,dual core 2.4 ghz,процессор,quad core 3.0 ghz,процессор,dual core 2.4 ghz,процессор,quad core 3.0 ghz
+оперативная память,4 gb,оперативная память,8 gb,оперативная память,4 gb,оперативная память,8 gb,оперативная память,4 gb,оперативная память,8 gb
+видео карта,"2 gb memory (dedicated vram or shared), shader model 2.0+",видео карта,geforce gtx 950 or radeon r9 370 with at least 2 gb vram,видео карта,"2 gb memory (dedicated vram or shared), opengl 3.0+ support",видео карта,geforce gtx 950 or radeon r9 370 with at least 2 gb vram,видео карта,"2 gb memory (dedicated vram or shared), opengl 3.0+ support",видео карта,geforce gtx 950 or radeon r9 370 with at least 2 gb vram
+directx,version 11,directx,version 11,диск,1 gb,диск,1 gb,диск,1 gb,диск,1 gb
+диск,1 gb,диск,1 gb,дополнительно,operating system is required,дополнительно,operating system is required,дополнительно,operating system is required,дополнительно,operating system is required
+дополнительно,operating system is required,дополнительно,operating system is required,сеть,—,сеть,широкополосное подключение,сеть,—,сеть,широкополосное подключение
+,,,,,,,,,,,
+windows_min_Watch_Dogs™,windows_min_Watch_Dogs™,windows_req_Watch_Dogs™,windows_req_Watch_Dogs™
+операционная система,"windows vista (sp2), windows 7 (sp1) or windows 8 (please note that we only support oss.)",операционная система,"windows vista (sp2), windows 7 (sp1) or windows 8 (please note that we only support oss.)"
+процессор,intel core 2 quad q8400 @ 2.66ghz or amd phenom ii x4 940 @ 3.0ghz,процессор,eight core - intel core i7-3770 @3.5 ghz or amd fx-8350 x8 @ 4 ghz
+оперативная память,6 gb,оперативная память,8 gb
+видео карта,directx 11 graphics card with 1 gb video - nvidia geforce gtx 460 or amd radeon hd 5770,видео карта,directx 11 graphics card with 2 gb video - nvidia geforce gtx 560 ti or amd radeon hd 7850
+directx,version 11,directx,version 11
+диск,25 gb,диск,25 gb
+звуковая карта,directx 9.0c compatible sound card with latest drivers,звуковая карта,directx 9.0c compatible sound card with latest drivers
+,,,
+windows_min_Green Hell,windows_min_Green Hell,windows_req_Green Hell,windows_req_Green Hell
+операционная система,windows 7/8/10,операционная система,windows 7/8/10
+процессор,3.2 ghz dual core,процессор,3.2 ghz dual core
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,"geforce gtx 660, radeon rx 460 with 2 gb of video",видео карта,"geforce 970, radeon rx 580 with 4gb of video"
+directx,version 11,directx,version 11
+диск,8 gb,диск,8 gb
+,,,
+windows_min_Sniper Elite 4,windows_min_Sniper Elite 4,windows_req_Sniper Elite 4,windows_req_Sniper Elite 4
+операционная система,windows 7 windows 8.1 or windows 10,операционная система,windows 7 windows 8.1 or windows 10
+процессор,intel cpu core i3-2100 or amd equivalent,процессор,intel cpu core i7-3770 or amd equivalent
+оперативная память,4 gb,оперативная память,8 gb
+,,,
+windows_min_Left 4 Dead,windows_min_Left 4 Dead,windows_req_Left 4 Dead,windows_req_Left 4 Dead
+операционная система,macos x 10.6.4 or higher (snow leopard graphics update required),операционная система,—
+процессор,"dual core intel, 2ghz",процессор,—
+оперативная память,1 gb,оперативная память,1 gb
+видео карта,ati radeon 2400 or higher / nvidia 8600m or higher / intel hd graphics 3000,видео карта,—
+диск,at least 7.5 gb of free space,диск,—
+звуковая карта,directx 9.0c compatible sound card,звуковая карта,—
+,,,
+windows_min_Resident Evil 4,windows_min_Resident Evil 4,windows_req_Resident Evil 4,windows_req_Resident Evil 4
+операционная система,"windows xp/ vista, windows 7, windows 8",операционная система,"windows vista, windows 7, windows 8"
+процессор,"intel core™ 2 duo 2.4 ghz, amd athlon™ x2 2.8 ghz",процессор,"intel core™ 2 quad 2.7 ghz, amd phenom™ ii x4 3 ghz"
+оперативная память,2 gb,оперативная память,4 gb
+видео карта,"nvidia geforce 8800gts, ati radeon™ hd 4850",видео карта,nvidia geforce gtx 560
+directx,version 9.0c,directx,version 9.0c
+диск,15 gb,диск,15 gb
+,,,
+windows_min_Pacify,windows_min_Pacify,windows_req_Pacify,windows_req_Pacify
+операционная система,macos 10.14.x mojave,операционная система,macos 10.15.x catalina
+процессор,intel i5,процессор,intel i7
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,2gb video,видео карта,4gb video
+directx,version 11,directx,version 12
+диск,5 gb,диск,6 gb
+дополнительно,direct x 11 feature level 10 required to run.,дополнительно,—
+,,,
+windows_min_BioShock™ Remastered,windows_min_BioShock™ Remastered,windows_req_BioShock™ Remastered,windows_req_BioShock™ Remastered
+операционная система,macos 10.12.5,операционная система,—
+процессор,2.4ghz intel core i5,процессор,—
+оперативная память,8 gb,оперативная память,—
+видео карта,"2gb nvidia 680mx, 2gb amd r9 m290, 1.5gb intel iris pro 5200 (see notes for more details)",видео карта,—
+directx,version 11,directx,version 11
+диск,27 gb,диск,—
+звуковая карта,directx compatible sound device,звуковая карта,directx compatible sound device
+,,,
+windows_min_Batman: Arkham City - Game of the Year Edition,windows_min_Batman: Arkham City - Game of the Year Edition
+операционная система,macos 10.14
+процессор,2.0ghz intel core 2 duo
+оперативная память,4gb
+диск,16gb
+видео карта,"512mb nvidia 640m, 1.5gb intel hd4000, 2gb amd 290m"
+directx,9.0c
+,
+windows_min_Mafia II (Classic),windows_min_Mafia II (Classic),windows_req_Mafia II (Classic),windows_req_Mafia II (Classic)
+операционная система,10.10.5,операционная система,—
+процессор,2.0ghz intel core i3,процессор,—
+оперативная память,4gb,оперативная память,—
+диск,8gb,диск,—
+видео карта,"512mb amd 5650, 512mb nvidia 650m, intel hd4000* (see notes for more details)",видео карта,—
+звуковая карта,100% directx 9.0c compatible sound card,звуковая карта,100% directx 9.0c compatible sound card
+периферия,keyboard and mouse or windows compatible gamepad,периферия,keyboard and mouse or windows compatible gamepad
+other requirements,"initial installation requires one-time internet connection for steam authentication; software installations required (included with the game)include nvidia physx_drivers 10.04.02_9.10.0522and nvidia gpu drivers 197.13 or latest, steam client and microsoft directx.",other requirements,—
+,,,
+windows_min_Verdun,windows_min_Verdun,windows_req_Verdun,windows_req_Verdun,macos_min_Verdun,macos_min_Verdun,macos_req_Verdun,macos_req_Verdun,linux_min_Verdun,linux_min_Verdun,linux_req_Verdun,linux_req_Verdun
+операционная система,windows 8/10,операционная система,—,операционная система,10.11+,операционная система,—,операционная система,"ubuntu 18.04+ 64bit only. other distros will probably work, but are not officially supported.",операционная система,—
+процессор,"intel cpu core i5-2500k 3.3ghz, amd cpu phenom ii x4 940",процессор,—,процессор,"intel cpu core i5-2500k 3.3ghz, amd cpu phenom ii x4 940",процессор,—,процессор,"intel cpu core i5-2500k 3.3ghz, amd cpu phenom ii x4 940",процессор,—
+оперативная память,4 gb,оперативная память,8 gb,оперативная память,4 gb,оперативная память,8 gb,оперативная память,4 gb,оперативная память,8 gb
+видео карта,"geforce gtx 960m / radeon hd 7750 or higher, 1gb video card memory",видео карта,4gb video card memory,видео карта,"geforce gtx 960m / radeon hd 7750 or higher, 1gb video card memory",видео карта,4gb video card memory,видео карта,"geforce gtx 960m / radeon hd 7750 or higher, 1gb video card memory",видео карта,4gb video card memory
+directx,version 10,directx,—,сеть,широкополосное подключение,сеть,—,сеть,широкополосное подключение,сеть,—
+сеть,широкополосное подключение,сеть,—,диск,12 gb,диск,—,диск,8 gb,диск,—
+диск,12 gb,диск,—,дополнительно,"multiplayer only, make sure you have a stable and fast internet connection.",дополнительно,—,дополнительно,"multiplayer only, make sure you have a stable and fast internet connection.",дополнительно,—
+,,,,,,,,,,,
+windows_min_Detroit: Become Human,windows_min_Detroit: Become Human,windows_req_Detroit: Become Human,windows_req_Detroit: Become Human
+операционная система,windows 10 (),операционная система,windows 10 ()
+процессор,intel core i5-2300 @ 2.8 ghz or amd ryzen 3 1200 @ 3.1ghz or amd fx-8350 @ 4.2ghz,процессор,intel core i5-6600 @ 3.3 ghz or amd ryzen 3 1300 x @ 3.4 ghz
+оперативная память,8 gb,оперативная память,12 gb
+видео карта,nvidia geforce gtx 780 or amd hd 7950 with 3gb vram minimum (support of vulkan 1.1 required),видео карта,nvidia geforce gtx 1060 or amd radeon rx 580 with 4gb vram minimum (support of vulkan 1.1 required)
+,,,
+windows_min_Mortal Kombat X,windows_min_Mortal Kombat X,windows_req_Mortal Kombat X,windows_req_Mortal Kombat X
+операционная система,"vista, win 7, win 8, win 10",операционная система,"win 7, win 8, win 10"
+процессор,"intel core i5-750, 2.67 ghz | amd phenom ii x4 965, 3.4 ghz",процессор,"intel core i7-3770, 3.4 ghz | amd fx-8350, 4.0 ghz"
+оперативная память,3 gb,оперативная память,8 gb
+видео карта,nvidia geforce gtx 460 |; amd radeon hd 5850,видео карта,nvidia geforce gtx 660 |; amd radeon hd 7950
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+,,,
+windows_min_Bright Memory,windows_min_Bright Memory,windows_req_Bright Memory,windows_req_Bright Memory
+операционная система,windows 7,операционная система,windows 10
+процессор,i5-3470 intel or amd equivalent,процессор,i7-4790k intel or amd equivalent
+оперативная память,6 gb,оперативная память,8 gb
+видео карта,nvidia gtx 660 or amd radeon hd 7770,видео карта,nvidia gtx 1060 or amd radeon r9 390
+directx,version 11,directx,version 11
+диск,4 gb,диск,4 gb
+,,,
+windows_min_DARK SOULS™ II,windows_min_DARK SOULS™ II,windows_req_DARK SOULS™ II,windows_req_DARK SOULS™ II
+операционная система,"windows vista sp2, windows 7 sp1, windows 8",операционная система,"windows 7 sp1, windows 8"
+процессор,amd phenom ii™ x2 555 3.2ghz or intel pentium core ™ 2 duo e8500 3.17ghz,процессор,intel coretm i3 2100 3.10ghz or amd a8 3870k 3.0ghz
+оперативная память,2 gb,оперативная память,4 gb
+видео карта,"nvidia geforce 9600gt, ati radeon™ hd 5870",видео карта,nvidia geforce gtx 750 or ati radeon™ hd 6870 or higher
+directx,version 9.0c,directx,version 9.0c
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,12 gb,диск,15 gb
+звуковая карта,directx 9 sound device,звуковая карта,directx 9 sound device
+,,,
+windows_min_GTFO,windows_min_GTFO,windows_req_GTFO,windows_req_GTFO
+операционная система,windows 7,операционная система,windows 10
+процессор,intel core i5 2500k or amd equivalent,процессор,intel core i7-7700 or amd equivalent
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,nvidia geforce gt 1030 or radeon hd 7850,видео карта,nvidia geforce gtx 1060 or radeon rx 5500 xt
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,15 gb,диск,15 gb
+,,,
+windows_min_Foxhole,windows_min_Foxhole
+операционная система,windows 7 or higher
+процессор,"dual-core intel or amd, 2.0 ghz cpu"
+оперативная память,4 gb
+видео карта,1 gb directx 11 compatible video card
+сеть,широкополосное подключение
+,
+windows_min_Mafia: Definitive Edition,windows_min_Mafia: Definitive Edition,windows_req_Mafia: Definitive Edition,windows_req_Mafia: Definitive Edition
+операционная система,windows 10,операционная система,windows 10
+процессор,intel core-i5 2550k 3.4ghz / amd fx 8120 3.1 ghz,процессор,intel core-i7 3770 3.4ghz / amd fx-8350 4.2ghz
+оперативная память,6 gb,оперативная память,16 gb
+видео карта,nvidia geforce gtx 660 / amd radeon hd 7870,видео карта,nvidia geforce gtx 1080 / amd radeon rx 5700
+directx,version 11,directx,version 11
+диск,50 gb,диск,50 gb
+,,,

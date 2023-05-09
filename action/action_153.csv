@@ -1,0 +1,337 @@
+windows_min_Pedro Land DX,windows_min_Pedro Land DX
+операционная система,windows 10
+,
+windows_min_ Edge Worlds,windows_min_ Edge Worlds,windows_req_ Edge Worlds,windows_req_ Edge Worlds
+операционная система,microsoft windows 7/8/8.1/10 (64bit),операционная система,microsoft windows 7/8/8.1/10 (64bit)
+процессор,intel core i3-3200 ,процессор,intel core i5-4460 
+оперативная память,2 gb,оперативная память,4 gb
+видео карта,gt730 ,видео карта,gtx660 
+directx,version 11,directx,version 11
+диск,2 gb,диск,2 gb
+звуковая карта,n/a,звуковая карта,n/a
+,,,
+windows_min_Kitten Hero,windows_min_Kitten Hero,windows_req_Kitten Hero,windows_req_Kitten Hero
+операционная система,windows 7 32 bits,операционная система,windows 10 s
+процессор,2.0 ghz,процессор,3.0 ghz
+оперативная память,512 mb,оперативная память,1 gb
+видео карта,512 mb vram,видео карта,1 gb vram
+directx,version 10,directx,version 10
+,,,
+windows_min_Reed The Robotanist Plus,windows_min_Reed The Robotanist Plus,windows_req_Reed The Robotanist Plus,windows_req_Reed The Robotanist Plus
+оперативная память,4 gb,оперативная память,16 gb
+видео карта,nice to have,видео карта,—
+диск,300 mb,диск,300 mb
+операционная система,—,операционная система,linux mint 20.3 or whatever i tested with lol
+,,,
+windows_min_Overdrive,windows_min_Overdrive,windows_req_Overdrive,windows_req_Overdrive
+операционная система,windows 10,операционная система,windows 10 / 11
+процессор,intel core i3-4340 or amd fx-630,процессор,intel core i5-2500k or amd ryzen 5 1600x
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,nvidia geforce gtx 960 or amd radeon rx 470,видео карта,nvidia geforce gtx 1060 or amd radeon rx 580
+directx,version 11,directx,version 12
+,,,
+windows_min_Aerofly FS 4 Flight Simulator,windows_min_Aerofly FS 4 Flight Simulator,windows_req_Aerofly FS 4 Flight Simulator,windows_req_Aerofly FS 4 Flight Simulator,macos_min_Aerofly FS 4 Flight Simulator,macos_min_Aerofly FS 4 Flight Simulator,macos_req_Aerofly FS 4 Flight Simulator,macos_req_Aerofly FS 4 Flight Simulator,linux_min_Aerofly FS 4 Flight Simulator,linux_min_Aerofly FS 4 Flight Simulator,linux_req_Aerofly FS 4 Flight Simulator,linux_req_Aerofly FS 4 Flight Simulator
+операционная система,64bit versions of windows 10 / 11,операционная система,—,операционная система,macos mojave (10.14.xx),операционная система,—,операционная система,64bit linux or steam os,операционная система,—
+процессор,intel or amd quad core cpu ( intel core i5-4590 / amd fx 8350 ),процессор,—,процессор,intel quad core or apple m1 cpu,процессор,—,процессор,intel or amd quad core cpu,процессор,—
+оперативная память,8 gb,оперативная память,16 gb,оперативная память,8 gb,оперативная память,16 gb,оперативная память,8 gb,оперативная память,16 gb
+видео карта,opengl 4.0 or vulkan compatible 3d graphics card with at least 4 gb of ( nvidia gtx 970 / amd radeon r9 290 ),видео карта,opengl 4.5 or vulkan compatible 3d graphic card with 8 gb of,видео карта,nvidia or amd gpu with 4 gb of or apple m1 gpu,видео карта,nvidia or amd gpu with 6 gb of or apple m1 gpu,видео карта,opengl 4.0 or vulkan compatible 3d graphics card with at least 4 gb of,видео карта,opengl 4.5 or vulkan compatible 3d graphic card with 8 gb of
+диск,100 gb,диск,—,диск,100 gb,диск,—,диск,100 gb,диск,—
+,,,,,,,,,,,
+windows_min_,windows_min_
+операционная система,win7 10 11
+оперативная память,4 gb
+видео карта,960 +++
+directx,version 9.0c
+,
+windows_min_Legend of Kendor,windows_min_Legend of Kendor
+операционная система,windows 10
+процессор,intel i5
+оперативная память,4 gb
+видео карта,intel
+,
+windows_min_Kunai Strike,windows_min_Kunai Strike
+операционная система,windows 7
+процессор,"quad-core intel or amd, 2.5ghz or faster"
+оперативная память,8 gb
+видео карта,nvidia geforce 470 gtx or amd radeon 6870 hd series card or higher
+,
+windows_min_Dragon Fury,windows_min_Dragon Fury
+операционная система,windows 10
+процессор,процессор
+оперативная память,4 gb
+directx,version 10
+,
+windows_min_Don't Get Tagged,windows_min_Don't Get Tagged,windows_req_Don't Get Tagged,windows_req_Don't Get Tagged
+операционная система,steamos 3.0 (arch-based) + linux kernel,операционная система,steamos 3.0 (arch-based) + linux kernel
+процессор,"amd apu cpu: zen 2 4c/8t, 2.4-3.5ghz (up to 448 gflops fp32)",процессор,"amd apu cpu: zen 2 4c/8t, 2.4-3.5ghz (up to 448 gflops fp32)"
+видео карта,"gpu: 8 rdna 2 cus, 1.0-1.6ghz (up to 1.6 tflops fp32)",видео карта,"gpu: 8 rdna 2 cus, 1.0-1.6ghz (up to 1.6 tflops fp32)"
+диск,48 mb,диск,—
+,,,
+windows_min_MAZE RUNNER,windows_min_MAZE RUNNER,windows_req_MAZE RUNNER,windows_req_MAZE RUNNER
+операционная система,windows 10,операционная система,windows 10
+процессор,"quad-core intel or amd, 2.5 ghz or faster",процессор,"quad-core intel or amd, 2.5 ghz or faster"
+оперативная память,8 gb,оперативная память,8 gb
+видео карта,directx 11 or directx 12 compatible graphics card,видео карта,directx 11 or directx 12 compatible graphics card
+directx,version 11,directx,version 11
+диск,8 gb,диск,8 gb
+,,,
+windows_min_Super Kit: TO THE TOP,windows_min_Super Kit: TO THE TOP
+операционная система,windows 10
+процессор,core i5-7500 / ryzen 5 1600
+оперативная память,8 gb
+видео карта,gtx 1060 / rx 580
+directx,version 11
+диск,2 gb
+,
+windows_min_Knights of the Kitchen Table,windows_min_Knights of the Kitchen Table
+операционная система,windows 10
+процессор,intel i5-7360u ()
+оперативная память,8 gb
+видео карта,intel iris plus 640 ()
+,
+windows_min_Trippy Tavern,windows_min_Trippy Tavern,windows_req_Trippy Tavern,windows_req_Trippy Tavern
+операционная система,windows 7,операционная система,windows 10
+процессор,intel i5-4590 equivalent,процессор,intel i7-6700 equivalent
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,nvidia geforce gtx 970 equivalent,видео карта,nvidia geforce gtx 1070 equivalent
+диск,350 mb,диск,350 mb
+vr support,openxr,vr support,"openxr, requires motion controllers (e.g. valve index, oculus touch, etc.)"
+,,,
+windows_min_Putinist Slayer,windows_min_Putinist Slayer,windows_req_Putinist Slayer,windows_req_Putinist Slayer
+операционная система,windows 10+,операционная система,windows 10+
+процессор,1.6ghz+,процессор,2ghz+
+оперативная память,2 gb,оперативная память,2 gb
+видео карта,2gb+,видео карта,2gb+
+диск,300 mb,диск,300 mb
+,,,
+windows_min_Heal & Hurt,windows_min_Heal & Hurt
+операционная система,windows 7
+процессор,intelcore i3 gen 5
+оперативная память,2 gb
+видео карта,nvidia 670
+directx,version 11
+,
+windows_min_Bring It On!,windows_min_Bring It On!
+,
+windows_min_The Killer,windows_min_The Killer,windows_req_The Killer,windows_req_The Killer
+операционная система,"windows 7, windows 8 or windows 10;",операционная система,"windows 7, windows 8 or windows 10;"
+процессор,"cpu with 2 cores of 2,4 ghz;",процессор,"cpu with 4 cores of 2,4 ghz;"
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,graphics card that supports directx11 and with at least 1 gb of vram;,видео карта,"graphics card with directx11 support and with at least 2 gb of (nvidia gtx660 or higher, or amd hd5870 or higher);"
+directx,version 11,directx,version 11
+диск,10 gb,диск,—
+звуковая карта,-,звуковая карта,-
+,,,
+windows_min_Tales of Terror,windows_min_Tales of Terror,windows_req_Tales of Terror,windows_req_Tales of Terror
+операционная система,windows 10,операционная система,—
+процессор,intel core i5 / amd equivalent,процессор,—
+оперативная память,8 gb,оперативная память,—
+видео карта,nvidia geforce gtx 960 / amd equivalent,видео карта,—
+диск,6 gb,диск,—
+,,,
+windows_min_Watch Your Back,windows_min_Watch Your Back,windows_req_Watch Your Back,windows_req_Watch Your Back
+операционная система,windows 10,операционная система,windows 10
+процессор,intel i3-8100 / ryzen 3 2200 g,процессор,intel i7-9700k / ryzen 7 3700x
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,1050ti / radeon r9 380,видео карта,1080ti / radeon rx 5500m
+directx,version 10,directx,version 10
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,2 gb,диск,5 gb
+,,,
+windows_min_Vulgaria,windows_min_Vulgaria
+операционная система,windows 10
+процессор,intel core™ i7-2600
+оперативная память,16 gb
+видео карта,nvidia geforce gtx 570
+directx,version 7.1
+диск,3 gb
+звуковая карта,realtek high def audio
+,
+windows_min_Trouble Town,windows_min_Trouble Town,windows_req_Trouble Town,windows_req_Trouble Town
+операционная система,windows 10,операционная система,windows 10
+процессор,intel core i5 4 cores 2.6ghz or similar,процессор,intel core i5 4 cores 3.3ghz or similar
+оперативная память,4 gb,оперативная память,6 gb
+видео карта,geforce gtx 700 series or similar,видео карта,geforce gtx 950 series or similar
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+,,,
+windows_min_StarMech,windows_min_StarMech
+операционная система,windows 7 (sp1+) and windows 10 versions only
+процессор,x64 architecture with sse2 instruction set support
+оперативная память,1 gb
+видео карта,"dx10, dx11, and dx12-capable gpus"
+directx,version 10
+,
+windows_min_Crazy Cook,windows_min_Crazy Cook,windows_req_Crazy Cook,windows_req_Crazy Cook
+операционная система,windows 95/98/me/2000/xp,операционная система,windows xp
+процессор,intel core i5-4590 / amd fx 8350,процессор,intel i5-4590 / amd ryzen 5 1500x
+оперативная память,8 gb,оперативная память,8 gb
+видео карта,nvidia gtx 970 / amd radeon r9 290,видео карта,nvidia gtx 1060 / amd radeon rx 480
+диск,1 gb,диск,1 gb
+звуковая карта,direct sound compatible/support 3d sound effects,звуковая карта,direct sound compatible/support 3d sound effects
+,,,
+windows_min_Unichrome: A 1-Bit Unicorn Adventure,windows_min_Unichrome: A 1-Bit Unicorn Adventure
+операционная система,windows 8
+процессор,intel core i3 m380
+оперативная память,2 gb
+видео карта,intel hd 4000
+directx,version 10
+,
+windows_min_Atria,windows_min_Atria,windows_req_Atria,windows_req_Atria
+операционная система,windows 10,операционная система,windows 11
+процессор,intel core i5 10th gen 6 core,процессор,iintel core i7 11th gen 8 core
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,4095mb nvidia geforce gtx 1080 ti,видео карта,12gb gtx 3060
+directx,version 12,directx,version 12
+,,,
+windows_min_Estencel,windows_min_Estencel,windows_req_Estencel,windows_req_Estencel
+операционная система,windows 10 (),операционная система,windows 10 ()
+процессор,intel core i3-6100 / amd fx-6300,процессор,intel core i7-4770k / amd ryzen 5 1600
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,geforce gtx 750 ti / amd r7 265,видео карта,geforce gtx 1070 / amd rx vega 56
+directx,version 11,directx,version 11
+,,,
+windows_min_Hidden,windows_min_Hidden
+операционная система,windows 7
+процессор,intel core i3 cpu 2.10ghz
+оперативная память,1 gb
+,
+windows_min_Mate,windows_min_Mate,windows_req_Mate,windows_req_Mate
+операционная система,macos sierra,операционная система,macos monterey
+процессор,intel i3,процессор,intel i3
+оперативная память,2 gb,оперативная память,2 gb
+видео карта,nvidia gt1030,видео карта,nvidia gt1030
+directx,version 11,directx,version 11
+диск,3 gb,диск,3 gb
+звуковая карта,realtek,звуковая карта,realtek
+,,,
+windows_min_Bonza Boom,windows_min_Bonza Boom,windows_req_Bonza Boom,windows_req_Bonza Boom
+операционная система,win 10,операционная система,win 10
+процессор,core i3-530,процессор,core i3-530
+оперативная память,2 gb,оперативная память,2 gb
+видео карта,gtx960 and above,видео карта,gtx960 and above
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,512 mb,диск,512 mb
+звуковая карта,directx compatible,звуковая карта,directx compatible
+,,,
+windows_min_Blocked!,windows_min_Blocked!,windows_req_Blocked!,windows_req_Blocked!
+операционная система,windows 7,операционная система,windows 10
+процессор,intel i5 3570,процессор,intel i5 6700
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,geforce gtx 650,видео карта,geforce gtx 1050
+directx,version 11,directx,version 11
+диск,300 mb,диск,300 mb
+,,,
+windows_min_Chunkers,windows_min_Chunkers,windows_req_Chunkers,windows_req_Chunkers
+операционная система,microsoft windows 10,операционная система,microsoft windows 11
+процессор,intel pentium gold g7400,процессор,intel core i5 8300
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,intel uhd graphics 710,видео карта,nvidia gtx 1050
+сеть,широкополосное подключение,сеть,широкополосное подключение
+,,,
+windows_min_Treefender,windows_min_Treefender
+операционная система,10
+процессор,intel i5-4590 / amd ryzen 5 1500x
+оперативная память,8 gb
+видео карта,nvidia gtx 1060 / amd radeon rx 480
+directx,version 11
+,
+windows_min_Flip of Light,windows_min_Flip of Light
+операционная система,windows 7 ()
+процессор,intel core i3 4th generation or similar
+оперативная память,4 gb
+видео карта,intel hd 520 or similar
+,
+windows_min_Zuria,windows_min_Zuria
+операционная система,windows 7
+процессор,core 2 quad q6600 2.4 ghz
+оперативная память,1 gb
+видео карта,geforce 8600 gt 256mb
+directx,version 11
+сеть,широкополосное подключение
+,
+windows_min_Fight Club - All Stars,windows_min_Fight Club - All Stars,windows_req_Fight Club - All Stars,windows_req_Fight Club - All Stars
+операционная система,osx 11+,операционная система,osx 11+
+процессор,2.6ghz dual core,процессор,2.6ghz dual core
+оперативная память,8 mb,оперативная память,8 mb
+видео карта,opengl 3.0 compatible,видео карта,opengl 3.0 compatible
+directx,version 10,directx,version 11
+диск,1 gb,диск,1 gb
+,,,
+windows_min_Мафия Онлайн,windows_min_Мафия Онлайн,windows_req_Мафия Онлайн,windows_req_Мафия Онлайн
+операционная система,any,операционная система,any
+процессор,any,процессор,any
+оперативная память,1 mb,оперативная память,1 mb
+видео карта,any,видео карта,any
+диск,200 mb,диск,200 mb
+звуковая карта,—,звуковая карта,—
+,,,
+windows_min_Turbo Light Rush,windows_min_Turbo Light Rush
+операционная система,windows 10
+процессор,intel core i3
+оперативная память,4 gb
+видео карта,intel hd 520
+,
+windows_min_Lost Boy : Lost Island,windows_min_Lost Boy : Lost Island,windows_req_Lost Boy : Lost Island,windows_req_Lost Boy : Lost Island
+операционная система,windows 7 (64bit),операционная система,windows 10 (64bit)
+процессор,intel core 2 duo e5200,процессор,intel core i5
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,geforce 9800gtx+ (1gb),видео карта,geforce gtx 560
+directx,version 10,directx,version 11
+диск,9 gb,диск,9 gb
+,,,
+windows_min_SIMBA THE CAT,windows_min_SIMBA THE CAT
+операционная система,os: windows 10 64bit only
+процессор,intel core i5 / ryzen 5
+оперативная память,8 gb
+видео карта,nvidia gtx 960
+,
+windows_min_Valand,windows_min_Valand,windows_req_Valand,windows_req_Valand
+операционная система,windows 7,операционная система,windows 10
+процессор,intel core i3-7100 3.9ghz / amd fx-6300 3.5ghz,процессор,intel core i5-7500 3.40ghz / amd ryzen 5 3600x 3.8ghz
+оперативная память,2 gb,оперативная память,4 gb
+видео карта,nvidia 450 gts / radeon hd 5750,видео карта,nvidia geforce gtx 970 / amd r9 290x
+,,,
+windows_min_Big Flying Asteroid,windows_min_Big Flying Asteroid
+операционная система,windows 10
+процессор,"quad-core intel or amd, 2.5 ghz or faster"
+оперативная память,8 mb
+видео карта,directx 11 or directx 12 compatible graphics card
+directx,version 11
+,
+windows_min_Here to There,windows_min_Here to There
+операционная система,windows 10
+процессор,1.1 ghz
+оперативная память,2 gb
+видео карта,any
+directx,version 9.0
+сеть,широкополосное подключение
+диск,150 mb
+,
+windows_min_Impact Point,windows_min_Impact Point,windows_req_Impact Point,windows_req_Impact Point
+операционная система,windows 7,операционная система,windows 10
+процессор,any,процессор,any
+оперативная память,1 gb,оперативная память,2 gb
+видео карта,any,видео карта,any
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,100 mb,диск,100 mb
+,,,
+windows_min_WOE,windows_min_WOE,windows_req_WOE,windows_req_WOE
+операционная система,windows 7,операционная система,windows 10
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,integrated graphics (particles disabled),видео карта,dedicated graphics card
+диск,500 mb,диск,500 mb
+,,,
+windows_min_The Shadelight,windows_min_The Shadelight,windows_req_The Shadelight,windows_req_The Shadelight
+операционная система,windows 10,операционная система,windows 10
+процессор,amd athlon x4 845,процессор,ryzen 3 1200
+видео карта,nvidia geforce gt 1030,видео карта,radeon rx 570
+,,,
+windows_min_GRINDSHIFT,windows_min_GRINDSHIFT
+операционная система,windows vista
+процессор,requires a and operating system
+оперативная память,2 gb
+видео карта,intel hd graphics 4000
+directx,version 9.0
+,

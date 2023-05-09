@@ -1,0 +1,361 @@
+windows_min_The Unliving,windows_min_The Unliving,windows_req_The Unliving,windows_req_The Unliving
+операционная система,mavericks 10.9,операционная система,—
+процессор,intel core i3-2100 or amd fx-4350,процессор,intel core i5-6600 or amd ryzen 5 1500x
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,opengl 3.2+,видео карта,—
+directx,version 11,directx,version 11
+диск,2 gb,диск,—
+,,,
+windows_min_Catmaze,windows_min_Catmaze,macos_min_Catmaze,macos_min_Catmaze,linux_min_Catmaze,linux_min_Catmaze
+операционная система,windows 7,операционная система,mac os 10.7+,операционная система,steam os 2.0 / ubuntu 14.04 lts ()
+процессор,dual core 2.4 ghz,процессор,2 ghz dual core,процессор,2 ghz
+оперативная память,2 gb,оперативная память,2 gb,оперативная память,4 gb
+видео карта,hardware accelerated graphics with dedicated memory,видео карта,hardware accelerated graphics with dedicated memory,видео карта,"opengl 2.1-compatible, 512 mb video memory, framebuffer object support. e.g. intel hd 4600 ."
+,,,,,
+windows_min_Shadow Complex Remastered,windows_min_Shadow Complex Remastered,windows_req_Shadow Complex Remastered,windows_req_Shadow Complex Remastered
+операционная система,osx 10.10.5 (yosemite),операционная система,osx 10.11 (el capitan)
+процессор,"dual-core, min 2.5 ghz",процессор,"quad-core, ~2 ghz"
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,gtx 670m,видео карта,gtx 750m
+directx,version 9.0c,directx,version 11
+,,,
+windows_min_Tiny Brains,windows_min_Tiny Brains
+операционная система,"vista, 7, 8"
+процессор,p4 3 ghz or athlon 3400
+оперативная память,2 gb
+видео карта,256 mb video memory with shader model 3.0 support; ati radeon x1600xt / nvidea geforce 7800gs
+directx,version 9.0c
+,
+windows_min_Insecticide Part 1,windows_min_Insecticide Part 1
+операционная система,windows xp/vista
+процессор,1.5ghz
+оперативная память,256 mb
+видео карта,"16-bit graphics, directx 9 (shader 2.0) compatible video card, 64 mb minimum video memory"
+directx,9.0c
+звуковая карта,directx compatible sound card
+,
+windows_min_Men of War: Condemned Heroes,windows_min_Men of War: Condemned Heroes,windows_req_Men of War: Condemned Heroes,windows_req_Men of War: Condemned Heroes
+операционная система,windows xp/vista/7,операционная система,windows xp/vista/7
+процессор,p4 2.6ghz (athlon 3000+),процессор,core 2 duo 2.33ghz (athlon x2 5000+)
+оперативная память,1 gb,оперативная память,2 gb
+видео карта,geforce fx 8800 (radeon hd3850) 256mb,видео карта,geforce fx 8800 (radeon hd3850) 256mb
+directx,9.0c,directx,9.0c
+диск,3 gb hd space,диск,3 gb hd space
+,,,
+windows_min_Time Rifters,windows_min_Time Rifters,macos_min_Time Rifters,macos_min_Time Rifters,linux_min_Time Rifters,linux_min_Time Rifters
+операционная система,windows xp / vista / windows 7 / windows 8,операционная система,osx 10.6 +,операционная система,ububtu 12.04 lts
+процессор,2.0 ghz or higher,процессор,2.0 ghz,процессор,2.0 ghz
+оперативная память,2 gb,оперативная память,2 gb,оперативная память,2 gb
+видео карта,directx 9 or opengl 3 compatible video card,видео карта,opengl 3 compatible video card,видео карта,directx d10 or opengl 3 compatible video card
+directx,version 9.0,диск,1 gb,диск,1 gb
+,,,,,
+windows_min_BMX The Game,windows_min_BMX The Game,windows_req_BMX The Game,windows_req_BMX The Game
+операционная система,windows 10,операционная система,windows 10
+процессор,2.6ghz dual core i5 or higher,процессор,3.0ghz quad core i5 or higher
+оперативная память,8 gb,оперативная память,16 gb
+видео карта,gtx 960 or higher,видео карта,gtx 1060 or higher
+directx,version 11,directx,version 11
+диск,16 gb,диск,16 gb
+,,,
+windows_min_Iron Snout,windows_min_Iron Snout,macos_min_Iron Snout,macos_min_Iron Snout,linux_min_Iron Snout,linux_min_Iron Snout
+операционная система,"windows xp, vista, 7 or 8",операционная система,mac os x,операционная система,linux/steamos
+оперативная память,512 mb,оперативная память,512 mb,оперативная память,512 mb
+видео карта,128mb,видео карта,128mb,видео карта,128mb
+,,,,,
+windows_min_Windforge,windows_min_Windforge
+операционная система,windows 7
+процессор,core 2 duo
+оперативная память,2 gb
+видео карта,512 mb graphics memory and open gl 3 compatible gpu
+,
+windows_min_A.I.M.2 Clan Wars,windows_min_A.I.M.2 Clan Wars,windows_req_A.I.M.2 Clan Wars,windows_req_A.I.M.2 Clan Wars
+операционная система,"xp, vista, 7, 8, 10",операционная система,"xp, vista, 7, 8, 10"
+процессор,"1,5 ghz",процессор,"2,5 ghz"
+оперативная память,256 mb,оперативная память,768 mb
+видео карта,nvidia geforce3 or ati radeon 7500,видео карта,nvidia geforce fx5900 or ati radeon 9800
+directx,version 9.0c,directx,version 9.0c
+диск,3 gb,диск,4 gb
+,,,
+windows_min_Strife: Veteran Edition,windows_min_Strife: Veteran Edition,windows_req_Strife: Veteran Edition,windows_req_Strife: Veteran Edition,macos_min_Strife: Veteran Edition,macos_min_Strife: Veteran Edition,macos_req_Strife: Veteran Edition,macos_req_Strife: Veteran Edition,linux_min_Strife: Veteran Edition,linux_min_Strife: Veteran Edition,linux_req_Strife: Veteran Edition,linux_req_Strife: Veteran Edition
+операционная система,windows xp / vista / 7,операционная система,windows 7 and later,операционная система,os x 10.9,операционная система,os x leopard 10.9,операционная система,ubuntu 14.04 lts,операционная система,ubuntu 14.04 lts
+процессор,1.0 ghz,процессор,1.5 ghz,процессор,1.0 ghz,процессор,1.5 ghz,процессор,1.0 ghz,процессор,1.5 ghz
+оперативная память,256 mb,оперативная память,512 mb,оперативная память,256 mb,оперативная память,512 mb,оперативная память,256 mb,оперативная память,512 mb
+видео карта,100% directx compatible graphics,видео карта,100% directx compatible graphics,видео карта,3d graphics card or onboard graphics compatible with opengl,видео карта,3d graphics card or onboard graphics compatible with opengl,видео карта,3d graphics card or onboard graphics compatible with opengl,видео карта,3d graphics card or onboard graphics compatible with opengl
+directx,version 9.0c,directx,version 9.0c,диск,500 mb,диск,500 mb,диск,500 mb,диск,500 mb
+сеть,широкополосное подключение,сеть,широкополосное подключение,звуковая карта,100% coreaudio compatible card or onboard sound,звуковая карта,100% coreaudio compatible card or onboard sound,звуковая карта,any alsa supported card on onboard audio,звуковая карта,any alsa supported card or onboard audio
+диск,500 mb,диск,500 mb,сеть,—,сеть,широкополосное подключение,,,,
+,,,,,,,,,,,
+windows_min_Animal Super Squad,windows_min_Animal Super Squad,windows_req_Animal Super Squad,windows_req_Animal Super Squad
+операционная система,windows 7 x64,операционная система,windows 7 x64
+процессор,intel core i3 6100 / amd ryzen 3 1200,процессор,intel core i5 6600 / amd ryzen 5 1400
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,intel hd graphics 520,видео карта,geforce gtx 950 / radeon r9 280x
+directx,version 11,directx,—
+диск,2 gb,диск,2 gb
+,,,
+windows_min_Be My Girlfriends,windows_min_Be My Girlfriends
+операционная система,win7 sp1/win8/win10/xp
+процессор,1.2 ghz
+оперативная память,8 gb
+видео карта,directx 9 compatible graphics card
+,
+windows_min_Noobs Want to Live,windows_min_Noobs Want to Live,windows_req_Noobs Want to Live,windows_req_Noobs Want to Live
+операционная система,windows 7 64bit,операционная система,windows 10
+процессор,intel pentium 4 that's sse2 capable,процессор,intel core™ i5 s
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,intel uhd 630,видео карта,nvidia geforce gtx 1650
+directx,version 11,directx,version 11
+,,,
+windows_min_Suite 776,windows_min_Suite 776
+операционная система,windows 7 or higher
+процессор,i5 + anything post 2015 should suffice
+оперативная память,4 gb
+видео карта,gtx 960 or slightly lower.
+directx,version 10
+диск,3 gb
+звуковая карта,directx 10 or higher compatible sound card
+,
+windows_min_EVE: Valkyrie – Warzone,windows_min_EVE: Valkyrie – Warzone,windows_req_EVE: Valkyrie – Warzone,windows_req_EVE: Valkyrie – Warzone
+операционная система,windows 7 sp1,операционная система,windows 8
+процессор,i3-550,процессор,intel i7
+оперативная память,4 gb,оперативная память,12 gb
+видео карта,gtx 460 / amd 290 dx 11 compatible card,видео карта,nvidia gtx 970
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,30 gb,диск,30 gb
+,,,
+windows_min_Rocket League® - Jurassic World™ Car Pack,windows_min_Rocket League® - Jurassic World™ Car Pack,windows_req_Rocket League® - Jurassic World™ Car Pack,windows_req_Rocket League® - Jurassic World™ Car Pack
+операционная система,macos x 10.8.5,операционная система,macos x 10.8.5
+процессор,2.4+ ghz quad core,процессор,2.5+ ghz quad core
+оперативная память,2 gb,оперативная память,4 gb
+видео карта,nvidia gtx 260 or ati 4850,видео карта,"nvidia gtx 660, ati 7950"
+directx,version 9.0c,directx,version 9.0c
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,8 gb,диск,8 gb
+,,,
+windows_min_Fight of Animals,windows_min_Fight of Animals,windows_req_Fight of Animals,windows_req_Fight of Animals
+операционная система,windows 7 ( versions required),операционная система,windows 7 ( versions required)
+процессор,i5-4460,процессор,i7-4790
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,geforce gtx 750,видео карта,geforce gtx 960
+directx,version 11,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,600 mb,диск,1 gb
+,,,
+windows_min_Surfingers,windows_min_Surfingers,macos_min_Surfingers,macos_min_Surfingers,linux_min_Surfingers,linux_min_Surfingers
+операционная система,windows 7,операционная система,osx 10,операционная система,ubuntu 12.4
+процессор,1.0 ghz,процессор,1.0 ghz,процессор,1.0 ghz
+,,,,,
+windows_min_The Withering,windows_min_The Withering,windows_req_The Withering,windows_req_The Withering
+операционная система,windows 7,операционная система,windows 8.x
+процессор,intel (r) i5 - 4200u cpu 1.6 ghz,процессор,intel (r) i7 - 980 cpu 3.33 ghz
+оперативная память,6144 mb,оперативная память,16 gb
+видео карта,"intel (r) hd graphics family, sm:3.0",видео карта,nvidia geforce gtx 970
+directx,version 9.0,directx,version 9.0
+диск,6394 mb,диск,6394 mb
+,,,
+windows_min_Tree Simulator 2022,windows_min_Tree Simulator 2022
+операционная система,windows 7 or 10
+процессор,intel i3
+оперативная память,1 gb
+видео карта,gtx 560
+directx,version 11
+диск,1 gb
+,
+windows_min_Bounty game,windows_min_Bounty game,windows_req_Bounty game,windows_req_Bounty game
+операционная система,"windows 7, windows 8.1,windows10",операционная система,"windows 7, windows 8.1,windows10"
+процессор,intel i5 8400 /amd ryzen5 1500x,процессор,intel i7 8700 /amd ryzen5 2600
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,nvdia gtx 750/ amd rx 7260x,видео карта,nvdia gtx 1060 / amd rx 5500xt
+directx,version 11,directx,version 11
+,,,
+windows_min_Sky Knights,windows_min_Sky Knights,windows_req_Sky Knights,windows_req_Sky Knights
+операционная система,windows 7 sp1 (),операционная система,"windows 7 sp1 (), windows 8 (), windows 10 ()"
+процессор,2.0 ghz dual-core cpu,процессор,2.4 ghz quad-core cpu
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,dx10 compatible gpu with 1 gb vram,видео карта,dx11 compatible gpu with 2 gb vram
+directx,version 10,directx,version 11
+сеть,широкополосное подключение,сеть,широкополосное подключение
+,,,
+windows_min_ZED ZONE,windows_min_ZED ZONE,windows_req_ZED ZONE,windows_req_ZED ZONE
+операционная система,win xp,операционная система,win 10
+процессор,intel i3/ amd r3,процессор,intel i7/ amd r7
+оперативная память,2 gb,оперативная память,8 gb
+видео карта,nvidia gtx 660,видео карта,nvidia gtx 1060
+directx,version 10,directx,version 11
+,,,
+windows_min_Super Puzzle Platformer Deluxe,windows_min_Super Puzzle Platformer Deluxe,windows_req_Super Puzzle Platformer Deluxe,windows_req_Super Puzzle Platformer Deluxe
+операционная система,snow leopard 10.6.x,операционная система,—
+процессор,dual core 2 ghz,процессор,—
+оперативная память,2 gb gb,оперативная память,—
+видео карта,pixel shader 2.0,видео карта,—
+directx,9.0c,directx,—
+,,,
+windows_min_PAYDAY 2: The Bomb Heists,windows_min_PAYDAY 2: The Bomb Heists,windows_req_PAYDAY 2: The Bomb Heists,windows_req_PAYDAY 2: The Bomb Heists
+операционная система,windows xp sp3,операционная система,windows xp sp3/vista/windows 7
+процессор,2 ghz intel dual core,процессор,2.3 ghz intel quad core
+оперативная память,2 gb,оперативная память,3 gb
+видео карта,nvidia geforce 8800 / ati radeon hd 2600 (256mb minimum),видео карта,nvidia geforce gtx460 / ati radeon hd 5850 (512mb minimum)
+directx,9.0c,directx,9.0c
+диск,13 gb hd space,диск,13 gb hd space
+,,,
+windows_min_Planetoid Pioneers,windows_min_Planetoid Pioneers,windows_req_Planetoid Pioneers,windows_req_Planetoid Pioneers
+операционная система,windows 7,операционная система,windows 7
+процессор,dual core 2.5 ghz,процессор,quad core 3 ghz
+оперативная память,8 gb,оперативная память,8 gb
+видео карта,modern graphics card with 1 gb memory,видео карта,modern graphics card with 2 gb memory
+диск,4 gb,диск,4 gb
+звуковая карта,any sound card,звуковая карта,any sound card
+дополнительно,play with joypad or keyboard and mouse,дополнительно,play with joypad or keyboard and mouse
+,,,
+windows_min_Revhead,windows_min_Revhead,windows_req_Revhead,windows_req_Revhead,macos_min_Revhead,macos_min_Revhead,macos_req_Revhead,macos_req_Revhead,linux_min_Revhead,linux_min_Revhead,linux_req_Revhead,linux_req_Revhead
+операционная система,"windows 7, windows 8.1, windows 10 ( versions only)",операционная система,"windows7, windows 10",операционная система,10.11 (el capitan),операционная система,10.13 (high sierra),операционная система,ubuntu,операционная система,ubuntu (16.04 or higher)
+процессор,2ghz dual core,процессор,i5,процессор,2ghz dual core,процессор,i5,процессор,2ghz dual core,процессор,i5
+оперативная память,4 gb,оперативная память,16 gb,оперативная память,4 gb,оперативная память,8 gb,оперативная память,4 gb,оперативная память,16 gb
+видео карта,min. 1gb,видео карта,nvidia gtx 960 (2gb),видео карта,intel iris (1gb),видео карта,amd radeon r9 m295x (4gb) or dedicated gfx,видео карта,min 1gb,видео карта,nvidia gtx 970 (2gb)
+directx,version 9.0,directx,version 9.0,сеть,широкополосное подключение,сеть,—,сеть,широкополосное подключение,сеть,—
+сеть,широкополосное подключение,сеть,широкополосное подключение,диск,2 gb,диск,—,диск,2 gb,диск,2 gb
+,,,,,,,,,,,
+windows_min_Crab Champions,windows_min_Crab Champions
+операционная система,windows 7/8/10
+процессор,core i3 3.3 ghz
+оперативная память,4 gb
+видео карта,intel hd 4000
+диск,6 gb
+,
+windows_min_Wings! Remastered Edition,windows_min_Wings! Remastered Edition
+операционная система,"windows vista sp2, windows 7, windows 8"
+процессор,2 ghz dual core cpu
+оперативная память,4 gb
+видео карта,"intel hd 3000, dedicated nvidia or amd graphics card with directx 9.0c hardware support"
+directx,version 9.0c
+диск,1 gb
+,
+windows_min_Puddle,windows_min_Puddle,windows_req_Puddle,windows_req_Puddle,macos_min_Puddle,macos_min_Puddle,macos_req_Puddle,macos_req_Puddle,linux_min_Puddle,linux_min_Puddle,linux_req_Puddle,linux_req_Puddle
+операционная система,windows xp 32bits sp3,операционная система,"windows vista, windows 7 or 8",операционная система,macos x 10.7,операционная система,macos x 10.7.x/10.8.x,операционная система,"12.04, 12.10, fully updated",операционная система,"ubuntu 12.04, 12.10 fully updated"
+процессор,2 ghz dual core,процессор,2 ghz dual core and above,процессор,intel core duo 2.16 ghz,процессор,intel core duo 2.4 ghz,процессор,2 ghz dual core,процессор,2 ghz dual core and above
+оперативная память,1024 mb,оперативная память,2048 mb,оперативная память,2 gb,оперативная память,2 gb,оперативная память,1024 mb,оперативная память,2048 mb
+видео карта,"nvidia geforce 8600 gt, ati radeon 4650, intel hd graphics, 512 mb shader model 3",видео карта,"nvidia geforce 8800, ati radeon 4800, intel hd graphics 512 mb",видео карта,"nvidia geforce 9400m, ati radeon 2400xt, intel hd",видео карта,"nvidie geforce 8600 gt, ati radeon 2600 pro, intel hd",видео карта,"nvidia geforce 8600 gt, ati radeon 4650, 512 mb shader model 3",видео карта,"nvidia geforce 8800, ati radeon 4800, 512 mb"
+directx,9.0c,directx,9.0c,диск,700 mb,диск,1024 mb,диск,650 mb hd space,диск,1024 mb hd space
+диск,650 mb hd space,диск,1024 mb hd space,,,,,,,,
+,,,,,,,,,,,
+windows_min_Table Top Racing: World Tour,windows_min_Table Top Racing: World Tour,windows_req_Table Top Racing: World Tour,windows_req_Table Top Racing: World Tour
+операционная система,"windows 7, 8, 10",операционная система,"windows 7, 8, 10"
+процессор,"core i3 6100, amd x4 860 and above (may work on lower specifications)",процессор,"core i5-2500, amd fx-8120 and above (may work on lower specifications)"
+оперативная память,4 gb,оперативная память,8 gb
+видео карта,"gtx 650ti, radeon hd 5870 (may work on lower specifications)",видео карта,"gtx 750, radeon hd 6950 (may work on lower specifications)"
+directx,version 10,directx,version 10
+сеть,широкополосное подключение,сеть,широкополосное подключение
+диск,4 gb,диск,4 gb
+звуковая карта,generic,звуковая карта,все
+,,,
+windows_min_Duet,windows_min_Duet,macos_min_Duet,macos_min_Duet,linux_min_Duet,linux_min_Duet
+операционная система,windows vista,операционная система,"macos x 10.11 ""el capitan""",операционная система,linux required
+процессор,core 2 duo,оперативная память,1 gb,оперативная память,1 gb
+оперативная память,1 gb,видео карта,integrated,видео карта,integrated
+видео карта,integrated,диск,150 mb,диск,150 mb
+,,,,,
+windows_min_Air Brawl,windows_min_Air Brawl
+операционная система,windows 7
+процессор,2 ghz
+оперативная память,2 gb
+directx,version 9.0
+,
+windows_min_ORCS,windows_min_ORCS
+операционная система,windows 7
+процессор,core 2 duo
+оперативная память,2 gb
+,
+windows_min_Desert Skies,windows_min_Desert Skies,windows_req_Desert Skies,windows_req_Desert Skies
+операционная система,windows 7+,операционная система,windows 7+
+процессор,2.6 ghz dual core,процессор,intel core i5
+оперативная память,1 gb,оперативная память,2 gb
+видео карта,intel hd 4600,видео карта,nvidia gtx 550
+directx,version 11,directx,version 11
+диск,500 mb,диск,500 mb
+,,,
+windows_min_Outlaws + A Handful of Missions,windows_min_Outlaws + A Handful of Missions,windows_req_Outlaws + A Handful of Missions,windows_req_Outlaws + A Handful of Missions
+операционная система,windows xp,операционная система,—
+процессор,1.8 ghz,процессор,—
+оперативная память,1 gb,оперативная память,—
+видео карта,3d graphics card compatible with directx 7,видео карта,3d graphics card compatible with directx 9.0c
+directx,version 7.0,directx,version 9.0c
+диск,651 mb,диск,—
+звуковая карта,16-bit sound card,звуковая карта,—
+,,,
+windows_min_ROCKETSROCKETSROCKETS,windows_min_ROCKETSROCKETSROCKETS,windows_req_ROCKETSROCKETSROCKETS,windows_req_ROCKETSROCKETSROCKETS,macos_min_ROCKETSROCKETSROCKETS,macos_min_ROCKETSROCKETSROCKETS,macos_req_ROCKETSROCKETSROCKETS,macos_req_ROCKETSROCKETSROCKETS,linux_min_ROCKETSROCKETSROCKETS,linux_min_ROCKETSROCKETSROCKETS,linux_req_ROCKETSROCKETSROCKETS,linux_req_ROCKETSROCKETSROCKETS
+операционная система,xp,операционная система,7,операционная система,10.7,операционная система,10.8,операционная система,"ubuntu 12.04 lts, fully updated",операционная система,steamos
+процессор,core 2 duo or higher,процессор,core 2 duo or higher,процессор,core 2 duo or higher,процессор,core 2 duo or higher,процессор,1.8 ghz dual core cpu,процессор,1.8 ghz dual core cpu
+оперативная память,2 gb,оперативная память,2 gb,оперативная память,2 gb,оперативная память,2 gb,оперативная память,1 gb,оперативная память,—
+видео карта,intel hd graphics 3000 with 384 mb of,видео карта,nvidia geforce 9800 gtx+ or higher,видео карта,intel hd graphics 3000 with 384 mb of,видео карта,nvidia geforce 9800 gtx+ or higher,видео карта,"256 mb geforce 8800, radeon hd 2000, or intel hd 4000 graphics",видео карта,—
+диск,200 mb,диск,200 mb,диск,200 mb,диск,200 mb,диск,200 mb,диск,—
+,,,,,,,,,,,
+windows_min_Realms of Magic,windows_min_Realms of Magic,macos_min_Realms of Magic,macos_min_Realms of Magic,linux_min_Realms of Magic,linux_min_Realms of Magic
+операционная система,windows 7,операционная система,10.10 yosemite,операционная система,2.6.24
+процессор,core i5 2ghz,процессор,core i5 2ghz,процессор,core i5 2ghz
+оперативная память,2 gb,оперативная память,1 gb,оперативная память,1 gb
+видео карта,nvidia gtx460 / mobility radeon hd 5830,видео карта,nvidia gtx460 / mobility radeon hd 5830,видео карта,nvidia gtx460 / mobility radeon hd 5830
+диск,1 gb,сеть,широкополосное подключение,сеть,широкополосное подключение
+,,диск,1 gb,диск,1 gb
+,,звуковая карта,openal compatible sound card,звуковая карта,openal compatible sound card
+,,,,,
+windows_min_Ria's Hook,windows_min_Ria's Hook,windows_req_Ria's Hook,windows_req_Ria's Hook
+операционная система,windows,операционная система,windows 10
+процессор,amd athlon ll x2 265,процессор,2.5 ghz dual core cpu (64x)
+оперативная память,4 gb,оперативная память,4 gb
+видео карта,intel hd graphics 4000,видео карта,geforce gtx 960~
+directx,version 11,directx,version 11
+,,,
+windows_min_Arena Wars 2,windows_min_Arena Wars 2
+операционная система,windows xp sp3
+процессор,2.0+ghz
+оперативная память,2 gb
+видео карта,graphic ships with shader 3.0 support
+directx,9.0c
+диск,600 mb hd space
+звуковая карта,direct x 9.0c compatible
+,
+windows_min_Mutant Mudds Deluxe,windows_min_Mutant Mudds Deluxe,windows_req_Mutant Mudds Deluxe,windows_req_Mutant Mudds Deluxe
+операционная система,windows xp / windows vista / windows 7,операционная система,—
+процессор,1.8 ghz,процессор,—
+оперативная память,512 mb,оперативная память,1 gb
+видео карта,3d graphics card,видео карта,—
+directx,version 9.0,directx,—
+,,,
+windows_min_Hybrid Animals,windows_min_Hybrid Animals
+операционная система,windows 7
+процессор,intel pentium d or amd athlon 64 (k8) 2.6 ghz
+оперативная память,2 gb
+видео карта,nvidea geforce 9600 gt or amd radeon hd 2400
+directx,version 9.0
+,
+windows_min_Words for Evil,windows_min_Words for Evil
+операционная система,mac os x 10.5
+процессор,2.0 ghz intel
+оперативная память,2 gb
+видео карта,"geforce 8800 or radeon hd4800 series, 512 mb"
+directx,version 9.0c
+,
+windows_min_Vessel,windows_min_Vessel
+операционная система,windows 7 / vista / xp
+процессор,dual core 2.0ghz
+оперативная память,2gb system
+диск,1.5gb
+видео карта,ati radeon hd 2400 or nvidia geforce 7600 (shader model 3.0 needs to be supported)
+directx,9.0c
+,
+windows_min_Voodoo Vince: Remastered,windows_min_Voodoo Vince: Remastered,windows_req_Voodoo Vince: Remastered,windows_req_Voodoo Vince: Remastered
+операционная система,windows 7,операционная система,windows 10
+процессор,intel core2-duo 2ghz,процессор,intel core2-duo 2ghz
+оперативная память,3 gb,оперативная память,4 gb
+видео карта,nvidia geforce gt430-1gb vram,видео карта,nvidia geforce gt440-2gb vram
+directx,version 11,directx,version 11
+диск,4 gb,диск,4 gb
+,,,
+windows_min_Zwei: The Ilvard Insurrection,windows_min_Zwei: The Ilvard Insurrection
+операционная система,windows 7
+процессор,intel xeon w3505 @ 2.5 ghz (2-core)
+оперативная память,1 gb
+видео карта,nvidia quadro 600
+directx,version 8.0
+диск,5 gb
+,

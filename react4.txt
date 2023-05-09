@@ -1,0 +1,28 @@
+import React from "react";
+
+function App() {
+    return (
+        <div>
+            <div>
+                <label htmlFor="keywords">Ключевые слова:</label>
+                <input type="text" id="keywords" />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <button style={{ width: "15%", height: "3em", margin: "5px", fontSize: "16px" }}>
+                    Отсортировать по ценам
+                </button>
+                <button style={{ width: "15%", height: "3em", margin: "5px", fontSize: "16px" }}>
+                    Отсортировать по названиям
+                </button>
+                <button style={{ width: "15%", height: "3em", margin: "5px", fontSize: "16px" }}>
+                    Отсортировать по давности появления в каталоге
+                </button>
+                <button style={{ width: "15%", height: "3em", margin: "5px", fontSize: "16px" }}>
+                    Сохранить конфигурацию в Excel
+                </button>
+            </div>
+        </div>
+    );
+}
+
+export default App;
