@@ -181,11 +181,12 @@ def create_tables(connection):
 
 @app.route('/details')
 def get_details():
-    details = main()
+    all_lists = main()
     details_list = []
-    for detail in details:
-        detail_dict = {key: value for key, value in vars(detail).items()}
-        details_list.append(detail_dict)
+    for details in all_lists:
+        for detail in details:
+            detail_dict = {key: value for key, value in vars(detail).items()}
+            details_list.append(detail_dict)
     return jsonify(details_list)
 
 def main():
@@ -206,7 +207,7 @@ def main():
     except mysql.connector.Error as error:
         print(f'An error {error} occured')
 
-    create_tables(connection)
+    # create_tables(connection)
 
     cpus_fromDB = read_from_db(connection, "cpus", Cpu, constants.cpu_keys)
     coolers_fromDB = read_from_db(connection, "coolers", Cooler, constants.cooler_keys)
@@ -218,7 +219,7 @@ def main():
     powers_fromDB = read_from_db(connection, "powers", Power, constants.power_keys)
     cases_fromDB = read_from_db(connection, "cases", Case, constants.case_keys)
 
-    all_lists = cpus_fromDB
+    all_lists = [cpus_fromDB, coolers_fromDB, motherboards_fromDB]
     # [cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB]
     return all_lists
 
@@ -333,3 +334,5 @@ def main():
 if __name__ == '__main__':
     main()
     app.run()
+
+

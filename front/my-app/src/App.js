@@ -250,15 +250,14 @@ function App() {
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                     <label htmlFor="motherboards" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Мат. плата</label>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <select id="motherboards" value={motherboards} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }} >
-                            <option value="ASUS ROG Maximus XIII Hero">ASUS ROG Maximus XIII Hero</option>
-                            <option value="GIGABYTE AORUS X570 Master">GIGABYTE AORUS X570 Master</option>
-                            <option value="MSI MPG B550 Gaming Edge WiFi">MSI MPG B550 Gaming Edge WiFi</option>
-                            <option value="ASRock Z590 Extreme WiFi 6E">ASRock Z590 Extreme WiFi 6E</option>
+                        <select value={selectedMotherboard.name} onChange={(e) => handleComponentChange(e, motherboards, setSelectedMotherboard, setMotherboardPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            {motherboards.map(motherboard => (
+                                <option value={motherboard.name} key={motherboard.name}>{motherboard.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
-                        <input type="number" id="ramPrice" value={ramPrice} readOnly style={{ width: '40%' }} />
+                        <input type="number" id="motherboardPrice" value={selectedMotherboard ? selectedMotherboard.price : ''} readOnly style={{ width: '35%', fontSize: "20px" }} />
                     </div>
                 </div>
 
@@ -266,10 +265,10 @@ function App() {
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                     <label htmlFor="rams" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>RAM</label>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flex: '1' }}>
-                        <select id="rams" value={rams} style={{ fontSize: "20px", width: '33.33%', minWidth: '800px', marginRight: '10px' }}>
-                            <option value="corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200">corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200</option>
-                            <option value="g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600">g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600</option>
-                            <option value="crucial ballistix 64gb (2 x 32gb) ddr4-3200">crucial ballistix 64gb (2 x 32gb) ddr4-3200</option>
+                        <select value={selectedRam.name} onChange={(e) => handleComponentChange(e, rams, setSelectedRam, setRamPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            {rams.map(ram => (
+                                <option value={ram.name} key={ram.name}>{ram.name}</option>
+                            ))}
                         </select>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flex: 1 }}>
@@ -287,10 +286,10 @@ function App() {
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                     <label htmlFor="gpus" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Видеокарта</label>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <select id="gpus" value={gpus} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }} >
-                            <option value="corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200">corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200</option>
-                            <option value="g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600">g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600</option>
-                            <option value="crucial ballistix 64gb (2 x 32gb) ddr4-3200">crucial ballistix 64gb (2 x 32gb) ddr4-3200</option>
+                        <select value={selectedGpu.name} onChange={(e) => handleComponentChange(e, gpus, setSelectedGpu, setGpuPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            {gpus.map(gpu => (
+                                <option value={gpu.name} key={gpu.name}>{gpu.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
@@ -301,42 +300,42 @@ function App() {
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                     <label htmlFor="ssds" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>SSD</label>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <select id="ssds" value={ssds} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }} >
-                            <option value="corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200">corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200</option>
-                            <option value="g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600">g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600</option>
-                            <option value="crucial ballistix 64gb (2 x 32gb) ddr4-3200">crucial ballistix 64gb (2 x 32gb) ddr4-3200</option>
+                        <select value={selectedSsd.name} onChange={(e) => handleComponentChange(e, ssds, setSelectedSsd, setSsdPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            {ssds.map(ssd => (
+                                <option value={ssd.name} key={ssd.name}>{ssd.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
-                        <input type="number" id="ramPrice" value={ramPrice} readOnly style={{ width: '40%' }} />
+                        <input type="number" id="ssdPrice" value={selectedSsd ? selectedSsd.price : ''} readOnly style={{ width: '35%', fontSize: "20px" }} />
                     </div>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                     <label htmlFor="hdds" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>HDD</label>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <select id="hdds" value={hdds} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }} >
-                            <option value="corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200">corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200</option>
-                            <option value="g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600">g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600</option>
-                            <option value="crucial ballistix 64gb (2 x 32gb) ddr4-3200">crucial ballistix 64gb (2 x 32gb) ddr4-3200</option>
+                        <select value={selectedHdd.name} onChange={(e) => handleComponentChange(e, hdds, setSelectedHdd, setHddPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            {hdds.map(hdd => (
+                                <option value={hdd.name} key={hdd.name}>{hdd.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
-                        <input type="number" id="ramPrice" value={ramPrice} readOnly style={{ width: '40%' }} />
+                        <input type="number" id="hddPrice" value={selectedHdd ? selectedHdd.price : ''} readOnly style={{ width: '35%', fontSize: "20px" }} />
                     </div>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                     <label htmlFor="powers" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Блок питания</label>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <select id="powers" value={powers} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }} >
-                            <option value="corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200">corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200</option>
-                            <option value="g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600">g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600</option>
-                            <option value="crucial ballistix 64gb (2 x 32gb) ddr4-3200">crucial ballistix 64gb (2 x 32gb) ddr4-3200</option>
+                        <select value={selectedPower.name} onChange={(e) => handleComponentChange(e, powers, setSelectedPower, setPowerPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            {powers.map(power => (
+                                <option value={power.name} key={power.name}>{power.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
-                        <input type="number" id="ramPrice" value={ramPrice} readOnly style={{ width: '40%' }} />
+                        <input type="number" id="powerPrice" value={selectedPower ? selectedPower.price : ''} readOnly style={{ width: '35%', fontSize: "20px" }} />
                     </div>
                 </div>
 
@@ -344,14 +343,14 @@ function App() {
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                     <label htmlFor="casePCs" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Корпус</label>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <select id="casePCs" value={casePCs} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }} >
-                            <option value="corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200">corsair vengeance rgb pro 16gb (2 x 8gb) ddr4-3200</option>
-                            <option value="g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600">g.skill ripjaws v series 32gb (2 x 16gb) ddr4-3600</option>
-                            <option value="crucial ballistix 64gb (2 x 32gb) ddr4-3200">crucial ballistix 64gb (2 x 32gb) ddr4-3200</option>
+                        <select value={selectedCasePC.name} onChange={(e) => handleComponentChange(e, casePCs, setSelectedCasePC, setCasePrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            {casePCs.map(casePC => (
+                                <option value={casePC.name} key={casePC.name}>{casePC.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
-                        <input type="number" id="ramPrice" value={ramPrice} readOnly style={{ width: '40%' }} />
+                        <input type="number" id="casePrice" value={selectedCasePC ? selectedCasePC.price : ''} readOnly style={{ width: '35%', fontSize: "20px" }} />
                     </div>
                 </div>
 

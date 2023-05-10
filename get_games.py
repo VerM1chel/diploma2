@@ -58,7 +58,15 @@ def getClassNamesAndValues(c):
 
 def write_data(connection, cursor, table_name, req_dicts_list, directions_list, games_names_list):
     for i, game_name in enumerate(games_names_list):
-        values_to_write = [game_name, req_dicts_list[i]["процессор"], None, None, req_dicts_list[i]["оперативная память"], req_dicts_list[i]["видео карта"], req_dicts_list[i]["диск"], None, None, None, directions_list[i]]
+        try: cpu = req_dicts_list[i]["процессор"]
+        except: cpu = None
+        try: ram = req_dicts_list[i]["оперативная память"]
+        except: ram = None
+        try: gpu = req_dicts_list[i]["видео карта"]
+        except: gpu = None
+        try: ssd = req_dicts_list[i]["диск"]
+        except: ssd = None
+        values_to_write = [game_name, cpu, None, None, ram, gpu, ssd, None, None, None, directions_list[i]]
         placeholders = ', '.join(['%s'] * len(values_to_write))
         write_data_to_table_query = f"INSERT INTO {table_name} (program_name, cpu, cooler, motherboard, ram, gpu, ssd, hdd, power, casePC, directions) VALUES ({placeholders})"
         try:
@@ -81,7 +89,7 @@ def parse_games():
         # clear_cache_cookies(driver) # Чистим кеш и cookies
         # driver.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": UserAgent().random}) # Используем случайный user agent, чтобы избежать попадания в черный список сайта
         # print(driver.execute_script("return navigator.userAgent;"))
-        i = 0
+        i = 4
         while True:
             print(f"page number {i + 1}")
             driver.get(main_devices_link+f"?page={i+1}")
@@ -107,8 +115,13 @@ def parse_games():
                 is_os_text = [o.text.lower().strip() for o in is_os_text]
                 is_win, is_mac, is_lin = False, False, False
                 is_os_list = [is_win, is_mac, is_lin]
-                if "win" in is_os_text[0]:
-                    is_os_list[0] = True
+                if is_os_text is None:
+                    continue
+                try:
+                    if "win" in is_os_text[0]:
+                        is_os_list[0] = True
+                except:
+                    print("nice")
                 else:
                     continue
                 game_name = soup_game.find('h1').text[22:].rstrip()
@@ -170,17 +183,24 @@ def parse_games():
                 time.sleep(1)
                 try:
                     genres_dd = soup_game.find('dt', string=' Жанры ').find_next_sibling('dd') # Находим список жанров
+                    genres = [a.text for a in genres_dd.find_all('a')]
                 except:
-                    genres_dd = soup_game.find('dt', string=' Жанр ').find_next_sibling('dd')  # Находим список жанров
-                genres = [a.text for a in genres_dd.find_all('a')]
+                    try:
+                        genres_dd = soup_game.find('dt', string=' Жанр ').find_next_sibling('dd')  # Находим список жанров
+                        genres = [a.text for a in genres_dd.find_all('a')]
+                    except:
+                        genres = [""]
                 genres_string = ", ".join(genres)
                 genres_string = genres_string + ".\n"
-
                 try:
                     categories_dd = soup_game.find('dt', string=' Категории ').find_next_sibling('dd') # Находим список категорий
+                    categories = [a.text for a in categories_dd.find_all('a')]
                 except:
-                    categories_dd = soup_game.find('dt', string=' Категория ').find_next_sibling('dd')  # Находим список категорий
-                categories = [a.text for a in categories_dd.find_all('a')]
+                    try:
+                        categories_dd = soup_game.find('dt', string=' Категория ').find_next_sibling('dd')  # Находим список категорий
+                        categories = [a.text for a in categories_dd.find_all('a')]
+                    except:
+                        categories = [""]
                 categories_string = ", ".join(categories)
                 directions = genres_string + categories_string
                 directions_list.append(directions)
