@@ -1,3 +1,5 @@
+from flask import Flask, jsonify
+
 import constants
 from sql_code import config
 from sql_code import queries
@@ -16,6 +18,7 @@ import inspect
 import mysql.connector
 from mysql.connector import Error
 
+app = Flask(__name__)
 
 def get_Conf():
     pass
@@ -86,7 +89,7 @@ def ram_logic(budget, motherboard, rams):
     return result
 
 # Done
-def ssd_logic(budget, ssds, motherboard, direction, itSeconfSSD=False): # Всегда (даже если бюджет ограничен, берем 512 Гб SSD) (256 Гб для совсем дешевок)
+def ssd_logic(budget, ssds, motherboard, itSeconfSSD=False): # Всегда (даже если бюджет ограничен, берем 512 Гб SSD) (256 Гб для совсем дешевок)
 # Чекнуть разъемы M.2 (M.2 дорогие и крутые для игровых) (М.2 ssd (операционка и прога в которой ты работаешь) и SATA ssd для остального
     result = []
     for ssd in ssds:
@@ -147,7 +150,7 @@ def case_logic(budget, cases, motherboard, gpu, power):
     return result
 
 
-def create_conf(details, idealPrice):
+def create_conf(idealPrice, details):
     sorted_details = sorted(details, key=lambda d: abs(idealPrice - d.price)) # Получаем список, у которого первые элементы -- это экземпляры класса с наиболее близким совпадением к желаемой цене
     return sorted_details[:5] # Возвращаем топ 5 совпадений
 
@@ -165,7 +168,8 @@ def read_from_db(connection, table_name, my_class, keys):
 def create_tables(connection):
     cursor = connection.cursor()
     table_queries = [queries.create_cpus_table, queries.create_coolers_table, queries.create_motherboards_table, queries.create_rams_table,
-        queries.create_gpus_table, queries.create_ssds_table, queries.create_hhds_table, queries.create_powers_table, queries.create_cases_table]
+        queries.create_gpus_table, queries.create_ssds_table, queries.create_hhds_table, queries.create_powers_table, queries.create_cases_table,
+                     queries.create_min_reqs_table, queries.create_recommended_reqs_table, queries.create_configuration_table]
     for query in table_queries:
         try:
             cursor.execute(query)
@@ -175,7 +179,14 @@ def create_tables(connection):
             cursor.close()
     cursor.close()
 
-
+@app.route('/details')
+def get_details():
+    details = main()
+    details_list = []
+    for detail in details:
+        detail_dict = {key: value for key, value in vars(detail).items()}
+        details_list.append(detail_dict)
+    return jsonify(details_list)
 
 def main():
     # 2. Read all trebovaniya from database (read all devices)
@@ -207,80 +218,92 @@ def main():
     powers_fromDB = read_from_db(connection, "powers", Power, constants.power_keys)
     cases_fromDB = read_from_db(connection, "cases", Case, constants.case_keys)
 
-# Then we need to get only devices, that pass to customer requirements
-    budget = None
-    while budget.isdigit() == False or budget < 0:
-        budget = float(input())
+    all_lists = cpus_fromDB
+    # [cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB]
+    return all_lists
 
-    cpus = []
+    # get_details(cpus_fromDB)
+    # print("nice")
 
-    # CPU
-    if budget > 400:
-        cpus = cpu_logic(budget=budget*0.20, cpus=cpus_fromDB)
-    elif budget < 300: # если конфигурация слишком дешевая
-        cpus = cpu_logic(budget=budget * (0.20 + 0.34 * 0.6 + 0.03 - 0.013), cpus=cpus_fromDB)  # если процессор и со встроенной графикой, и со встроенным кулером
-    elif budget < 400:  # если конфигурация дешевая
-        cpus = cpu_logic(budget=budget*(0.20+0.34*0.60-0.013), cpus=cpus_fromDB) # если процессор со встроенной графикой
-    if len(cpus) == 0: # Если ничего не подошло по цене
-        print("При заданном бюджете невозможно составить выбранную конфигурацию CPU")
-
-    # Cooler
-
-
-    # Motherboard
-    # если проц со встроенное графикой или кулером (или, и то, и другое) и если конфигурация ДЕШЕВАЯ,
-    # то половину из части бюджета, которую мы бы потратили на GPU или кулер мы тратим на CPU
-    # и другую половину тратим на MB
-    if budget < 400:
-        motherboards = motherboard_logic(motherboards_fromDB, cpu=cpu, budget=budget * (0.12 + 0.33 * 0.4))
-    else:
-        motherboards = motherboard_logic(motherboards_fromDB, budget=budget * 0.12)
-
-    if len(motherboards) == 0:  # Если ничего не подошло по цене
-        print("При заданном бюджете невозможно составить выбранную конфигурацию MB")
-
-    # RAM
-    if budget < 400:
-        rams = ram_logic(rams_fromDB,budget=budget * (0.12 * 1.5))
-    else:
-        rams = ram_logic(rams_fromDB,budget=budget * 0.12)
-
-    # GPU
-    # если комп НЕ слишком дешевый и процессор БЕЗ встроенной графики. И если дешевый комп, то должен выбраться процессор со встроенной графикой, тогда если у нас НЕ такой проц, то выбираем видеокарту
-    if cpu.type == "BOX" and chosen_cooler is None: # если проц со встроенным кулером
-        gpus = gpu_logic(gpus_fromDB, budget=budget * (0.33 + 0.03))     # то часть бюджета для кулера тратим на видеокарту
-    else:
-        gpus = gpu_logic(gpus_fromDB, budget=budget * 0.33)
-
-    # SSD
-
-    if motherboard.type == "SATA":# в зависимости от материнки выбираем способ подключения к ней SSD и HDD
-        connection_type = "SATA"
-    elif motherboard.type == "M.2":
-        connection_type = "M.2"
-    if budget >= 400:
-        ssds = ssd_logic(ssds_fromDB, budget=budget * 0.07, type=connection_type)
-        hdds = hdd_logic(hdds_fromDB, budget=budget * 0.06, type=connection_type)
-        if len(ssds) == 0:  # Если ничего не подошло по цене
-            print("При заданном бюджете невозможно составить выбранную конфигурацию SSD")
-        if len(hdds) == 0:  # Если ничего не подошло по цене
-            print("При заданном бюджете невозможно составить выбранную конфигурацию HDD")
-    else: # если комп дешевый, то можно и только SSD
-        ssd_logic(ssds_fromDB, budget=budget * (0.06 + 0.07) * 1.1, type=connection_type)
-        if len(ssds) == 0:  # Если ничего не подошло по цене
-            print("При заданном бюджете невозможно составить выбранную конфигурацию SSD")
-
-
-    # power
-    if budget > 400: # если комп не совсем дешевый, то выбираем корпус без блока питания в комплекте
-        powers = power_logic(powers_fromDB, budget=budget * 0.07)
-    else:
-        powers = power_logic(powers_fromDB,budget=budget * (0.07 + 0.07)) # иначе с БП (часть бюджета для БП отдаем на корпус)
-
-
-
-    # Еще посмотреть с того кода на case и power. Также про размеры видеокарты и еще всякая штука, которую я записывал
-
+# # Then we need to get only devices, that pass to customer requirements
+#     budget = None
+#     while budget.isdigit() == False or budget < 0:
+#         budget = float(input())
+#
+#     cpus = cpu_logic(budget, cpus_fromDB)
+#     coolers = cooler_logic(budget, coolers_fromDB, cpu)
+#     motherboards = motherboard_logic(motherboards_fromDB, cpu)
+#     rams = ram_logic(budget, motherboard, rams_fromDB)
+#     gpus = gpu_logic(budget, gpus_fromDB, cpu, direction)
+#     ssds = ssd_logic(budget, ssds_fromDB, motherboard, itSeconfSSD=False)
+#     hdds = hdd_logic(budget, hdds_fromDB)
+#     powers = power_logic(budget, powers_fromDB, gpu)
+#     cases = case_logic(budget, cases_fromDB, motherboard, gpu, power)
+#
+#
+#
+#     # CPU
+#     if budget > 400:
+#         cpu = create_conf(budget=budget*0.20, cpus=cpus_fromDB)
+#     elif budget < 300: # если конфигурация слишком дешевая
+#         cpu = create_conf(budget=budget * (0.20 + 0.34 * 0.6 + 0.03 - 0.013), cpus=cpus_fromDB)  # если процессор и со встроенной графикой, и со встроенным кулером
+#     elif budget < 400:  # если конфигурация дешевая
+#         cpu = create_conf(budget=budget*(0.20+0.34*0.60-0.013), cpus=cpus_fromDB) # если процессор со встроенной графикой
+#     if cpu is None: # Если ничего не подошло по цене
+#         print("При заданном бюджете невозможно составить выбранную конфигурацию CPU")
+#
+#     # Cooler
+#
+#
+#     # Motherboard
+#     # если проц со встроенное графикой или кулером (или, и то, и другое) и если конфигурация ДЕШЕВАЯ,
+#     # то половину из части бюджета, которую мы бы потратили на GPU или кулер мы тратим на CPU
+#     # и другую половину тратим на MB
+#     if budget < 400:
+#         motherboard = create_conf(motherboards_fromDB, cpu=cpu, budget=budget * (0.12 + 0.33 * 0.4))
+#     else:
+#         motherboard = create_conf(motherboards_fromDB, budget=budget * 0.12)
+#
+#     if len(motherboards) == 0:  # Если ничего не подошло по цене
+#         print("При заданном бюджете невозможно составить выбранную конфигурацию MB")
+#
+#     # RAM
+#     if budget < 400:
+#         ram = create_conf(rams_fromDB,budget=budget * (0.12 * 1.5))
+#     else:
+#         ram = create_conf(rams_fromDB,budget=budget * 0.12)
+#
+#     # GPU
+#     # если комп НЕ слишком дешевый и процессор БЕЗ встроенной графики. И если дешевый комп, то должен выбраться процессор со встроенной графикой, тогда если у нас НЕ такой проц, то выбираем видеокарту
+#     if cpu.type == "BOX" and chosen_cooler is None: # если проц со встроенным кулером
+#         gpu = create_conf(gpus_fromDB, budget=budget * (0.33 + 0.03))     # то часть бюджета для кулера тратим на видеокарту
+#     else:
+#         gpu = create_conf(gpus_fromDB, budget=budget * 0.33)
+#
+#     # SSD
+#
+#     if motherboard.type == "SATA":# в зависимости от материнки выбираем способ подключения к ней SSD и HDD
+#         connection_type = "SATA"
+#     elif motherboard.type == "M.2":
+#         connection_type = "M.2"
+#     if budget >= 400:
+#         ssd = create_conf(ssds_fromDB, budget=budget * 0.07, type=connection_type)
+#         hdd = create_conf(hdds_fromDB, budget=budget * 0.06, type=connection_type)
+#         if len(ssds) == 0:  # Если ничего не подошло по цене
+#             print("При заданном бюджете невозможно составить выбранную конфигурацию SSD")
+#         if len(hdds) == 0:  # Если ничего не подошло по цене
+#             print("При заданном бюджете невозможно составить выбранную конфигурацию HDD")
+#     else: # если комп дешевый, то можно и только SSD
+#         create_conf(ssds_fromDB, budget=budget * (0.06 + 0.07) * 1.1, type=connection_type)
+#         if len(ssds) == 0:  # Если ничего не подошло по цене
+#             print("При заданном бюджете невозможно составить выбранную конфигурацию SSD")
+#
+#
+#     # power
+#     if budget > 400: # если комп не совсем дешевый, то выбираем корпус без блока питания в комплекте
+#         power = create_conf(powers_fromDB, budget=budget * 0.07)
+#     else:
+#         power = create_conf(powers_fromDB,budget=budget * (0.07 + 0.07)) # иначе с БП (часть бюджета для БП отдаем на корпус)
 
 
 
@@ -306,32 +329,7 @@ def main():
 """
 
 
-
-
-
-
-
-
-    # coolers = cooler_logic(coolers_fromDB,)
-    # motherboards = motherboard_logic(motherboards_fromDB,)
-    # rams = ram_logic(rams_fromDB,)
-    # gpus = gpu_logic(gpus_fromDB,)
-    # ssds = ssd_logic(ssds_fromDB,)
-    # hdds = hdd_logic(hdds_fromDB,)
-    # powers = power_logic(powers_fromDB,)
-    # cases = case_logic(cases_fromDB,)
-#
-
-
-
-
-
-
-
-
-
-
-
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
+    app.run()

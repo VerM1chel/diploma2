@@ -384,6 +384,40 @@ create_cases_table = """
     );
 """
 
+create_min_reqs_table = """
+    CREATE TABLE IF NOT EXISTS MIN_REQS (
+        id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+        program_name VARCHAR(255),
+        cpu VARCHAR(255),
+        cooler VARCHAR(255),
+        motherboard VARCHAR(255),
+        ram VARCHAR(255),
+        gpu VARCHAR(255),
+        ssd VARCHAR(255),
+        hdd VARCHAR(255),
+        power VARCHAR(255),
+        casePC VARCHAR(255),
+        directions VARCHAR(2000)
+    );
+"""
+
+create_recommended_reqs_table = """
+CREATE TABLE IF NOT EXISTS RECOMMENDED_REQS (
+        id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+        program_name VARCHAR(255),
+        cpu VARCHAR(255),
+        cooler VARCHAR(255),
+        motherboard VARCHAR(255),
+        ram VARCHAR(255),
+        gpu VARCHAR(255),
+        ssd VARCHAR(255),
+        hdd VARCHAR(255),
+        power VARCHAR(255),
+        casePC VARCHAR(255),
+        directions VARCHAR(2000)
+    );
+"""
+
 create_configuration_table = """
     CREATE TABLE IF NOT EXISTS CONFIGURATION (
       id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -396,14 +430,14 @@ create_configuration_table = """
       hdd_id INT,
       power_id INT,
       case_id INT,
-      FOREIGN KEY (cpu_id) REFERENCES CPU(id),
-      FOREIGN KEY (cooler_id) REFERENCES COOLER(id),
-      FOREIGN KEY (motherboard_id) REFERENCES MOTHERBOARD(id),
-      FOREIGN KEY (ram_id) REFERENCES RAM(id),
-      FOREIGN KEY (gpu_id) REFERENCES GPU(id),
-      FOREIGN KEY (ssd_id) REFERENCES SSD(id),
-      FOREIGN KEY (hdd_id) REFERENCES HDD(id),
-      FOREIGN KEY (power_id) REFERENCES POWER(id),
-      FOREIGN KEY (case_id) REFERENCES CASE(id)
+      FOREIGN KEY (cpu_id) REFERENCES CPUS(id),
+      FOREIGN KEY (cooler_id) REFERENCES COOLERS(id),
+      FOREIGN KEY (motherboard_id) REFERENCES MOTHERBOARDS(id),
+      FOREIGN KEY (ram_id) REFERENCES RAMS(id),
+      FOREIGN KEY (gpu_id) REFERENCES GPUS(id),
+      FOREIGN KEY (ssd_id) REFERENCES SSDS(id),
+      FOREIGN KEY (hdd_id) REFERENCES HDDS(id),
+      FOREIGN KEY (power_id) REFERENCES POWERS(id),
+      FOREIGN KEY (case_id) REFERENCES CASES(id)
     );
 """

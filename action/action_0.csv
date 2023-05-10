@@ -388,3 +388,10 @@ windows_min_Dying Light 2 Stay Human,windows_min_Dying Light 2 Stay Human,window
 оперативна€ пам€ть,8 gb,оперативна€ пам€ть,16 gb
 видео карта,nvidia geforce gtx 1050 ti / amd radeonЩ rx 560 (4gb vram),видео карта,nvidia geforce rtxЩ 2060 6gb or amd rx vega 56 8gb
 ,,,
+windows_min_CS:GO,windows_min_CS:GO,macos_min_CS:GO,macos_min_CS:GO,linux_min_CS:GO,linux_min_CS:GO
+операционна€ система,windows 7/vista/xp,операционна€ система,macos x 10.11 (el capitan),операционна€ система,ubuntu 12.04
+процессор,intel coreЩ 2 duo e6600 or amd phenomЩ x3 8750,процессор,intel core duo (2ghz ),процессор,dual core from intel or amd at 2.8 ghz
+оперативна€ пам€ть,2 gb,оперативна€ пам€ть,2 gb,оперативна€ пам€ть,4 gb
+видео карта,video card must be 256 mb or more and should be a directx 9-compatible with support for pixel shader 3.0,видео карта,ati radeon hd 2400 / nvidia 8600m,видео карта,"nvidia geforce 8600 / 9600gt, ati/amd radeon hd2600/3600 (graphic drivers: nvidia 310, amd 12.11), opengl 2.1"
+directx,version 9.0c,диск,15 gb,диск,15 gb
+,,,,,

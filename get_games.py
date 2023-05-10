@@ -1,9 +1,12 @@
+from classes.configuration import Configuration
 import os
 import constants
 import time
 import logging
 import random
+import inspect
 
+import mysql.connector
 import csv
 import pandas as pd
 import numpy as np
@@ -45,23 +48,45 @@ def clear_cache_cookies(driver):
 def concat_notempty(*args):
     return pd.concat([x for x in args if not x.empty], axis=1)
 
+def getClassNamesAndValues(c):
+    class_attributes_names, class_attributes_values = [], []
+    for i in inspect.getmembers(c):
+        if i[0] == "__dict__":
+            class_attributes_names = list(i[1].keys())
+            class_attributes_values = list(i[1].values())
+            return class_attributes_names, class_attributes_values
+
+def write_data(connection, cursor, table_name, req_dicts_list, directions_list, games_names_list):
+    for i, game_name in enumerate(games_names_list):
+        values_to_write = [game_name, req_dicts_list[i]["процессор"], None, None, req_dicts_list[i]["оперативная память"], req_dicts_list[i]["видео карта"], req_dicts_list[i]["диск"], None, None, None, directions_list[i]]
+        placeholders = ', '.join(['%s'] * len(values_to_write))
+        write_data_to_table_query = f"INSERT INTO {table_name} (program_name, cpu, cooler, motherboard, ram, gpu, ssd, hdd, power, casePC, directions) VALUES ({placeholders})"
+        try:
+            cursor.execute(write_data_to_table_query, values_to_write)
+            connection.commit()
+        except:
+            print("Problems with cursor")
+    print("Data wroten succesfully")
+    return
 
 def parse_games():
     device_info_lists = []
+    connection = None
     logging.basicConfig(level=logging.INFO, filename="py_log.log", filemode="w")
     csv.Dialect.skipinitialspace = True
-    main_devices_links = [constants.games_link_action, constants.games_link_adventure, constants.games_link_casual, constants.games_link_education]
+    main_devices_links = ["https://sysrqmts.com/ru/games"]
     all_games_types = {}
     for iii, main_devices_link in enumerate(main_devices_links):
         driver = webdriver.Chrome()
-        clear_cache_cookies(driver) # Чистим кеш и cookies
-        driver.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": UserAgent().random}) # Используем случайный user agent, чтобы избежать попадания в черный список сайта
-        print(driver.execute_script("return navigator.userAgent;"))
+        # clear_cache_cookies(driver) # Чистим кеш и cookies
+        # driver.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": UserAgent().random}) # Используем случайный user agent, чтобы избежать попадания в черный список сайта
+        # print(driver.execute_script("return navigator.userAgent;"))
         i = 0
         while True:
             print(f"page number {i + 1}")
             driver.get(main_devices_link+f"?page={i+1}")
-            soup = BeautifulSoup(driver.page_source, features="html.parser")
+            content = driver.page_source
+            soup = BeautifulSoup(content, features="html.parser")
             games_names = soup.find_all(class_="game-card__name")
             games_links = soup.find_all('a', class_="game-card", href=True)
             # try:
@@ -71,6 +96,7 @@ def parse_games():
                 os.makedirs(path)
             os.chdir(path)
             all_games_types[game_type] = {}
+            req_dicts_min_win_list, req_dicts_req_win_list, directions_list, games_names_list = [], [], [], []
             for game_link in games_links:
                 game_link = game_link.attrs['href']
                 driver.get(game_link)
@@ -80,10 +106,10 @@ def parse_games():
                 is_os_text = soup_game.find_all('h2', class_="page-section__title") # Узнаем какие ОС поддерживают данную игру
                 is_os_text = [o.text.lower().strip() for o in is_os_text]
                 is_win, is_mac, is_lin = False, False, False
-                for o in is_os_text:
-                    if "win" in o:
-                        is_os_list[0] = True
-                if is_win == False:
+                is_os_list = [is_win, is_mac, is_lin]
+                if "win" in is_os_text[0]:
+                    is_os_list[0] = True
+                else:
                     continue
                 game_name = soup_game.find('h1').text[22:].rstrip()
 
@@ -112,7 +138,11 @@ def parse_games():
                     indices.remove(indices[0]) # Самый первый индекс тоже не особо нужен, потому что он и так присутствует всегда
 
 
-                req_dict_min_win, req_dict_req_win = {}, {}
+                req_dict_min_win, req_dict_min_mac, req_dict_min_lin = {}, {}, {}
+                req_dict_req_win, req_dict_req_mac, req_dict_req_lin = {}, {}, {}
+                req_dicts_min = [req_dict_min_win, req_dict_min_mac, req_dict_min_lin]
+                req_dicts_req = [req_dict_req_win, req_dict_req_mac, req_dict_req_lin]
+
                 current_idx = 0
                 current_os = 0
                 ii = 0
@@ -121,17 +151,13 @@ def parse_games():
                 while j < len(req_keys):
                     if len(indices) > 1 and j == new_os_index:  # Если дошли до момента, когда начинаются требования для новой OC
                         current_os += 1
+                        if current_os > 1:
+                            break
                         current_idx += 1
                         ii += 1
                         if current_idx < len(indices):
                             new_os_index = indices[current_idx]
-                    elif is_os_list[0] == False and is_os_list[1] == True: # Если только mac
-                        current_os = 1
-                        ii = 1
-                    elif is_os_list[0] == False and is_os_list[1] == False and is_os_list[2] == True: # Если только linux
-                        current_os = 2
-                        ii = 2
-                    if is_os_list[current_os] == True: # Это надо для ситуаций, когда отсутствуют mac-требования, но есть linux-требования (чтобы записывалось только для нужной OS
+                    if is_os_list[0] == True: # Это надо для ситуаций, когда отсутствуют mac-требования, но есть linux-требования (чтобы записывалось только для нужной OS
                         req_dicts_min[current_os][req_keys[j]] = req_values[j]  # В словарь с текущей ОС добавляем новую пару ключ-значение
                     if conditions_req[ii] == True:
                         req_dicts_req[current_os][req_keys[j+1]] = req_values[j+1]
@@ -139,21 +165,47 @@ def parse_games():
                             j += 1
                     if j < len(req_keys):
                         j += 1
-                req_dict_min_win = pd.DataFrame(req_dict_min_win.items(), columns=["windows_min_"+game_name, "windows_min_"+game_name])
-                req_dict_req_win = pd.DataFrame(req_dict_req_win.items(), columns=["windows_req_"+game_name, "windows_req_"+game_name])
-                if conditions_req[0] == True:
-                    win_req = pd.concat([req_dict_min_win, req_dict_req_win], axis=1)
-                else:
-                    win_req = req_dict_min_win
-                df = win_req
-                df.iloc[-1] = [""]*df.shape[1] # Игры разделяются между собой строкой (row) с пустыми строками (string)
-                all_games_types[game_type][game_name] = df
-                df.to_csv(f'action_{i}.csv', mode='a+', encoding='cp1251', index=False, errors='ignore')
-                logging.info(f"Action game (page {i} was processed")
+                req_dicts_min_win_list.append(req_dict_min_win)
+                req_dicts_req_win_list.append(req_dict_req_win)
+                time.sleep(1)
+                try:
+                    genres_dd = soup_game.find('dt', string=' Жанры ').find_next_sibling('dd') # Находим список жанров
+                except:
+                    genres_dd = soup_game.find('dt', string=' Жанр ').find_next_sibling('dd')  # Находим список жанров
+                genres = [a.text for a in genres_dd.find_all('a')]
+                genres_string = ", ".join(genres)
+                genres_string = genres_string + ".\n"
+
+                try:
+                    categories_dd = soup_game.find('dt', string=' Категории ').find_next_sibling('dd') # Находим список категорий
+                except:
+                    categories_dd = soup_game.find('dt', string=' Категория ').find_next_sibling('dd')  # Находим список категорий
+                categories = [a.text for a in categories_dd.find_all('a')]
+                categories_string = ", ".join(categories)
+                directions = genres_string + categories_string
+                directions_list.append(directions)
+                games_names_list.append(game_name)
+
                 print(f"this is {game_name}")
                 time.sleep(random.uniform(7, 15))
+
+            if connection is None:
+                try:
+                    connection = mysql.connector.connect(
+                        host="localhost",
+                        user="root",
+                        passwd="password",
+                        database="diploma"
+                    )
+                    print('Succesfull connected')
+                    cursor = connection.cursor()
+                except mysql.connector.Error as error:
+                    print(f'An error {error} occured')
+            write_data(connection, cursor, "min_reqs", req_dicts_min_win_list, directions_list, games_names_list)
+            write_data(connection, cursor, "recommended_reqs", req_dicts_req_win_list, directions_list, games_names_list)
             i += 1
 
 
-if __name__ == '__get_names__':
+
+if __name__ == '__main__':
     parse_games()

@@ -3,10 +3,9 @@ from flask import Flask
 app = Flask(__name__)
 
 # Members API Route
-@app.route('/api/get_elements')
-def get_elements():
-    elements = ['элемент1', 'элемент2', 'элемент3']
-    return jsonify(elements)
+@app.route('/all_cpus')
+def get_all_cpus():
+    return
 
 if __name__ == '__main__':
     app.run()

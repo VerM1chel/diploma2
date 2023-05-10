@@ -194,7 +194,6 @@ def main():
                     )
                     print('Succesfull connected')
                     cursor = connection.cursor()
-                    cursor.execute("USE diploma;")
                 except mysql.connector.Error as error:
                     print(f'An error {error} occured')
             write_data(connection, cursor, page, i, tables_names, devices)
