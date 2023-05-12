@@ -132,11 +132,71 @@ function App() {
     const [powerPrice, setPowerPrice] = useState('');
     const [casePrice, setCasePrice] = useState('');
 
+    const [numbers, setNumbers] = useState([]);
+
+    const [selectedCpuId, selectedCoolerId, selectedMotherboardId, selectedRamId, selectedGpuId, selectedSsdId, selectedHddId, selectedPowerId, selectedCaseId] = numbers;
+
     useEffect(() => {
-        axios.get('/details')
+       
+    }, []);
+
+
+    useEffect(() => {
+        axios.get('/numbers')
+            .then(response => setNumbers(response.data));
+ 
+        axios.get('/cpus')
             .then(response => {
                 setCpus(response.data);
-                setSelectedItem(response.data[0].name); // Выбираем первый элемент списка по умолчанию
+                setSelectedCpu(response.data[selectedCpuId].name); // Выбираем первый элемент списка по умолчанию
+            })
+            .catch(error => console.log(error));
+        axios.get('/coolers')
+            .then(response => {
+                setCoolers(response.data);
+                setSelectedCooler(response.data[selectedCoolerId].name); // Выбираем первый элемент списка по умолчанию
+            })
+            .catch(error => console.log(error));
+        axios.get('/motherboards')
+            .then(response => {
+                setMotherboards(response.data);
+                setSelectedMotherboard(response.data[selectedMotherboardId].name); // Выбираем первый элемент списка по умолчанию
+            })
+            .catch(error => console.log(error));
+        axios.get('/rams')
+            .then(response => {
+                setRams(response.data);
+                setSelectedRam(response.data[selectedRamId].name); // Выбираем первый элемент списка по умолчанию
+            })
+            .catch(error => console.log(error));
+        axios.get('/gpus')
+            .then(response => {
+                setGpus(response.data);
+                setSelectedGpu(response.data[selectedGpuId].name); // Выбираем первый элемент списка по умолчанию
+            })
+            .catch(error => console.log(error));
+        axios.get('/ssds')
+            .then(response => {
+                setSsds(response.data);
+                setSelectedSsd(response.data[selectedSsdId].name); // Выбираем первый элемент списка по умолчанию
+            })
+            .catch(error => console.log(error));
+        axios.get('/hdds')
+            .then(response => {
+                setHdds(response.data);
+                setSelectedHdd(response.data[selectedHddId].name); // Выбираем первый элемент списка по умолчанию
+            })
+            .catch(error => console.log(error));
+        axios.get('/powers')
+            .then(response => {
+                setPowers(response.data);
+                setSelectedPower(response.data[selectedPowerId].name); // Выбираем первый элемент списка по умолчанию
+            })
+            .catch(error => console.log(error));
+        axios.get('/casePCs')
+            .then(response => {
+                setCasePCs(response.data);
+                setSelectedCasePC(response.data[selectedCaseId].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
     }, []);
@@ -293,7 +353,7 @@ function App() {
                         </select>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
-                        <input type="number" id="ramPrice" value={ramPrice} readOnly style={{ width: '40%' }} />
+                        <input type="number" id="gpuPrice" value={gpuPrice} readOnly style={{ width: '40%' }} />
                     </div>
                 </div>
 
@@ -386,49 +446,3 @@ function App() {
 }
 
 export default App;
-
-
-
-/*<select id="cpu" value={selectedCpu} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }} onChange={handleSelectChange}>*/
-
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-
-// function App() {
-//    const [items, setItems] = useState([]);
-//    const [selectedItem, setSelectedItem] = useState("");
-
-//    useEffect(() => {
-//        axios.get('/details')
-//            .then(response => {
-//                setItems(response.data);
-//                setSelectedItem(response.data[0].name); // Выбираем первый элемент списка по умолчанию
-//            })
-//            .catch(error => console.log(error));
-//    }, []);
-
-//    const handleSelectChange = (event) => {
-//        setSelectedItem(event.target.value);
-//    }
-
-//    return (
-//        <div>
-//            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
-//                <label htmlFor="cpu" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Процессор</label>
-//                <div style={{ display: 'flex', flexDirection: 'column' }}>
-//                    <select id="cpu" value={selectedItem} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }} onChange={handleSelectChange}>
-//                        {items.map(item => (
-//                            <option value={item.name} key={item.name}>{item.name}</option>
-//                        ))}
-//                    </select>
-//                </div>
-//                <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
-//                    <label htmlFor="ramPrice">Цена (BYN)</label>
-//                    <input type="number" id="ramPrice" value={selectedItem.price} readOnly style={{ width: '40%' }} />
-//                </div>
-//            </div>
-//        </div>
-//    );
-//}
-
-//export default App;

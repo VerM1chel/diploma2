@@ -1,6 +1,7 @@
 # from detail import Detail
 # Done
 class Ram:
+    id = 0
     name = ""
     price = 0.0
     kit = 0
@@ -88,6 +89,7 @@ class Ram:
             else:
                 self.color = None
         elif reading == True:
+            self.id = values[keys.index("Id")]
             self.name = values[keys.index("Название")]
             self.price = values[keys.index("Цена")]
             self.kit = values[keys.index("Набор")]

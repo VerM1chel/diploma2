@@ -3,6 +3,7 @@
 import re
 
 class Motherboard:
+    id = 0
     name = ""
     price = 0.0
     market_launch_date = 0
@@ -96,7 +97,10 @@ class Motherboard:
             else:
                 self.chipset = None
             if "Форм-фактор" in keys:
-                self.form_factor = values[keys.index("Форм-фактор")]
+                form_factor = values[keys.index("Форм-фактор")]
+                if form_factor == "mATX":
+                    form_factor = "micro-ATX"
+                self.form_factor = form_factor
             else:
                 self.form_factor = None
             if "Подсветка" in keys:
@@ -360,6 +364,7 @@ class Motherboard:
             else:
                 self.width = None
         elif reading == True:
+            self.id = values[keys.index("Id")]
             self.name = values[keys.index("Название")]
             self.price = values[keys.index("Цена")]
             self.market_launch_date = values[keys.index("Дата выхода на рынок")]

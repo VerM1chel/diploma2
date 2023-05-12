@@ -80,25 +80,25 @@ def write_data(connection, cursor, page, i, tables_names, devices):
     return cursor
 
 def main():
-    connection = None
+    connection, cursor = None, None
     device_info_lists = []
-    # constants.all_cpus_link, constants.all_coolers_link, constants.all_motherboards_link, constants.all_rams_link, constants.all_gpus_link, constants.all_ssds_link, constants.all_hdds_link, constants.all_powers_link,constants.all_cases_link]
-    main_devices_links = [constants.all_motherboards_link]
-    # cpus,  coolers, motherboards, rams, gpus, ssds, hdds, powers,cases
-    motherboards = []
-    # cpus, coolers, motherboards, rams, gpus, ssds, hdds, powers,cases
-    devices = [motherboards]
+    # , constants.all_coolers_link, constants.all_motherboards_link, constants.all_motherboards_link, constants.all_rams_link, constants.all_gpus_link, constants.all_ssds_link, constants.all_hdds_link, constants.all_powers_link,constants.all_cases_link]
+    main_devices_links = [constants.all_cpus_link]
+    # cpus, coolers,motherboards, motherboards, rams, gpus, ssds, hdds, powers,cases
+    cpus = []
+    # , coolers, motherboards, rams, gpus, ssds, hdds, powers,cases
+    devices = [cpus]
     # Cpu, Cooler, Motherboard, Ram, Gpu, Ssd, Hdd, Power,Case
-    Device_classes = [Motherboard]
+    Device_classes = [Cpu]
     # "cpus", "coolers", "motherboards", "rams", "gpus", "ssds", "hdds", "powers","cases"
-    tables_names = ["motherboards"]
+    tables_names = ["cpus"]
     time.sleep(5)
     for i, main_devices_link in enumerate(main_devices_links): # Для каждого типа комплектующих
         driver = webdriver.Chrome()
         clear_cache_cookies(driver) # Чистим кеш и cookies
         driver.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": UserAgent().random}) # Используем случайный user agent, чтобы избежать попадания в черный список сайта
         print(driver.execute_script("return navigator.userAgent;"))
-        page = 0
+        page = 15
         condition = True
         while condition: # Пока можно переходить на следующую страницу каталога
             time.sleep(5)
@@ -111,6 +111,8 @@ def main():
             #     device_links = [device_link for device_link in device_links if "Кулер для процессора" in device_link.text]
             device_links = [device_link.attrs['href'] for device_link in device_links]  # Приводим их в вид, позволяющий работать с этими ссылками
             if len(device_links) < 30:
+                if cursor != None:
+                    write_data(connection, cursor, page, i, tables_names, devices)
                 condition = False
             time.sleep(3)
             for j, device_link in enumerate(device_links): # Для каждого экземпляра данного типа выполняется переход на страницу с описанием, возвращается html-код и выбираются нужные характеристики
@@ -126,7 +128,8 @@ def main():
                 try:
                     price = little_soup.find('a', class_="offers-description__link offers-description__link_nodecor js-description-price-link").text.strip()
                 except:
-                    write_data(connection, cursor, page, i, tables_names, devices)
+                    if cursor != None:
+                        write_data(connection, cursor, page, i, tables_names, devices)
                     condition = False
                     break
                 ks.append("Название")

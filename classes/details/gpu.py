@@ -3,6 +3,7 @@
 import re
 
 class Gpu:
+    id = 0
     name = ""
     price = 0.0
     market_launch_date = 0
@@ -210,6 +211,7 @@ class Gpu:
             else:
                 self.usb_type_c = None
         elif reading == True:
+            self.id = values[keys.index("Id")]
             self.name = values[keys.index("Название")]
             self.price = values[keys.index("Цена")]
             self.market_launch_date = values[keys.index("Дата выхода на рынок")]
@@ -238,8 +240,8 @@ class Gpu:
             self.cooling = values[keys.index("Охлаждение")]
             self.cooling_system_thickness = values[keys.index("Толщина системы охлаждения")]
             self.num_fans = values[keys.index("Количество вентиляторов")]
-            self.video_card_length = values[keys.index("Длина видеокарты")].split()[0]
-            self.video_card_height = values[keys.index("Высота видеокарты")].split()[0]
+            self.video_card_length = values[keys.index("Длина видеокарты")]
+            self.video_card_height = values[keys.index("Высота видеокарты")]
             self.low_profile = values[keys.index("Низкопрофильная (Low Profile)")]
             self.functional_features = values[keys.index("Функциональные особенности")]
             self.vga_or_d_sub = values[keys.index("VGA (D-Sub)")]

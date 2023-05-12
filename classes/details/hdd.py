@@ -1,6 +1,7 @@
 import re
 
 class Hdd:
+    id = 0
     name = ""
     price = 0.0
     drive_type = ""
@@ -31,7 +32,10 @@ class Hdd:
             else:
                 self.drive_type = None
             if "Объём" in keys:
-                self.volume = float(values[keys.index("Объём")].split()[0])
+                volume = values[keys.index("Объём")].split()[0]
+                if len(volume) == 1:  # Если объем в Тб
+                    volume = float(volume) * 1024
+                self.volume = float(volume)
             else:
                 self.volume = None
             if "Форм-фактор" in keys:
@@ -103,6 +107,7 @@ class Hdd:
             else:
                 self.thickness = None
         elif reading == True:
+            self.id = values[keys.index("Id")]
             self.name = values[keys.index("Название")]
             self.price = values[keys.index("Цена")]
             self.drive_type = values[keys.index("Тип накопителя")]

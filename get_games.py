@@ -89,7 +89,7 @@ def parse_games():
         # clear_cache_cookies(driver) # Чистим кеш и cookies
         # driver.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": UserAgent().random}) # Используем случайный user agent, чтобы избежать попадания в черный список сайта
         # print(driver.execute_script("return navigator.userAgent;"))
-        i = 4
+        i = 18
         while True:
             print(f"page number {i + 1}")
             driver.get(main_devices_link+f"?page={i+1}")
@@ -108,6 +108,7 @@ def parse_games():
             for game_link in games_links:
                 game_link = game_link.attrs['href']
                 driver.get(game_link)
+                time.sleep(1)
                 game_content = driver.page_source
                 soup_game = BeautifulSoup(game_content, features="html.parser")
 
@@ -122,15 +123,11 @@ def parse_games():
                         is_os_list[0] = True
                 except:
                     print("nice")
-                else:
-                    continue
                 game_name = soup_game.find('h1').text[22:].rstrip()
-
                 req_keys = soup_game.find_all(class_="game-requirements-table__name")
                 req_keys = [rk.text.strip().lower() for rk in req_keys]
                 req_values = soup_game.find_all(class_="game-requirements-table__value")
                 req_values = [rv.text.strip().lower() for rv in req_values]
-
                 indices = list(np.where(np.array(req_keys) == "операционная система")[0]) # Тут получаем индексы всех вхождений фразу "операционная система"
                 if len(indices) == 0:
                     indices = [0]
@@ -149,7 +146,6 @@ def parse_games():
                     j += 1
                 if len(indices) > 1:
                     indices.remove(indices[0]) # Самый первый индекс тоже не особо нужен, потому что он и так присутствует всегда
-
 
                 req_dict_min_win, req_dict_min_mac, req_dict_min_lin = {}, {}, {}
                 req_dict_req_win, req_dict_req_mac, req_dict_req_lin = {}, {}, {}
@@ -172,12 +168,15 @@ def parse_games():
                             new_os_index = indices[current_idx]
                     if is_os_list[0] == True: # Это надо для ситуаций, когда отсутствуют mac-требования, но есть linux-требования (чтобы записывалось только для нужной OS
                         req_dicts_min[current_os][req_keys[j]] = req_values[j]  # В словарь с текущей ОС добавляем новую пару ключ-значение
-                    if conditions_req[ii] == True:
-                        req_dicts_req[current_os][req_keys[j+1]] = req_values[j+1]
+                    try:
+                        if conditions_req[ii] == True:
+                            req_dicts_req[current_os][req_keys[j+1]] = req_values[j+1]
+                            if j < len(req_keys):
+                                j += 1
                         if j < len(req_keys):
                             j += 1
-                    if j < len(req_keys):
-                        j += 1
+                    except:
+                        break
                 req_dicts_min_win_list.append(req_dict_min_win)
                 req_dicts_req_win_list.append(req_dict_req_win)
                 time.sleep(1)
@@ -192,6 +191,8 @@ def parse_games():
                         genres = [""]
                 genres_string = ", ".join(genres)
                 genres_string = genres_string + ".\n"
+                if len(req_values) < 1:
+                    continue
                 try:
                     categories_dd = soup_game.find('dt', string=' Категории ').find_next_sibling('dd') # Находим список категорий
                     categories = [a.text for a in categories_dd.find_all('a')]
@@ -207,8 +208,7 @@ def parse_games():
                 games_names_list.append(game_name)
 
                 print(f"this is {game_name}")
-                time.sleep(random.uniform(7, 15))
-
+                time.sleep(random.uniform(2, 4))
             if connection is None:
                 try:
                     connection = mysql.connector.connect(

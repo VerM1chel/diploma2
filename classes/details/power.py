@@ -1,6 +1,7 @@
 # from detail import Detail
 
 class Power:
+    id = 0
     name = ""
     price = 0.0
     market_launch_date = 0
@@ -173,6 +174,7 @@ class Power:
             else:
                 self.equipment = None
         elif reading == True:
+            self.id = values[keys.index("Id")]
             self.name = values[keys.index("Название")]
             self.price = values[keys.index("Цена")]
             self.market_launch_date = values[keys.index("Дата выхода на рынок")]
