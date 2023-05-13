@@ -107,7 +107,7 @@ class Hdd:
             else:
                 self.thickness = None
         elif reading == True:
-            self.id = values[keys.index("Id")]
+            self.id = values[keys.index("Id")]-1
             self.name = values[keys.index("Название")]
             self.price = values[keys.index("Цена")]
             self.drive_type = values[keys.index("Тип накопителя")]

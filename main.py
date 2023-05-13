@@ -23,11 +23,14 @@ from mysql.connector import Error
 app = Flask(__name__)
 all_lists = []
 indeces = []
+prices = []
 
 @app.route('/indeces')
 def get_details():
     return jsonify(indeces)
-
+@app.route('/prices')
+def get_prices():
+    return jsonify(prices)
 @app.route('/cpus')
 def get_cpus():
     details_list = []
@@ -242,11 +245,12 @@ def read_from_db(connection, table_name, my_class, keys):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM {table_name}")
     my_class_list = []
+    none_item = my_class(keys, [0] + ["None"] + [0] + [None] * (len(keys) - 2), [], reading=True) # Пустая запись, пока ничего не выбрано
     for row in cursor:
         values = list(row)
         # values = [str(v) for v in values]
         my_class_list.append(my_class(keys, values, [], reading=True))
-    return my_class_list
+    return my_class_list, none_item
 
 def create_tables(connection):
     cursor = connection.cursor()
@@ -267,6 +271,7 @@ import json
 def main():
     global all_lists
     global indeces
+    global prices
     configurations = []
     # 2. Read all trebovaniya from database (read all devices)
 
@@ -287,16 +292,15 @@ def main():
     # create_tables(connection)
 
     # 3. Read all devices from database
-    cpus_fromDB = read_from_db(connection, "cpus", Cpu, constants.cpu_keys)
-    coolers_fromDB = read_from_db(connection, "coolers", Cooler, constants.cooler_keys)
-    motherboards_fromDB = read_from_db(connection, "motherboards", Motherboard, constants.motherboard_keys)
-    rams_fromDB = read_from_db(connection, "rams", Ram, constants.ram_keys)
-    gpus_fromDB = read_from_db(connection, "gpus", Gpu, constants.gpu_keys)
-    ssds_fromDB = read_from_db(connection, "ssds", Ssd, constants.ssd_keys)
-    hdds_fromDB = read_from_db(connection, "hdds", Hdd, constants.hhd_keys)
-    powers_fromDB = read_from_db(connection, "powers", Power, constants.power_keys)
-    cases_fromDB = read_from_db(connection, "cases", Case, constants.case_keys)
-    all_lists = [cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB]
+    cpus_fromDB, none_cpu = read_from_db(connection, "cpus", Cpu, constants.cpu_keys)
+    coolers_fromDB, none_cooler = read_from_db(connection, "coolers", Cooler, constants.cooler_keys)
+    motherboards_fromDB, none_motherboard = read_from_db(connection, "motherboards", Motherboard, constants.motherboard_keys)
+    rams_fromDB, none_ram = read_from_db(connection, "rams", Ram, constants.ram_keys)
+    gpus_fromDB, none_gpu = read_from_db(connection, "gpus", Gpu, constants.gpu_keys)
+    ssds_fromDB, none_ssd = read_from_db(connection, "ssds", Ssd, constants.ssd_keys)
+    hdds_fromDB, none_hdd = read_from_db(connection, "hdds", Hdd, constants.hhd_keys)
+    powers_fromDB, none_power = read_from_db(connection, "powers", Power, constants.power_keys)
+    cases_fromDB, none_case = read_from_db(connection, "cases", Case, constants.case_keys)
 
     # get_details(cpus_fromDB)
 
@@ -379,9 +383,16 @@ def main():
     print(configurations[0].power.name+f" {configurations[0].power.price}")
     print(configurations[0].casePC.name+f" {configurations[0].casePC.price}")
 
-    indeces = [configurations[0].cpu.id, configurations[0].cooler.id, configurations[0].motherboard.id, configurations[0].ram.id,
-    configurations[0].gpu.id, configurations[0].ssd.id, configurations[0].hdd.id, configurations[0].power.id, configurations[0].casePC.id]
+    indeces = [configurations[0].cpu.id+1, configurations[0].cooler.id+1, configurations[0].motherboard.id+1, configurations[0].ram.id+1,
+    configurations[0].gpu.id+1, configurations[0].ssd.id+1, configurations[0].hdd.id+1, configurations[0].power.id, configurations[0].casePC.id+1]
+    prices = [configurations[0].cpu.price, configurations[0].cooler.price, configurations[0].motherboard.price, configurations[0].ram.price,
+    configurations[0].gpu.price, configurations[0].ssd.price, configurations[0].hdd.price, configurations[0].power.price, configurations[0].casePC.price]
+    print(5)
 
+    none_lists = [none_cpu, none_cooler, none_motherboard, none_ram, none_gpu, none_ssd, none_hdd, none_power, none_case]
+    all_lists = [cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB]
+    for i,none_list in enumerate(none_lists):
+        all_lists[i].insert(0, none_lists[i])
 
 
 

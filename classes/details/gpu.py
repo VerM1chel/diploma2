@@ -211,7 +211,7 @@ class Gpu:
             else:
                 self.usb_type_c = None
         elif reading == True:
-            self.id = values[keys.index("Id")]
+            self.id = values[keys.index("Id")]-1
             self.name = values[keys.index("Название")]
             self.price = values[keys.index("Цена")]
             self.market_launch_date = values[keys.index("Дата выхода на рынок")]
