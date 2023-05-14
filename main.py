@@ -426,4 +426,4 @@ if __name__ == '__main__':
 #
 # setCpus(response.data[0].name); // Выбираем первый элемент списка по умолчанию
 # setCoolers(response.data[1].name);
-# setMotherboards(response.data[2].name);
+# setMotherboards(response.data[2].name); 
