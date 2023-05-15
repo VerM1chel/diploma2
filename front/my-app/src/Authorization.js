@@ -5,6 +5,7 @@ function LoginModal(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isRegistering, setIsRegistering] = useState(false);
+    const [error, setError] = useState(null);
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);
@@ -18,12 +19,8 @@ function LoginModal(props) {
         if (isRegistering) {
             handleRegistration(username, password);
         } else {
-            // Here goes the functionality for login
-            // ... (your code for login)
+            handleLogin(username, password);
         }
-
-        // Close the modal and navigate to another page
-        props.onClose();
     }
 
     function toggleRegisterMode() {
@@ -41,16 +38,62 @@ function LoginModal(props) {
 
     function handleRegistration(username, password) {
         // Send the registration data to the backend server
+        if (username.trim() === "" || password.trim() === "") {
+            alert("Пожалуйста, введите имя пользователя и пароль");
+            return;
+        }
         axios
             .post('/register', { username, password })
             .then(response => {
                 // Registration successful
                 alert('Пользователь успешно зарегистрирован!');
+                // Clear the username and password fields
+                setUsername("");
+                setPassword("");
+                // Close the modal and navigate to another page
+                props.onClose();
             })
             .catch(error => {
                 // Registration failed
                 alert('Не удалось зарегистрировать пользователя. Пожалуйста, попробуйте снова.');
             });
+    }
+
+    function handleLogin(username, password) {
+        // Send the login data to the backend server
+        axios
+            .post('/login', { username, password })
+            .then(response => {
+                // Login successful
+                if (response.data.success) {
+                    // Open the "User Configurations" window
+                    openUserConfigurationsWindow();
+                    // Clear the username and password fields
+                    setUsername("");
+                    setPassword("");
+                    // Close the modal and navigate to another page
+                    props.onClose();
+                } else {
+                    // Login failed
+                    alert('Неверное имя пользователя или пароль. Пожалуйста, попробуйте снова');
+                    // Clear the password field
+                    setPassword("");
+                }
+            })
+            .catch(error => {
+                // Login failed
+                alert('Ошибка при попытке входа. Пожалуйста, попробуйте снова');
+            });
+    }
+
+    function openUserConfigurationsWindow() {
+        // Create a new window or dialog
+        const configurationsWindow = window.open("", "_blank", "width=400,height=300");
+
+        // const configurationText = `Сборка ПК «${username}»: ${selectedItems.map(item => item.name).join(', ')}`;
+
+        // Откройте окно с текстом выбранных элементов
+        // alert(configurationText);
     }
 
     return (
@@ -73,6 +116,7 @@ function LoginModal(props) {
     );
 }
 
+
 const userDatabase = [
     { username: 'john', password: 'password1' },
     { username: 'jane', password: 'password2' },
@@ -84,7 +128,7 @@ function checkUserExistsInDatabase(username) {
     return userDatabase.some(user => user.username === username);
 }
 
-function Autorization() {
+function Authorization() {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     function handleShareClick(event) {
@@ -97,33 +141,10 @@ function Autorization() {
 
     return (
         <div>
-            <button
-                style={{
-                    width: "25%",
-                    height: "3em",
-                    margin: "5px",
-                    fontSize: "20px",
-                    marginTop: "150px"
-                }}
-                onClick={handleShareClick}
-            >
+            <button style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }} onClick={handleShareClick}>
                 {isLoginModalOpen ? "Регистрация" : "Поделиться своей конфигурацией с другими пользователями"}
             </button>
             {isLoginModalOpen && <LoginModal onClose={handleLoginModalClose} />}
         </div>
     );
-} export default Autorization;
-
-function handleRegistration(username, password) {
-    // Send the registration data to the backend server
-    axios
-        .post('/register', { username, password })
-        .then(response => {
-            // Registration successful
-            alert('Пользователь успешно зарегистрирован!');
-        })
-        .catch(error => {
-            // Registration failed
-            alert('Не удалось зарегистрировать пользователя. Пожалуйста, попробуйте снова.');
-        });
-}
+} export default Authorization;

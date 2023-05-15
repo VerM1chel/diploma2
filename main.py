@@ -122,6 +122,27 @@ def register():
     cursor.close()
     return jsonify({'message': 'Пользователь успешно зарегистрирован'}), 200
 
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="password",
+            database="diploma"
+        )
+        print('Succesfull connected')
+        cursor = connection.cursor()
+    except mysql.connector.Error as error:
+        print(f'An error {error} occured')
+    cursor.execute(f"SELECT * FROM USERS WHERE username = '{username}' and password = '{password}'")
+    result = cursor.fetchall()
+    if result:
+        return jsonify({'success': True, 'message': 'Вход выполнен успешно'})
+    return jsonify({'success': False, 'message': 'Неверное имя пользователя или пароль'}), 401
+
 # Done
 def cpu_logic(budget, cpus): # Функция возвращает список потенциально возможных комплектующих
     result = []

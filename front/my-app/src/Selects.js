@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Selects() {
+function Selects({ onSelectedItemsChange }) {
     const [cpus, setCpus] = useState([]);
     const [coolers, setCoolers] = useState([]);
     const [motherboards, setMotherboards] = useState([]);
@@ -142,6 +142,9 @@ function Selects() {
             setOutput6(selectedHdd);
             setOutput7(selectedPower);
             setOutput8(selectedCasePC);
+
+            const selectedItems = [selectedCpu, selectedCooler, selectedMotherboard, selectedRam, selectedGpu, selectedSsd, selectedHdd, selectedPower, selectedCasePC];
+            onSelectedItemsChange(selectedItems);
         }
     };
 
@@ -333,3 +336,4 @@ function Selects() {
         </div>
     );
 } export default Selects;
+
