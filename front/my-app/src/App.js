@@ -1,10 +1,14 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Selects from './selects/Selects.js'
+import Selects from './Selects.js';
+import Autorization from './Autorization.js';
 
 function App() {
     return (
-        <Selects />
+        <div>
+            <Selects />
+            <Autorization />
+        </div>
     );
 }
 

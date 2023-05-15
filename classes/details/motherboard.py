@@ -116,7 +116,10 @@ class Motherboard:
             else:
                 self.num_of_memory_slots = None
             if "Максимальный объём памяти" in keys:
-                self.max_memory = int(''.join(filter(str.isdigit, values[keys.index("Максимальный объём памяти")])))
+                max_memory = int(''.join(filter(str.isdigit, values[keys.index("Максимальный объём памяти")])))
+                if len(max_memory) == 1: # Если объем в Тб
+                    volume = float(max_memory) * 1024
+                self.max_memory = max_memory
             else:
                 self.max_memory = None
             if "Режим памяти" in keys:

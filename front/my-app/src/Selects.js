@@ -25,7 +25,6 @@ function Selects() {
     const [cpuPrice, setCpuPrice] = useState("");
     const [coolerPrice, setCoolerPrice] = useState("");
     const [motherboardPrice, setMotherboardPrice] = useState("");
-    const [ramSize, setRamSize] = useState("");
     const [ramPrice, setRamPrice] = useState("");
     const [gpuPrice, setGpuPrice] = useState("");
     const [ssdPrice, setSsdPrice] = useState("");
@@ -42,70 +41,59 @@ function Selects() {
                 setNumbers(response.data);
             })
             .catch(error => console.log(error));
-
         axios.get('/cpus')
             .then(response => {
                 setCpus(response.data);
-                setSelectedCpu(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
         axios.get('/coolers')
             .then(response => {
                 setCoolers(response.data);
-                setSelectedCooler(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
         axios.get('/motherboards')
             .then(response => {
                 setMotherboards(response.data);
-                setSelectedMotherboard(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
         axios.get('/rams')
             .then(response => {
                 setRams(response.data);
-                setSelectedRam(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
         axios.get('/gpus')
             .then(response => {
                 setGpus(response.data);
-                setSelectedGpu(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
         axios.get('/ssds')
             .then(response => {
                 setSsds(response.data);
-                setSelectedSsd(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
         axios.get('/hdds')
             .then(response => {
                 setHdds(response.data);
-                setSelectedHdd(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
         axios.get('/powers')
             .then(response => {
                 setPowers(response.data);
-                setSelectedPower(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
         axios.get('/casePCs')
             .then(response => {
                 setCasePCs(response.data);
-                setSelectedCasePC(response.data[0].name); // Выбираем первый элемент списка по умолчанию
             })
             .catch(error => console.log(error));
     }, []);
 
 
-    const handleComponentChange = (event, components, setOutput, setSelectedComponent, setPrice, setSize) => {
+    const handleComponentChange = (event, components, setOutput, setSelectedComponent, setPrice) => {
         setOutput(0);
         const selectedComponent = components.find((component) => component.name === event.target.value);
         setSelectedComponent(selectedComponent);
         setPrice(selectedComponent.price);
-        if (setSize) { setSize(selectedComponent.kit) }
     };
 
 
@@ -125,7 +113,7 @@ function Selects() {
         if (output0) { setCpuPrice(output0.price); }
         if (output1) { setCoolerPrice(output1.price); }
         if (output2) { setMotherboardPrice(output2.price); }
-        if (output3) { setRamPrice(output3.price); setRamSize(output3.kit) }
+        if (output3) { setRamPrice(output3.price); }
         if (output4) { setGpuPrice(output4.price); }
         if (output5) { setSsdPrice(output5.price); }
         if (output6) { setHddPrice(output6.price); }
@@ -157,6 +145,30 @@ function Selects() {
         }
     };
 
+
+    const sortCoolersByPrice = () => {
+        const currentCooler = coolers[numbers[1]];
+        setCoolers([...coolers].sort((a, b) => a.price - b.price));
+        setCoolers(coolers);
+        const newIndex = coolers.findIndex((cooler) => cooler.name === currentCooler.name);
+        numbers[1] = newIndex;
+        setSelectedCooler(coolers[numbers[1]]);
+    };
+
+
+    const sortCoolersByName = () => {
+        const sortedList = [...coolers].sort((a, b) => a.name.localeCompare(b.name));
+        setCoolers(sortedList);
+
+    };
+
+    const sortCoolersById = () => {
+        const sortedList = [...coolers].sort((a, b) => a.id - b.id);
+        setCoolers(sortedList);
+
+    };
+
+
     return (
         <div style={{ marginLeft: "30px" }}>
             <div>
@@ -165,24 +177,24 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="cpu" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Процессор</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, cpus, setOutput0, setSelectedCpu, setCpuPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, cpus, setOutput0, setSelectedCpu, setCpuPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {cpus.map((cpu, index) => (
-                                    <option value={cpu.name} selected={index === output0?.id + 1}>
+                                    <option value={cpu.name} selected={cpu.name === output0?.name}>
                                         {cpu.name}
                                     </option>
                                 ))}
                             </select>
                         </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
-                            <label htmlFor="cpuPrice">Цена (BYN)</label>
-                            <input type="number" id="cpuPrice" value={cpuPrice} selected={output0?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
+                            <label htmlFor="cpuPrice" style={{ marginTop: "-25px" }}>Цена (BYN)</label>
+                            <input type="number" id="cpuPrice" value={cpuPrice} selected={output0?.id + 1} readOnly style={{ width: '35%', fontSize: "20px", marginTop: "4px" }} />
                         </div>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="coolers" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Кулер</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, coolers, setOutput1, setSelectedCooler, setCoolerPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, coolers, setOutput1, setSelectedCooler, setCoolerPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {coolers.map((cooler, index) => (
                                     <option value={cooler.name} selected={index === output1?.id + 1}>
                                         {cooler.name}
@@ -190,7 +202,7 @@ function Selects() {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
                             <input type="number" id="coolerPrice" value={coolerPrice} selected={output1?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
@@ -199,7 +211,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="motherboards" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Мат. плата</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, motherboards, setOutput2, setSelectedMotherboard, setMotherboardPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, motherboards, setOutput2, setSelectedMotherboard, setMotherboardPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {motherboards.map((motherboard, index) => (
                                     <option value={motherboard.name} selected={index === output2?.id + 1}>
                                         {motherboard.name}
@@ -207,7 +219,7 @@ function Selects() {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
                             <input type="number" id="motherboardPrice" value={motherboardPrice} selected={output2?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
@@ -216,7 +228,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="rams" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>RAM</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, rams, setOutput3, setSelectedRam, setRamPrice, setRamSize)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, rams, setOutput3, setSelectedRam, setRamPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px", maxWidth: "800px" }}>
                                 {rams.map((ram, index) => (
                                     <option value={ram.name} selected={index === output3?.id + 1}>
                                         {ram.name}
@@ -224,11 +236,7 @@ function Selects() {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-                            <label style={{ marginRight: "3px" }} htmlFor="ramSize">X</label>
-                            <input type="number" id="ramSize" value={ramSize} selected={output3?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
-                        </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
                             <input type="number" id="ramPrice" value={ramPrice} selected={output3?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
@@ -237,7 +245,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="gpus" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Видеокарта</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, gpus, setOutput4, setSelectedGpu, setGpuPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, gpus, setOutput4, setSelectedGpu, setGpuPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {gpus.map((gpu, index) => (
                                     <option value={gpu.name} selected={index === output4?.id + 1}>
                                         {gpu.name}
@@ -245,7 +253,7 @@ function Selects() {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
                             <input type="number" id="gpuPrice" value={gpuPrice} selected={output4?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
@@ -253,7 +261,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="ssds" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>SSD</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, ssds, setOutput5, setSelectedSsd, setSsdPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, ssds, setOutput5, setSelectedSsd, setSsdPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {ssds.map((ssd, index) => (
                                     <option value={ssd.name} selected={index === output5?.id + 1}>
                                         {ssd.name}
@@ -261,7 +269,7 @@ function Selects() {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
                             <input type="number" id="ssdPrice" value={ssdPrice} selected={output5?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
@@ -269,7 +277,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="hdds" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>HDD</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, hdds, setOutput6, setSelectedHdd, setHddPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, hdds, setOutput6, setSelectedHdd, setHddPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {hdds.map((hdd, index) => (
                                     <option value={hdd.name} selected={index === output6?.id + 1}>
                                         {hdd.name}
@@ -277,7 +285,7 @@ function Selects() {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
                             <input type="number" id="hddPrice" value={hddPrice} selected={output6?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
@@ -285,7 +293,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="powers" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Блок питания</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, powers, setOutput7, setSelectedPower, setPowerPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, powers, setOutput7, setSelectedPower, setPowerPrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {powers.map((power, index) => (
                                     <option value={power.name} selected={index === output7?.id + 1}>
                                         {power.name}
@@ -293,7 +301,7 @@ function Selects() {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px" }}>
                             <input type="number" id="powerPrice" value={powerPrice} selected={output7?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
@@ -301,7 +309,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="casePCs" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Корпус</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, casePCs, setOutput8, setSelectedCasePC, setCasePrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, casePCs, setOutput8, setSelectedCasePC, setCasePrice)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px", marginRight: "50px" }}>
                                 {casePCs.map((casePC, index) => (
                                     <option value={casePC.name} selected={index === output8?.id + 1}>
                                         {casePC.name}
@@ -309,7 +317,7 @@ function Selects() {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column', marginLeft: "50px", marginTop: "-20px" }}>
+                        <div style={{ fontSize: "20px", display: 'flex', flexDirection: 'column' }}>
                             <input type="number" id="casePrice" value={casePrice} selected={output8?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
@@ -317,6 +325,10 @@ function Selects() {
                 <button style={{ width: "15%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }} onClick={createConfClick}>
                     СОСТАВИТЬ КОНФИГУРАЦИЮ
                 </button>
+                <button onClick={sortCoolersByPrice}>Сортировать по цене</button>
+                <button onClick={sortCoolersByName}>Сортировать по названию</button>
+                <button onClick={sortCoolersById}>Сортировать по ID</button>
+
             </div>
         </div>
     );

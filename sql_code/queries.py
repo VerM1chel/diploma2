@@ -441,3 +441,12 @@ create_configuration_table = """
       FOREIGN KEY (case_id) REFERENCES CASES(id)
     );
 """
+
+create_users_table = """
+CREATE TABLE IF NOT EXISTS USERS (
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    username VARCHAR(255),
+    password VARCHAR(255),
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+"""
