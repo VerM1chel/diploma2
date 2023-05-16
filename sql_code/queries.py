@@ -421,6 +421,7 @@ CREATE TABLE IF NOT EXISTS RECOMMENDED_REQS (
 create_configuration_table = """
     CREATE TABLE IF NOT EXISTS CONFIGURATIONS (
       id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+      user_id INT,
       cpu_id INT,
       cooler_id INT,
       motherboard_id INT,
@@ -430,6 +431,7 @@ create_configuration_table = """
       hdd_id INT,
       power_id INT,
       case_id INT,
+      FOREIGN KEY (user_id) REFERENCES USERS(id),
       FOREIGN KEY (cpu_id) REFERENCES CPUS(id),
       FOREIGN KEY (cooler_id) REFERENCES COOLERS(id),
       FOREIGN KEY (motherboard_id) REFERENCES MOTHERBOARDS(id),
@@ -450,3 +452,33 @@ CREATE TABLE IF NOT EXISTS USERS (
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 """
+
+
+
+
+
+
+
+get_configurations_from_db =  query = """
+    SELECT
+      c.id AS configuration_id,
+      cpu_conf.name AS cpu_name,
+      cooler_conf.name AS cooler_name,
+      motherboard_conf.name AS motherboard_name,
+      ram_conf.name AS ram_name,
+      gpu_conf.name AS gpu_name,
+      ssd_conf.name AS ssd_name,
+      hdd_conf.name AS hdd_name,
+      power_conf.name AS power_name,
+      case_conf.name AS case_name
+    FROM CONFIGURATIONS c
+    LEFT JOIN CPUS cpu_conf ON c.cpu_id = cpu_conf.id
+    LEFT JOIN COOLERS cooler_conf ON c.cooler_id = cooler_conf.id
+    LEFT JOIN MOTHERBOARDS motherboard_conf ON c.motherboard_id = motherboard_conf.id
+    LEFT JOIN RAMS ram_conf ON c.ram_id = ram_conf.id
+    LEFT JOIN GPUS gpu_conf ON c.gpu_id = gpu_conf.id
+    LEFT JOIN SSDS ssd_conf ON c.ssd_id = ssd_conf.id
+    LEFT JOIN HDDS hdd_conf ON c.hdd_id = hdd_conf.id
+    LEFT JOIN POWERS power_conf ON c.power_id = power_conf.id
+    LEFT JOIN CASES case_conf ON c.case_id = case_conf.id
+  """

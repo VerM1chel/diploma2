@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import UsersConfigurationsWindow from './UsersConfigurationsWindow';
 import axios from 'axios';
 
 function LoginModal(props) {
@@ -52,7 +53,6 @@ function LoginModal(props) {
                 setPassword("");
                 // Close the modal and navigate to another page
                 props.onClose();
-                props.onSuccessfulLogin(true);
             })
             .catch(error => {
                 // Registration failed
@@ -68,13 +68,13 @@ function LoginModal(props) {
                 // Login successful
                 if (response.data.success) {
                     // Open the "User Configurations" window
-                    
+
                     // Clear the username and password fields
                     setUsername("");
                     setPassword("");
                     // Close the modal and navigate to another page
                     props.onClose();
-                    props.onSuccessfulLogin(true); // Вызов функции обратного вызова для передачи значения isSuccessful
+                    props.onSuccessfulLogin(true, username); // Вызов функции обратного вызова для передачи значения isSuccessful
                 } else {
                     // Login failed
                     alert('Неверное имя пользователя или пароль. Пожалуйста, попробуйте снова');
@@ -117,17 +117,26 @@ function LoginModal(props) {
 function Authorization(selectedItems) {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSuccessful, setIsSuccessful] = useState(false);
+    const [loggedInUser, setLoggedInUser] = useState(""); // Добавлено состояние loggedInUser
+    const [showUsersConfigurations, setShowUsersConfigurations] = useState(false); // Добавлено состояние для отображения окна с конфигурациями пользователей
 
     function handleShareClick(event) {
         setIsLoginModalOpen(true);
     }
-
     function handleLoginModalClose(event) {
         setIsLoginModalOpen(false);
     }
 
-    function handleSuccessfulLogin(success) {
+    function handleSuccessfulLogin(success, username) {
         setIsSuccessful(success); // Обновление значения isSuccessful в компоненте Authorization
+        setLoggedInUser(username); // Сохранение имени пользователя в состоянии
+        setShowUsersConfigurations(false); // Сброс флага отображения окна с конфигурациями пользователей при успешном входе
+    }
+    function handleShowUsersConfigurations() {
+        setShowUsersConfigurations(true); // Устанавливаем флаг отображения окна с конфигурациями пользователей
+    }
+    function handleHideUsersConfigurations() {
+        setShowUsersConfigurations(false);
     }
 
     useEffect(() => {
@@ -139,7 +148,7 @@ function Authorization(selectedItems) {
     function saveConfiguration(selectedItems) {
         // Send the selectedItems to the Flask backend
         axios
-            .post('/saveConfiguration', { selectedItems })
+            .post('/saveConfiguration', { selectedItems, username: loggedInUser })
             .then(response => {
                 // Configuration saved successfully
                 alert('Конфигурация сохранена!');
@@ -153,6 +162,23 @@ function Authorization(selectedItems) {
 
     return (
         <div>
+            {showUsersConfigurations && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 999 }}>
+                    <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor: "#fff", padding: "20px", borderRadius: "10px" }}>
+                        <UsersConfigurationsWindow />
+                        <button onClick={handleHideUsersConfigurations}>Закрыть</button>
+                    </div>
+                </div>
+            )}
+
+            {!showUsersConfigurations && (
+                <button
+                    style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }}
+                    onClick={handleShowUsersConfigurations}
+                >
+                    Посмотреть конфигурации других пользователей
+                </button>
+            )}
             <button
                 style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }}
                 onClick={handleShareClick}
@@ -163,5 +189,4 @@ function Authorization(selectedItems) {
         </div>
     );
 }
-
 export default Authorization;

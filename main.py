@@ -24,6 +24,7 @@ app = Flask(__name__)
 all_lists = []
 indeces = []
 prices = []
+keywords = []
 
 @app.route('/indeces')
 def get_details():
@@ -147,14 +148,8 @@ def login():
 def save_configuration():
     # Get the selectedItems from the request body
     selected_items = request.json.get('selectedItems')
-    print(selected_items) #!
-    values = selected_items["selectedItems"][0]+1, selected_items["selectedItems"][1]+1, selected_items["selectedItems"][2]+1, selected_items["selectedItems"][3]+1, \
-             selected_items["selectedItems"][4]+1, selected_items["selectedItems"][5]+1, selected_items["selectedItems"][6]+1, selected_items["selectedItems"][7]+1, \
-             selected_items["selectedItems"][8]+1
-    sql = """
-            INSERT INTO CONFIGURATIONS (cpu_id, cooler_id, motherboard_id, ram_id, gpu_id, ssd_id, hdd_id, power_id, case_id)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-          """
+    username = request.json.get('username')
+    print(username) #!
     try:
         connection = mysql.connector.connect(
             host="localhost",
@@ -164,13 +159,72 @@ def save_configuration():
         )
         print('Succesfull connected')
         cursor = connection.cursor()
-        cursor.execute(sql, values)
+        user_id = getUserIdByUsername(cursor, username)
+        values_conf = user_id, selected_items["selectedItems"][0] + 1, selected_items["selectedItems"][1] + 1, \
+                      selected_items["selectedItems"][2] + 1, selected_items["selectedItems"][3] + 1, \
+                      selected_items["selectedItems"][4] + 1, selected_items["selectedItems"][5] + 1, \
+                      selected_items["selectedItems"][6] + 1, selected_items["selectedItems"][7] + 1, \
+                      selected_items["selectedItems"][8] + 1
+        sql_conf = """
+                  INSERT INTO CONFIGURATIONS (user_id, cpu_id, cooler_id, motherboard_id, ram_id, gpu_id, ssd_id, hdd_id, power_id, case_id)
+                  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+        cursor.execute(sql_conf, values_conf)
         connection.commit()
         cursor.close()
         return {'message': 'Configuration saved successfully'}
     except mysql.connector.Error as error:
         print(f'An error {error} occured')
         return {'message': "Configuration haven't wroten"}
+
+@app.route('/getConfigurations', methods=['GET'])
+def get_configurations():
+    # Здесь вы должны получить конфигурации из вашей базы данных или другого источника данных
+    # Пример кода получения конфигураций из базы данных:
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="password",
+            database="diploma"
+        )
+        print('Succesfull connected')
+        cursor = connection.cursor()
+        cursor.execute(queries.get_configurations_from_db)
+        configurations = cursor.fetchall()
+        # print(configurations)
+        cursor.close()
+        connection.close()
+    except mysql.connector.Error as error:
+        print(f'An error {error} occured')
+
+    # configurations = [
+    #     {'id': 1, 'name': 'Configuration 1', 'link': '/configurations/1'},
+    #     {'id': 2, 'name': 'Configuration 2', 'link': '/configurations/2'},
+    #     {'id': 3, 'name': 'Configuration 3', 'link': '/configurations/3'}
+    # ]
+    return jsonify(configurations)
+
+@app.route('/keywords', methods=['POST'])
+def handle_keywords():
+    global keywords
+    keywords = request.json.get('keywords')
+    return {'message': 'Keywords received successfully'}
+
+
+def getUserIdByUsername(cursor, username):
+    user_id = None
+    get_user_id_query = """
+    SELECT id
+    FROM USERS
+    WHERE username = %s
+    """
+    cursor.execute(get_user_id_query, (username,))
+    result = cursor.fetchone()
+    if result:
+        user_id = result[0]
+    print(f"user_id {user_id}")
+    return user_id
 
 def cpu_logic(budget, cpus): # Функция возвращает список потенциально возможных комплектующих
     result = []
@@ -332,7 +386,7 @@ def create_tables(connection):
     cursor = connection.cursor()
     table_queries = [queries.create_cpus_table, queries.create_coolers_table, queries.create_motherboards_table, queries.create_rams_table,
         queries.create_gpus_table, queries.create_ssds_table, queries.create_hhds_table, queries.create_powers_table, queries.create_cases_table,
-                     queries.create_min_reqs_table, queries.create_recommended_reqs_table, queries.create_configuration_table]
+                     queries.create_min_reqs_table, queries.create_recommended_reqs_table, queries.create_users_table, queries.create_configuration_table]
     for query in table_queries:
         try:
             cursor.execute(query)
