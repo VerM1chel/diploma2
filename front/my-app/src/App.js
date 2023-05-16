@@ -3,16 +3,17 @@ import Selects from './Selects.js';
 import Authorization from './Authorization.js';
 
 function App() {
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedItemsIds, setSelectedItemsIds] = useState([]);
 
     const handleSelectedItemsChange = (items) => {
-        setSelectedItems(items);
+        const itemIds = items.map((item) => item.id);
+        setSelectedItemsIds(itemIds);
     };
 
     return (
         <div>
             <Selects onSelectedItemsChange={handleSelectedItemsChange} />
-            <Authorization selectedItems={selectedItems} />
+            <Authorization selectedItems={selectedItemsIds} />
         </div>
     );
 }

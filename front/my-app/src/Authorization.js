@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function LoginModal(props) {
@@ -6,6 +6,7 @@ function LoginModal(props) {
     const [password, setPassword] = useState("");
     const [isRegistering, setIsRegistering] = useState(false);
     const [error, setError] = useState(null);
+    const [isSuccessful, setIsSuccessful] = useState(false);
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);
@@ -31,7 +32,6 @@ function LoginModal(props) {
         // Reset the username and password fields
         setUsername("");
         setPassword("");
-
         // Закрываем модальное окно
         props.onClose();
     }
@@ -52,6 +52,7 @@ function LoginModal(props) {
                 setPassword("");
                 // Close the modal and navigate to another page
                 props.onClose();
+                props.onSuccessfulLogin(true);
             })
             .catch(error => {
                 // Registration failed
@@ -67,12 +68,13 @@ function LoginModal(props) {
                 // Login successful
                 if (response.data.success) {
                     // Open the "User Configurations" window
-                    openUserConfigurationsWindow();
+                    
                     // Clear the username and password fields
                     setUsername("");
                     setPassword("");
                     // Close the modal and navigate to another page
                     props.onClose();
+                    props.onSuccessfulLogin(true); // Вызов функции обратного вызова для передачи значения isSuccessful
                 } else {
                     // Login failed
                     alert('Неверное имя пользователя или пароль. Пожалуйста, попробуйте снова');
@@ -86,15 +88,11 @@ function LoginModal(props) {
             });
     }
 
-    function openUserConfigurationsWindow() {
-        // Create a new window or dialog
-        const configurationsWindow = window.open("", "_blank", "width=400,height=300");
-
-        // const configurationText = `Сборка ПК «${username}»: ${selectedItems.map(item => item.name).join(', ')}`;
-
-        // Откройте окно с текстом выбранных элементов
-        // alert(configurationText);
-    }
+    useEffect(() => {
+        if (isSuccessful && props.onSuccessfulLogin) {
+            props.onSuccessfulLogin(isSuccessful); // Передача значения isSuccessful через функцию обратного вызова
+        }
+    }, [isSuccessful, props]);
 
     return (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 999 }}>
@@ -116,20 +114,9 @@ function LoginModal(props) {
     );
 }
 
-
-const userDatabase = [
-    { username: 'john', password: 'password1' },
-    { username: 'jane', password: 'password2' },
-    // Add more user entries as needed
-];
-
-function checkUserExistsInDatabase(username) {
-    // Check if the user exists in the database
-    return userDatabase.some(user => user.username === username);
-}
-
-function Authorization() {
+function Authorization(selectedItems) {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isSuccessful, setIsSuccessful] = useState(false);
 
     function handleShareClick(event) {
         setIsLoginModalOpen(true);
@@ -139,12 +126,42 @@ function Authorization() {
         setIsLoginModalOpen(false);
     }
 
+    function handleSuccessfulLogin(success) {
+        setIsSuccessful(success); // Обновление значения isSuccessful в компоненте Authorization
+    }
+
+    useEffect(() => {
+        if (isSuccessful) {
+            saveConfiguration(selectedItems); // Вызываем функцию saveConfiguration, когда isSuccessful равно true
+        }
+    }, [isSuccessful, selectedItems]);
+
+    function saveConfiguration(selectedItems) {
+        // Send the selectedItems to the Flask backend
+        axios
+            .post('/saveConfiguration', { selectedItems })
+            .then(response => {
+                // Configuration saved successfully
+                alert('Конфигурация сохранена!');
+                setIsSuccessful(true); // Обновляем переменную состояния
+            })
+            .catch(error => {
+                // Error occurred while saving configuration
+                alert('Ошибка при сохранении конфигурации');
+            });
+    }
+
     return (
         <div>
-            <button style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }} onClick={handleShareClick}>
+            <button
+                style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }}
+                onClick={handleShareClick}
+            >
                 {isLoginModalOpen ? "Регистрация" : "Поделиться своей конфигурацией с другими пользователями"}
             </button>
-            {isLoginModalOpen && <LoginModal onClose={handleLoginModalClose} />}
+            {isLoginModalOpen && <LoginModal onClose={handleLoginModalClose} onSuccessfulLogin={handleSuccessfulLogin} />}
         </div>
     );
-} export default Authorization;
+}
+
+export default Authorization;
