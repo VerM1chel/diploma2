@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import Selects from './Selects.js';
 import Authorization from './Authorization.js';
-import UsersConfigurationsWindow from './UsersConfigurationsWindow.js';
+import UsersConfigurations from './UsersConfigurationsWindow.js';
 
 function App() {
     const [selectedItemsIds, setSelectedItemsIds] = useState([]);
@@ -15,7 +15,7 @@ function App() {
         <div>
             <Selects onSelectedItemsChange={handleSelectedItemsChange} />
             <Authorization selectedItems={selectedItemsIds} />
-            <UsersConfigurationsWindow />
+            
         </div>
     );
 }

@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import UsersConfigurationsWindow from './UsersConfigurationsWindow';
+import UsersConfigurations from './UsersConfigurationsWindow';
 import axios from 'axios';
 
 function LoginModal(props) {
@@ -117,76 +117,95 @@ function LoginModal(props) {
 function Authorization(selectedItems) {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSuccessful, setIsSuccessful] = useState(false);
-    const [loggedInUser, setLoggedInUser] = useState(""); // Добавлено состояние loggedInUser
-    const [showUsersConfigurations, setShowUsersConfigurations] = useState(false); // Добавлено состояние для отображения окна с конфигурациями пользователей
+    const [loggedInUser, setLoggedInUser] = useState("");
+    const [showConfigurationsWindow, setShowConfigurationsWindow] = useState(false);
+    const [isShareClicked, setIsShareClicked] = useState(false);
 
     function handleShareClick(event) {
-        setIsLoginModalOpen(true);
+        setIsShareClicked(true);
+        if (!isSuccessful) {
+            setIsLoginModalOpen(true);
+
+        }
     }
+
     function handleLoginModalClose(event) {
         setIsLoginModalOpen(false);
     }
 
     function handleSuccessfulLogin(success, username) {
-        setIsSuccessful(success); // Обновление значения isSuccessful в компоненте Authorization
-        setLoggedInUser(username); // Сохранение имени пользователя в состоянии
-        setShowUsersConfigurations(false); // Сброс флага отображения окна с конфигурациями пользователей при успешном входе
-    }
-    function handleShowUsersConfigurations() {
-        setShowUsersConfigurations(true); // Устанавливаем флаг отображения окна с конфигурациями пользователей
-    }
-    function handleHideUsersConfigurations() {
-        setShowUsersConfigurations(false);
+        setIsSuccessful(success);
+        setLoggedInUser(username);
     }
 
     useEffect(() => {
-        if (isSuccessful) {
-            saveConfiguration(selectedItems); // Вызываем функцию saveConfiguration, когда isSuccessful равно true
+        if (isSuccessful && isShareClicked) {
+            saveConfiguration(selectedItems);
+            setIsShareClicked(false); // Reset the isShareClicked state
         }
-    }, [isSuccessful, selectedItems]);
+    }, [isSuccessful, isShareClicked, selectedItems]);
 
     function saveConfiguration(selectedItems) {
-        // Send the selectedItems to the Flask backend
+        // Проверка, сохранял ли пользователь такую конфигурацию ранее
         axios
-            .post('/saveConfiguration', { selectedItems, username: loggedInUser })
+            .post('/checkConfiguration', { selectedItems, username: loggedInUser })
             .then(response => {
-                // Configuration saved successfully
-                alert('Конфигурация сохранена!');
-                setIsSuccessful(true); // Обновляем переменную состояния
+                const isConfigurationSaved = response.data.isSaved;
+
+                if (isConfigurationSaved) {
+                    // Конфигурация уже сохранена, показать уведомление
+                    alert('Вы уже сохраняли эту конфигурацию ранее.');
+                } else {
+                    // Отправить конфигурацию на сервер для сохранения
+                    axios
+                        .post('/saveConfiguration', { selectedItems, username: loggedInUser })
+                        .then(response => {
+                            // Конфигурация успешно сохранена
+                            alert('Конфигурация сохранена!');
+                        })
+                        .catch(error => {
+                            // Ошибка при сохранении конфигурации
+                            alert('Ошибка при сохранении конфигурации');
+                        });
+                }
             })
             .catch(error => {
-                // Error occurred while saving configuration
-                alert('Ошибка при сохранении конфигурации');
+                // Ошибка при проверке конфигурации
+                alert('Ошибка при проверке конфигурации');
             });
     }
 
+
+    function handleNewButtonClick() {
+        if (isSuccessful) {
+            setShowConfigurationsWindow(false); // Сброс состояния перед открытием
+            setShowConfigurationsWindow(true);
+        } else {
+            setIsLoginModalOpen(true);
+        }
+    }
+
+
     return (
         <div>
-            {showUsersConfigurations && (
-                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 999 }}>
-                    <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor: "#fff", padding: "20px", borderRadius: "10px" }}>
-                        <UsersConfigurationsWindow />
-                        <button onClick={handleHideUsersConfigurations}>Закрыть</button>
-                    </div>
-                </div>
-            )}
-
-            {!showUsersConfigurations && (
-                <button
-                    style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }}
-                    onClick={handleShowUsersConfigurations}
-                >
-                    Посмотреть конфигурации других пользователей
-                </button>
-            )}
             <button
                 style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }}
                 onClick={handleShareClick}
             >
-                {isLoginModalOpen ? "Регистрация" : "Поделиться своей конфигурацией с другими пользователями"}
+                {"Поделиться своей конфигурацией с другими пользователями"}
             </button>
             {isLoginModalOpen && <LoginModal onClose={handleLoginModalClose} onSuccessfulLogin={handleSuccessfulLogin} />}
+
+            <button
+                style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px" }}
+                onClick={handleNewButtonClick}
+            >
+                Посмотреть чужие конфигурации
+            </button>
+
+            {showConfigurationsWindow && <UsersConfigurations />}
         </div>
     );
 }
+
 export default Authorization;

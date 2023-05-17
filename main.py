@@ -197,12 +197,6 @@ def get_configurations():
         connection.close()
     except mysql.connector.Error as error:
         print(f'An error {error} occured')
-
-    # configurations = [
-    #     {'id': 1, 'name': 'Configuration 1', 'link': '/configurations/1'},
-    #     {'id': 2, 'name': 'Configuration 2', 'link': '/configurations/2'},
-    #     {'id': 3, 'name': 'Configuration 3', 'link': '/configurations/3'}
-    # ]
     return jsonify(configurations)
 
 @app.route('/keywords', methods=['POST'])
@@ -210,6 +204,32 @@ def handle_keywords():
     global keywords
     keywords = request.json.get('keywords')
     return {'message': 'Keywords received successfully'}
+
+@app.route('/checkConfiguration', methods=['POST'])
+def check_configuration():
+    data = request.get_json()
+    selected_items = data['selectedItems']['selectedItems']
+    username = data['username']
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="password",
+            database="diploma"
+        )
+        print('Succesfull connected')
+        cursor = connection.cursor()
+        cursor.execute(queries.check_configuration, (username, selected_items[0]+1, selected_items[1]+1, selected_items[2]+1, selected_items[3]+1, selected_items[4]+1,
+            selected_items[5]+1, selected_items[6]+1, selected_items[7]+1, selected_items[8]+1))
+        result = cursor.fetchall()
+    except mysql.connector.Error as error:
+        print(f'An error {error} occured')
+    if len(result) == 0:
+        return jsonify({'isSaved': False})
+    else:
+        return jsonify({'isSaved': True})
+
+
 
 
 def getUserIdByUsername(cursor, username):
@@ -441,11 +461,11 @@ def main():
 
     # CPU
     cpus = cpu_logic(budget, cpus_fromDB)
-    if budget > 400:
+    if budget > 1400:
         cpu = create_conf(details=cpus, idealPrice=budget*0.20)
-    elif budget < 300: # если конфигурация слишком дешевая
+    elif budget < 1300: # если конфигурация слишком дешевая
         cpu = create_conf(details=cpus, idealPrice=budget * (0.20 + 0.34 * 0.6 + 0.03 - 0.013))  # если процессор и со встроенной графикой, и со встроенным кулером
-    elif budget < 400:  # если конфигурация дешевая
+    elif budget < 1400:  # если конфигурация дешевая
         cpu = create_conf(details=cpus, idealPrice=budget*(0.20+0.34*0.60-0.013)) # если процессор со встроенной графикой
     if cpu is None: # Если ничего не подошло по цене
         print("При заданном бюджете невозможно составить выбранную конфигурацию CPU")
@@ -526,3 +546,11 @@ def main():
 if __name__ == '__main__':
     main()
     app.run()
+
+
+
+
+
+
+
+

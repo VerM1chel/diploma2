@@ -56,7 +56,7 @@ def getClassNamesAndValues(c):
             class_attributes_values = list(i[1].values())
             return class_attributes_names, class_attributes_values
 
-def write_data(connection, cursor, table_name, req_dicts_list, directions_list, games_names_list):
+def write_games(connection, cursor, table_name, req_dicts_list, directions_list, games_names_list):
     for i, game_name in enumerate(games_names_list):
         try: cpu = req_dicts_list[i]["процессор"]
         except: cpu = None
@@ -221,11 +221,148 @@ def parse_games():
                     cursor = connection.cursor()
                 except mysql.connector.Error as error:
                     print(f'An error {error} occured')
-            write_data(connection, cursor, "min_reqs", req_dicts_min_win_list, directions_list, games_names_list)
-            write_data(connection, cursor, "recommended_reqs", req_dicts_req_win_list, directions_list, games_names_list)
+            write_games(connection, cursor, "min_reqs", req_dicts_min_win_list, directions_list, games_names_list)
+            write_games(connection, cursor, "recommended_reqs", req_dicts_req_win_list, directions_list, games_names_list)
             i += 1
 
 
 
 if __name__ == '__main__':
     parse_games()
+
+
+
+
+
+
+def parse_games():
+    connection = None
+    main_devices_links = ["https://sysrqmts.com/ru/games"]
+    all_games_types = {}
+    for iii, main_devices_link in enumerate(main_devices_links):
+        driver = webdriver.Chrome()
+        i = 0
+        while True:
+            print(f"page number {i + 1}")
+            driver.get(main_devices_link+f"?page={i+1}")
+            content = driver.page_source
+            soup = BeautifulSoup(content, features="html.parser")
+            games_links = soup.find_all('a', class_="game-card", href=True)
+            game_type = main_devices_link[30:]
+            all_games_types[game_type] = {}
+            req_dicts_min_win_list, req_dicts_req_win_list, directions_list, games_names_list = [], [], [], []
+            for game_link in games_links:
+                game_link = game_link.attrs['href']
+                driver.get(game_link)
+                time.sleep(1)
+                game_content = driver.page_source
+                soup_game = BeautifulSoup(game_content, features="html.parser")
+                is_os_text = soup_game.find_all('h2', class_="page-section__title")
+                is_os_text = [o.text.lower().strip() for o in is_os_text]
+                is_win, is_mac, is_lin = False, False, False
+                is_os_list = [is_win, is_mac, is_lin]
+                if is_os_text is None:
+                    continue
+                try:
+                    if "win" in is_os_text[0]:
+                        is_os_list[0] = True
+                except:
+                    print("nice")
+                game_name = soup_game.find('h1').text[22:].rstrip()
+                req_keys = soup_game.find_all(class_="game-requirements-table__name")
+                req_keys = [rk.text.strip().lower() for rk in req_keys]
+                req_values = soup_game.find_all(class_="game-requirements-table__value")
+                req_values = [rv.text.strip().lower() for rv in req_values]
+                indices = list(np.where(np.array(req_keys) == "операционная система")[0])
+                if len(indices) == 0:
+                    indices = [0]
+                is_req_win, is_req_mac, is_req_lin = False, False, False
+                conditions_req = [is_req_win, is_req_mac, is_req_lin]
+                ii = 0
+                j = 0
+                while j < len(indices)-1:
+                    if indices[j+1] == indices[j]+1:
+                        indices.remove(indices[j+1])
+                        j -= 1
+                        conditions_req[ii] = True
+                    elif ii < len(indices):
+                        ii += 1
+                    j += 1
+                if len(indices) > 1:
+                    indices.remove(indices[0])
+                req_dict_min_win, req_dict_min_mac, req_dict_min_lin = {}, {}, {}
+                req_dict_req_win, req_dict_req_mac, req_dict_req_lin = {}, {}, {}
+                req_dicts_min = [req_dict_min_win, req_dict_min_mac, req_dict_min_lin]
+                req_dicts_req = [req_dict_req_win, req_dict_req_mac, req_dict_req_lin]
+                current_idx = 0
+                current_os = 0
+                ii = 0
+                new_os_index = indices[current_idx]
+                j = 0
+                while j < len(req_keys):
+                    if len(indices) > 1 and j == new_os_index:
+                        current_os += 1
+                        if current_os > 1:
+                            break
+                        current_idx += 1
+                        ii += 1
+                        if current_idx < len(indices):
+                            new_os_index = indices[current_idx]
+                    if is_os_list[0] == True:
+                        req_dicts_min[current_os][req_keys[j]] = req_values[j]
+                    try:
+                        if conditions_req[ii] == True:
+                            req_dicts_req[current_os][req_keys[j+1]] = req_values[j+1]
+                            if j < len(req_keys):
+                                j += 1
+                        if j < len(req_keys):
+                            j += 1
+                    except:
+                        break
+                req_dicts_min_win_list.append(req_dict_min_win)
+                req_dicts_req_win_list.append(req_dict_req_win)
+                time.sleep(1)
+                try:
+                    genres_dd = soup_game.find('dt', string=' Жанры ').find_next_sibling('dd')
+                    genres = [a.text for a in genres_dd.find_all('a')]
+                except:
+                    try:
+                        genres_dd = soup_game.find('dt', string=' Жанр ').find_next_sibling('dd')
+                        genres = [a.text for a in genres_dd.find_all('a')]
+                    except:
+                        genres = [""]
+                genres_string = ", ".join(genres)
+                genres_string = genres_string + ".\n"
+                if len(req_values) < 1:
+                    continue
+                try:
+                    categories_dd = soup_game.find('dt', string=' Категории ').find_next_sibling('dd')
+                    categories = [a.text for a in categories_dd.find_all('a')]
+                except:
+                    try:
+                        categories_dd = soup_game.find('dt', string=' Категория ').find_next_sibling('dd')
+                        categories = [a.text for a in categories_dd.find_all('a')]
+                    except:
+                        categories = [""]
+                categories_string = ", ".join(categories)
+                directions = genres_string + categories_string
+                directions_list.append(directions)
+                games_names_list.append(game_name)
+                print(f"this is {game_name}")
+                time.sleep(random.uniform(2, 4))
+            if connection is None:
+                try:
+                    connection = mysql.connector.connect(
+                        host="localhost",
+                        user="root",
+                        passwd="password",
+                        database="diploma"
+                    )
+                    print('Succesfull connected')
+                    cursor = connection.cursor()
+                except mysql.connector.Error as error:
+                    print(f'An error {error} occured')
+            write_data(connection, cursor, "min_reqs", req_dicts_min_win_list, directions_list, games_names_list)
+            write_data(connection, cursor, "recommended_reqs", req_dicts_req_win_list, directions_list, games_names_list)
+            i += 1
+

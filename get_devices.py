@@ -61,7 +61,7 @@ def getClassNamesAndValues(c):
             return class_attributes_names, class_attributes_values
 
 
-def write_data(connection, cursor, page, i, tables_names, devices):
+def write_devices(connection, cursor, page, i, tables_names, devices):
     if page == 0:
         tmp_index = 0
     else:
@@ -81,17 +81,11 @@ def write_data(connection, cursor, page, i, tables_names, devices):
 
 def main():
     connection, cursor = None, None
-    device_info_lists = []
-    # , constants.all_coolers_link, constants.all_motherboards_link, constants.all_motherboards_link, constants.all_rams_link, constants.all_gpus_link, constants.all_ssds_link, constants.all_hdds_link, constants.all_powers_link,constants.all_cases_link]
-    main_devices_links = [constants.all_cpus_link]
-    # cpus, coolers,motherboards, motherboards, rams, gpus, ssds, hdds, powers,cases
-    cpus = []
-    # , coolers, motherboards, rams, gpus, ssds, hdds, powers,cases
-    devices = [cpus]
-    # Cpu, Cooler, Motherboard, Ram, Gpu, Ssd, Hdd, Power,Case
-    Device_classes = [Cpu]
-    # "cpus", "coolers", "motherboards", "rams", "gpus", "ssds", "hdds", "powers","cases"
-    tables_names = ["cpus"]
+    main_devices_links = [constants.all_cpus_link, constants.all_coolers_link, constants.all_motherboards_link, constants.all_motherboards_link, constants.all_rams_link, constants.all_gpus_link, constants.all_ssds_link, constants.all_hdds_link, constants.all_powers_link,constants.all_cases_link]
+    cpus, coolers, motherboards, motherboards, rams, gpus, ssds, hdds, powers, cases = [], [], [], [], [], [], [], [], [], []
+    devices = [cpus, coolers, motherboards, motherboards, rams, gpus, ssds, hdds, powers, cases]
+    Device_classes = [Cpu, Cooler, Motherboard, Ram, Gpu, Ssd, Hdd, Power, Case]
+    tables_names = ["cpus", "coolers", "motherboards", "rams", "gpus", "ssds", "hdds", "powers", "cases"]
     time.sleep(5)
     for i, main_devices_link in enumerate(main_devices_links): # Для каждого типа комплектующих
         driver = webdriver.Chrome()
@@ -112,7 +106,7 @@ def main():
             device_links = [device_link.attrs['href'] for device_link in device_links]  # Приводим их в вид, позволяющий работать с этими ссылками
             if len(device_links) < 30:
                 if cursor != None:
-                    write_data(connection, cursor, page, i, tables_names, devices)
+                    write_devices(connection, cursor, page, i, tables_names, devices)
                 condition = False
             time.sleep(3)
             for j, device_link in enumerate(device_links): # Для каждого экземпляра данного типа выполняется переход на страницу с описанием, возвращается html-код и выбираются нужные характеристики
@@ -129,7 +123,7 @@ def main():
                     price = little_soup.find('a', class_="offers-description__link offers-description__link_nodecor js-description-price-link").text.strip()
                 except:
                     if cursor != None:
-                        write_data(connection, cursor, page, i, tables_names, devices)
+                        write_devices(connection, cursor, page, i, tables_names, devices)
                     condition = False
                     break
                 ks.append("Название")
@@ -147,10 +141,10 @@ def main():
                         if len(td) == 1:
                             # try:
                             if td[0].find_all('p')[0].text.strip() == "Описание":
-                                pppppp = td[0].find_all('p')
-                                ks.append(pppppp[0].text.strip())
-                                vs.append('\n'.join(pppppp[2].stripped_strings))
-                                ds.append(pppppp[1].text.strip())
+                                p = td[0].find_all('p')
+                                ks.append(p[0].text.strip())
+                                vs.append('\n'.join(p[2].stripped_strings))
+                                ds.append(p[1].text.strip())
                                 continue
                         li = re.sub('\n+', '\n', td[0].text.strip()).split('\n')
                         li = [l.strip() for l in li]
@@ -184,7 +178,6 @@ def main():
                             br_tag.replace_with('\n')
                         vs.append(td[1].text.strip())
                 devices[i].append(Device_classes[i](ks, vs, ds))
-                # print(devices[i][j].max_memory_without_overclocking) #!
                 time.sleep(random.uniform(4, 8))
             time.sleep(random.uniform(7, 15))
             if connection is None:
@@ -199,7 +192,7 @@ def main():
                     cursor = connection.cursor()
                 except mysql.connector.Error as error:
                     print(f'An error {error} occured')
-            write_data(connection, cursor, page, i, tables_names, devices)
+            write_devices(connection, cursor, page, i, tables_names, devices)
             page += 1
     cursor.close()
     connection.close()

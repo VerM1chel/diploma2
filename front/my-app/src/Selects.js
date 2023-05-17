@@ -119,6 +119,7 @@ function Selects({ onSelectedItemsChange }) {
         if (output6) { setHddPrice(output6.price); }
         if (output7) { setPowerPrice(output7.price); }
         if (output8) { setCasePrice(output8.price); }
+
     }, [output0, output1, output2, output3, output4, output5, output6, output7, output8]);
 
 
