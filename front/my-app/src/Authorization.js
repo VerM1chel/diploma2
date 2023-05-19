@@ -120,12 +120,12 @@ function Authorization(selectedItems) {
     const [loggedInUser, setLoggedInUser] = useState("");
     const [showConfigurationsWindow, setShowConfigurationsWindow] = useState(false);
     const [isShareClicked, setIsShareClicked] = useState(false);
+    const [showUsersConfigurations, setShowUsersConfigurations] = useState(false); // New state variable
 
     function handleShareClick(event) {
         setIsShareClicked(true);
         if (!isSuccessful) {
             setIsLoginModalOpen(true);
-
         }
     }
 
@@ -141,7 +141,7 @@ function Authorization(selectedItems) {
     useEffect(() => {
         if (isSuccessful && isShareClicked) {
             saveConfiguration(selectedItems);
-            setIsShareClicked(false); // Reset the isShareClicked state
+            setIsShareClicked(false);
         }
     }, [isSuccessful, isShareClicked, selectedItems]);
 
@@ -177,14 +177,10 @@ function Authorization(selectedItems) {
 
 
     function handleNewButtonClick() {
-        if (isSuccessful) {
-            setShowConfigurationsWindow(false); // Сброс состояния перед открытием
-            setShowConfigurationsWindow(true);
-        } else {
+        if (!isSuccessful)
             setIsLoginModalOpen(true);
-        }
+        setShowUsersConfigurations(prevState => !prevState); // Toggle the state value
     }
-
 
     return (
         <div>
@@ -203,7 +199,7 @@ function Authorization(selectedItems) {
                 Посмотреть чужие конфигурации
             </button>
 
-            {showConfigurationsWindow && <UsersConfigurations />}
+            {showUsersConfigurations && <UsersConfigurations />} 
         </div>
     );
 }

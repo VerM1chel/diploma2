@@ -245,7 +245,7 @@ def getUserIdByUsername(cursor, username):
         user_id = result[0]
     print(f"user_id {user_id}")
     return user_id
-
+# Done
 def cpu_logic(budget, cpus): # Функция возвращает список потенциально возможных комплектующих
     result = []
     for cpu in cpus:
@@ -258,25 +258,25 @@ def cpu_logic(budget, cpus): # Функция возвращает список 
 # Done
 def cooler_logic(budget, coolers, cpu):
     result = []
-    if budget < 1400 and cpu.cooling_included == "Yes": # для дешевых конфигураций, чтобы сэкономить, можно купить процессор со встроенным кулером (то есть тут кулер не нужен)
+    if budget < 1300 and cpu.cooling_included == "Yes": # для дешевых конфигураций, чтобы сэкономить, можно купить процессор со встроенным кулером (то есть тут кулер не нужен)
         return []
     else:
         for cooler in coolers:
             if cooler.cooling != "водяное": # Если кулер все-таки нужен, то лучше исключить водяное охлаждение (оно подходит только под несколько типов корпусов) и то, только сборщики знают, как правильно оно собирается (там все эмпирическим путем узнается)
                 if cooler.power_dissipation != None:
-                    if 20 < (cooler.power_dissipation - cpu.estimated_thermal_power) < 55:  # Кулер должен рассеивать достаточно тепла, чтобы процессор не перегревался, но излишне слишком мощные кулеры нам тоже не нужны
+                    if 20 < (cooler.power_dissipation - cpu.estimated_thermal_power): #??? () < 55 # Кулер должен рассеивать достаточно тепла, чтобы процессор не перегревался, но излишне слишком мощные кулеры нам тоже не нужны
                         result.append(cooler)
     return result
 
 
 # Done
-def motherboard_logic(motherboards, cpu):
+def motherboard_logic(budget, motherboards, cpu):
     result = []
     for motherboard in motherboards:
         if cpu.socket == motherboard.socket: # Сокеты процессора и материнской платы должны совпадать
-            if cpu.integrated_graphics != "No" and motherboard.integrated_graphics_support == "Yes": # Если выбран процессор со встроенной графикой, то материнская плата должна это поддерживать
+            if budget < 1400 and cpu.integrated_graphics != "No" and motherboard.integrated_graphics_support == "Yes": # Если выбран процессор со встроенной графикой, то материнская плата должна это поддерживать
                 result.append(motherboard)
-            elif cpu.integrated_graphics == "No":
+            else:
                 result.append(motherboard)
     return result
 
@@ -288,12 +288,13 @@ def gpu_logic(budget, gpus, cpu, direction):
     if (direction != "игровой" or direction != "графический дизайн" or direction != "3d" or "видео- и аудио-производство") and budget < 1400 and cpu.integrated_graphics != "No":  # Если бюджет маловат и процессор имеет встроенную графику, то грех этим не воспользоваться (дискретную видеокарту не берем)
         return result
     for gpu in gpus:
-        if gpu.gpu_manufacturer != "AMD": # AMD -- нет raytrace и сильнее греются
-            if direction == "игровой" or direction == "графический дизайн" or direction == "3d" or "видео- и аудио-производство":
-                if "GTX" not in gpu.name:
+        if gpu.recommended_psu_watts != None: # Надо знать, какая видеокарта, чтобы выбрать подходящий блок питания
+            if gpu.gpu_manufacturer != "AMD": # AMD -- нет raytrace и сильнее греются
+                if direction == "игровой" or direction == "графический дизайн" or direction == "3d" or "видео- и аудио-производство":
+                    if "GTX" not in gpu.name:
+                        result.append(gpu)
+                else:
                     result.append(gpu)
-            else:
-                result.append(gpu)
     return result
 
 
@@ -355,39 +356,62 @@ def power_logic(budget, powers, gpu):
     certificate_types = ["бронзовый", "серебряный", "золотой", "платиновый", "титановый"]
     result = []
     for power in powers:
-        if (gpu.recommended_psu_watts < 600 and power.power >= 600) or (gpu.recommended_psu_watts > 600 and power.power >= gpu.recommended_psu_watts): # Если видеокарта требует <600 Вт, то ставим блок на 600. Если видеокарта требует >600, то берем блок с мощностью ровно (или чутка больше), чем нужно для видеокарты
-            if budget > 1200:  # Если комп не полная дешевка, то берем минимум бронзовый сертификат
-                if power.certificate_80plus != None:
-                    if power.certificate_80plus.strip() in certificate_types:
-                        result.append(power)
-            else:
+        if power.width != None:
+            if gpu != None:
+                if gpu.recommended_psu_watts != None:
+                    if (gpu.recommended_psu_watts < 600 and power.power >= 600) or (gpu.recommended_psu_watts > 600 and power.power >= gpu.recommended_psu_watts): # Если видеокарта требует <600 Вт, то ставим блок на 600. Если видеокарта требует >600, то берем блок с мощностью ровно (или чутка больше), чем нужно для видеокарты
+                        if budget > 1200:  # Если комп не полная дешевка, то берем минимум бронзовый сертификат
+                            if power.certificate_80plus != None:
+                                if power.certificate_80plus.strip() in certificate_types:
+                                    result.append(power)
+                        else:
+                            result.append(power)
+            elif (power.power >= 600):
                 result.append(power)
+
     return result
 
 
 #Done
+# корпус всегда брать без блока питания (если комп <= 1000, то комп без дискретного блока питания, только со встроенным)
 def case_logic(budget, cases, motherboard, gpu, power):
     result = []
 # Вообще, лучше брать только ATX, потому что особого смысла брать microATX и miniATX нет -- они дорогие, а цены не оправданы
     for case in cases:
         if case.portable_power_supplies != None and motherboard.form_factor in case.portable_power_supplies: # Надо, чтобы материнская плата помещалась в корпус (являлась совместимой для данного корпуса)
-            if case.max_graphics_card_length != None and case.max_graphics_card_length >= gpu.video_card_length: # Также, надо, чтобы видеокарта помещалась в корпус. Если меньше даже на миллиметр -- то все равно не влезет
-                if case.power != "отсутствует" and case.power != None:
-                    if (gpu.recommended_psu_watts < 600 and int(case.power.split()[0]) >= 600) or (gpu.recommended_psu_watts > 600 and int(case.power.split()[0]) >= gpu.recommended_psu_watts):
-                        if budget <= 1400: # если комп дешевый, то выбираем только корпуса со встроенным блоком питания (существенная экономия)
+            if gpu != None:
+                if case.max_graphics_card_length != None and case.max_graphics_card_length >= gpu.video_card_length: # Также, надо, чтобы видеокарта помещалась в корпус. Если меньше даже на миллиметр -- то все равно не влезет
+                    if budget <= 1000 and case.power != "отсутствует" and case.power != None:  # если комп дешевый, то выбираем только корпуса со встроенным блоком питания (существенная экономия)
+                        if (gpu.recommended_psu_watts < 600 and int(case.power.split()[0]) >= 600) or (gpu.recommended_psu_watts > 600 and int(case.power.split()[0]) >= gpu.recommended_psu_watts):
                             result.append(case)
-                    else: # Если комп не слишком дешевый, то лучше все же поставить блок питания. А так как блок питания не встроенный, то он должен помещаться в корпус
+                    if budget > 1000 and (case.power == "отсутствует" or case.power == None): # Если все же ставим блок питания
+                        if power.width != None: # Если комп не слишком дешевый, то лучше все же поставить блок питания. А так как блок питания не встроенный, то он должен помещаться в корпус
+                            if case.max_power_supply_length != None and case.max_power_supply_length >= power.width:
+                                result.append(case)
+            else:
+                if budget <= 1000 and case.power != "отсутствует" and case.power != None:  # если комп дешевый, то выбираем только корпуса со встроенным блоком питания (существенная экономия)
+                        result.append(case)
+                if budget > 1000 and (case.power == "отсутствует" or case.power == None): # Если все же ставим блок питания
+                    if power.width != None:  # Если комп не слишком дешевый, то лучше все же поставить блок питания. А так как блок питания не встроенный, то он должен помещаться в корпус
                         if case.max_power_supply_length != None and case.max_power_supply_length >= power.width:
                             result.append(case)
     return result
 
 
 def create_conf(details, idealPrice):
+    filtered_details = []
+    # for d in details:
+        # if abs(idealPrice - d.price) <= 50:
+        #     filtered_details.append(d)
     sorted_details = sorted(details, key=lambda d: abs(idealPrice - d.price)) # Получаем список, у которого первые элементы -- это экземпляры класса с наиболее близким совпадением к желаемой цене
+    print()
+    # for s in sorted_details:
+        # print(f"{s.price} raznnica= {idealPrice - d.price}")
     if len(sorted_details) < 1:
-        print("При заданном бюджете невозможно составить выбранную конфигурацию")
-        exit(15)
+        print("При заданном бюждете невозможно составить конфигурацию, либо отсутствуют необходимые комплектующие из соответствующего ценового диапазона")
+        exit(3)
     return sorted_details[0]
+
     # return sorted_details[:5] # Возвращаем топ 5 совпадений
 
 
@@ -406,7 +430,7 @@ def create_tables(connection):
     cursor = connection.cursor()
     table_queries = [queries.create_cpus_table, queries.create_coolers_table, queries.create_motherboards_table, queries.create_rams_table,
         queries.create_gpus_table, queries.create_ssds_table, queries.create_hhds_table, queries.create_powers_table, queries.create_cases_table,
-                     queries.create_min_reqs_table, queries.create_recommended_reqs_table, queries.create_users_table, queries.create_configuration_table]
+                     queries.create_min_reqs_table, queries.create_recommended_reqs_table, queries.create_configuration_table, queries.create_users_table]
     for query in table_queries:
         try:
             cursor.execute(query)
@@ -415,7 +439,6 @@ def create_tables(connection):
             print(f"The error {err} occured")
             cursor.close()
     cursor.close()
-import json
 
 
 def main():
@@ -455,10 +478,11 @@ def main():
     # get_details(cpus_fromDB)
 
 # Then we need to get only devices, that pass to customer requirements
-    budget = 2000
+    budget = 900
     # while budget.isdigit() == False or budget < 0: # *
     #     budget = float(input()) # *
 
+    cpu, cooler, motherboard, ram, gpu, ssd, hdd, power, casePC = None, None, None, None, None, None, None, None, None
     # CPU
     cpus = cpu_logic(budget, cpus_fromDB)
     if budget > 1400:
@@ -471,23 +495,24 @@ def main():
         print("При заданном бюджете невозможно составить выбранную конфигурацию CPU")
 
     # Cooler
-    coolers = cooler_logic(budget, coolers_fromDB, cpu)
-    cooler = create_conf(details=coolers, idealPrice=budget * 0.03)
+    if budget >= 1300:
+        coolers = cooler_logic(budget, coolers_fromDB, cpu)
+        cooler = create_conf(details=coolers, idealPrice=budget * 0.03)
 
     # Motherboard
     # если проц со встроенное графикой или кулером (или, и то, и другое) и если конфигурация ДЕШЕВАЯ,
     # то половину из части бюджета, которую мы бы потратили на GPU или кулер мы тратим на CPU
     # и другую половину тратим на MB
-    motherboards = motherboard_logic(motherboards_fromDB, cpu)
-    if budget < 400:
-        motherboard = create_conf(details=motherboards, cpu=cpu, idealPrice=budget * (0.12 + 0.33 * 0.4))
+    motherboards = motherboard_logic(budget, motherboards_fromDB, cpu)
+    if budget < 1400:
+        motherboard = create_conf(details=motherboards, idealPrice=budget * (0.12 + 0.33 * 0.4))
     else:
         motherboard = create_conf(details=motherboards, idealPrice=budget * 0.12)
 
 
     # RAM
     rams = ram_logic(budget, motherboard, rams_fromDB)
-    if budget < 400:
+    if budget < 1400:
         ram = create_conf(details=rams, idealPrice=budget * (0.12 * 1.5))
     else:
         ram = create_conf(details=rams, idealPrice=budget * 0.12)
@@ -496,53 +521,81 @@ def main():
     # GPU
     # если комп НЕ слишком дешевый и процессор БЕЗ встроенной графики. И если дешевый комп, то должен выбраться процессор со встроенной графикой, тогда если у нас НЕ такой проц, то выбираем видеокарту
     gpus = gpu_logic(budget, gpus_fromDB, cpu, direction)
-    if cpu.cooling_included == "Yes" and cooler is None: # если проц со встроенным кулером
-        gpu = create_conf(details=gpus, idealPrice=budget * (0.33 + 0.03))     # то часть бюджета для кулера тратим на видеокарту
-    else:
-        gpu = create_conf(details=gpus, idealPrice=budget * 0.33)
+    if len(gpus) > 0:
+        if cpu.cooling_included == "Yes" and cooler is None: # если проц со встроенным кулером и отдельный кулер решили не брать
+            gpu = create_conf(details=gpus, idealPrice=budget * (0.33 + 0.03)) # то часть бюджета для кулера тратим на видеокарту
+        else:
+            gpu = create_conf(details=gpus, idealPrice=budget * 0.33)
 
     # SSD/HDD
     ssds = ssd_logic(budget, ssds_fromDB, motherboard, itSeconfSSD=False)
     hdds = hdd_logic(budget, hdds_fromDB)
-    if budget >= 400:
+    if budget >= 1400:
         ssd = create_conf(details=ssds, idealPrice=budget * 0.07)
         hdd = create_conf(details=hdds, idealPrice=budget * 0.06)
     else: # если комп дешевый, то можно и только SSD
-        create_conf(details=ssds, idealPrice=budget * (0.06 + 0.07) * 1.1)
+        ssd = create_conf(details=ssds, idealPrice=budget * (0.06 + 0.07) * 1.1)
 
     # power
     powers = power_logic(budget, powers_fromDB, gpu)
-    if budget > 400: # если комп не совсем дешевый, то выбираем корпус без блока питания в комплекте
+    if budget >= 1000: # если комп не совсем дешевый, то выбираем корпус без блока питания в комплекте
         power = create_conf(details=powers, idealPrice=budget * 0.07)
-    else:
-        power = create_conf(details=powers, idealPrice=budget * (0.07 + 0.07)) # иначе с БП (часть бюджета для БП отдаем на корпус)
+
 
     # case
     cases = case_logic(budget, cases_fromDB, motherboard, gpu, power)
-    casePC = create_conf(details=cases, idealPrice=budget * 0.07)
+    if budget >= 1400:  # если комп не совсем дешевый, то выбираем корпус без блока питания в комплекте
+        casePC = create_conf(details=cases, idealPrice=budget * 0.07)
+    else:
+        casePC = create_conf(details=cases, idealPrice=budget * (0.07 + 0.07)) # иначе с БП (часть бюджета для БП отдаем на корпус)
 
     configurations.append(Configuration(cpu=cpu, cooler=cooler, motherboard=motherboard, ram=ram, gpu=gpu,
                   ssd=ssd, hdd=hdd, power=power, casePC=casePC))
+
+    none_lists = [none_cpu, none_cooler, none_motherboard, none_ram, none_gpu, none_ssd, none_hdd, none_power,
+                  none_case]
+    cooler_idx = 0 if cooler is None else configurations[0].cooler.id + 1
+    gpu_idx = 0 if gpu is None else configurations[0].gpu.id + 1
+    hdd_idx = 0 if hdd is None else configurations[0].hdd.id + 1
+    power_idx = 0 if power is None else configurations[0].power.id + 1
+    cooler_price = None if cooler is None else configurations[0].cooler.price
+    gpu_price = None if gpu is None else configurations[0].gpu.price
+    hdd_price = None if hdd is None else configurations[0].hdd.price
+    power_price = None if power is None else configurations[0].power.price
+    cooler_name = "None" if cooler is None else configurations[0].cooler.name
+    gpu_name = "None" if gpu is None else configurations[0].gpu.name
+    hdd_name = "None" if hdd is None else configurations[0].hdd.name
+    power_name = "None" if power is None else configurations[0].power.name
+
     print(configurations[0].cpu.name+f" {configurations[0].cpu.price}")
-    print(configurations[0].cooler.name+f" {configurations[0].cooler.price}")
+    if (cooler_price is not None):
+        print(cooler_name+f" {cooler_price}")
     print(configurations[0].motherboard.name+f" {configurations[0].motherboard.price}")
     print(configurations[0].ram.name+f" {configurations[0].ram.price}")
-    print(configurations[0].gpu.name+f" {configurations[0].gpu.price}")
+    if (gpu_price is not None):
+        print(gpu_name+f" {gpu_price}")
     print(configurations[0].ssd.name+f" {configurations[0].ssd.price}")
-    print(configurations[0].hdd.name+f" {configurations[0].hdd.price}")
-    print(configurations[0].power.name+f" {configurations[0].power.price}")
+    if (hdd_price is not None):
+        print(hdd_name+f" {hdd_price}")
+    if (power_price is not None):
+        print(power_name+f" {power_price}")
     print(configurations[0].casePC.name+f" {configurations[0].casePC.price}")
 
-    indeces = [configurations[0].cpu.id+1, configurations[0].cooler.id+1, configurations[0].motherboard.id+1, configurations[0].ram.id+1,
-    configurations[0].gpu.id+1, configurations[0].ssd.id+1, configurations[0].hdd.id+1, configurations[0].power.id, configurations[0].casePC.id+1]
-    prices = [configurations[0].cpu.price, configurations[0].cooler.price, configurations[0].motherboard.price, configurations[0].ram.price,
-    configurations[0].gpu.price, configurations[0].ssd.price, configurations[0].hdd.price, configurations[0].power.price, configurations[0].casePC.price]
+    indeces = [configurations[0].cpu.id+1, cooler_idx, configurations[0].motherboard.id+1, configurations[0].ram.id+1,
+    gpu_idx, configurations[0].ssd.id+1, hdd_idx, power_idx, configurations[0].casePC.id+1]
+    prices = [configurations[0].cpu.price, cooler_price, configurations[0].motherboard.price, configurations[0].ram.price,
+    gpu_price, configurations[0].ssd.price, hdd_price, power_price, configurations[0].casePC.price]
+    total_price = 0
+    for price in prices:
+        if price != None:
+            total_price += price
+    print(f"total_price = {total_price}")
     print(5)
-
-    none_lists = [none_cpu, none_cooler, none_motherboard, none_ram, none_gpu, none_ssd, none_hdd, none_power, none_case]
     all_lists = [cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB]
     for i,none_list in enumerate(none_lists):
         all_lists[i].insert(0, none_lists[i])
+
+
 if __name__ == '__main__':
     main()
     app.run()
