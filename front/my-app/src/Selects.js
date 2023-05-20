@@ -35,12 +35,6 @@ function Selects({ onSelectedItemsChange }) {
     const [numbers, setNumbers] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
     useEffect(() => {
-        axios.get('/indeces')
-            .then(response => {
-                console.log(response.data);
-                setNumbers(response.data);
-            })
-            .catch(error => console.log(error));
         axios.get('/cpus')
             .then(response => {
                 setCpus(response.data);
@@ -95,7 +89,7 @@ function Selects({ onSelectedItemsChange }) {
         setSelectedComponent(selectedComponent);
         setPrice(selectedComponent.price);
     };
-
+    
 
     const [output0, setOutput0] = useState(0);
     const [output1, setOutput1] = useState(0);
@@ -124,7 +118,7 @@ function Selects({ onSelectedItemsChange }) {
 
 
     const createConfClick = () => {
-        if (cpus.length > 0 && numbers.length > 0) {
+        if (numbers.length > 0) {
             const selectedCpu = cpus[numbers[0]];
             const selectedCooler = coolers[numbers[1]];
             const selectedMotherboard = motherboards[numbers[2]];
@@ -144,34 +138,83 @@ function Selects({ onSelectedItemsChange }) {
             setOutput7(selectedPower);
             setOutput8(selectedCasePC);
 
-            const selectedItems = [selectedCpu, selectedCooler, selectedMotherboard, selectedRam, selectedGpu, selectedSsd, selectedHdd, selectedPower, selectedCasePC];
+            const selectedItems = [
+                selectedCpu,
+                selectedCooler,
+                selectedMotherboard,
+                selectedRam,
+                selectedGpu,
+                selectedSsd,
+                selectedHdd,
+                selectedPower,
+                selectedCasePC,
+            ];
             onSelectedItemsChange(selectedItems);
         }
     };
 
+    useEffect(() => {
+        axios
+            .get('/indeces')
+            .then(response => {
+                console.log(response.data);
+                setNumbers(response.data);
+            })
+            .catch(error => console.log(error));
+    }, [numbers]);
 
-    const sortCoolersByPrice = () => {
-        const currentCooler = coolers[numbers[1]];
-        setCoolers([...coolers].sort((a, b) => a.price - b.price));
-        setCoolers(coolers);
-        const newIndex = coolers.findIndex((cooler) => cooler.name === currentCooler.name);
-        numbers[1] = newIndex;
-        setSelectedCooler(coolers[numbers[1]]);
+    const handleSortByPrice = () => {
+        axios.get('/sortByPrice')
+            .then(response => {
+                const { sorted_data, new_indeces } = response.data;
+                setCpus(sorted_data.cpus);
+                setCoolers(sorted_data.coolers);
+                setMotherboards(sorted_data.motherboards);
+                setRams(sorted_data.rams);
+                setGpus(sorted_data.gpus);
+                setSsds(sorted_data.ssds);
+                setHdds(sorted_data.hdds);
+                setPowers(sorted_data.powers);
+                setCasePCs(sorted_data.casePCs);
+            })
+            .catch(error => console.log(error));
+    };
+    const handleSortByName = () => {
+        axios.get('/sortByName')
+            .then(response => {
+                setCpus(response.data.cpus);
+                setCoolers(response.data.coolers);
+                setMotherboards(response.data.motherboards);
+                setRams(response.data.rams);
+                setGpus(response.data.gpus);
+                setSsds(response.data.ssds);
+                setHdds(response.data.hdds);
+                setPowers(response.data.powers);
+                setCasePCs(response.data.casePCs);
+
+            })
+            .catch(error => console.log(error));
+    };
+    const handleSortById = () => {
+        axios.get('/sortById')
+            .then(response => {
+                const { sorted_data, new_indeces } = response.data;
+                setCpus(sorted_data.cpus);
+                setCoolers(sorted_data.coolers);
+                setMotherboards(sorted_data.motherboards);
+                setRams(sorted_data.rams);
+                setGpus(sorted_data.gpus);
+                setSsds(sorted_data.ssds);
+                setHdds(sorted_data.hdds);
+                setPowers(sorted_data.powers);
+                setCasePCs(sorted_data.casePCs);
+                setNumbers(new_indeces.data);
+            })
+            .catch(error => console.log(error));
     };
 
 
-    const sortCoolersByName = () => {
-        const sortedList = [...coolers].sort((a, b) => a.name.localeCompare(b.name));
-        setCoolers(sortedList);
-
-    };
-
-    const sortCoolersById = () => {
-        const sortedList = [...coolers].sort((a, b) => a.id - b.id);
-        setCoolers(sortedList);
-
-    };
-
+// Далее в компоненте будет использована функция createConfClick в качестве обработчика события клика на кнопку
 
     return (
         <div style={{ marginLeft: "30px" }}>
@@ -329,10 +372,9 @@ function Selects({ onSelectedItemsChange }) {
                 <button style={{ width: "15%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }} onClick={createConfClick}>
                     СОСТАВИТЬ КОНФИГУРАЦИЮ
                 </button>
-                <button onClick={sortCoolersByPrice}>Сортировать по цене</button>
-                <button onClick={sortCoolersByName}>Сортировать по названию</button>
-                <button onClick={sortCoolersById}>Сортировать по ID</button>
-
+                <button onClick={handleSortByPrice}>Отсортировать по ценам</button>
+                <button onClick={handleSortByName}>Отсортировать по названиям</button>
+                <button onClick={handleSortById}>Отсортировать по давности появления в каталоге</button>
             </div>
         </div>
     );

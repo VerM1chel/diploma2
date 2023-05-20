@@ -3,8 +3,8 @@ from classes.configuration import Configuration
 from flask import Flask, jsonify, request
 
 import constants
-from sql_code import config
-from sql_code import queries
+from sqlConfigAndQueries import config
+from sqlConfigAndQueries import queries
 from classes.details.cpu import Cpu
 from classes.details.cooler import Cooler
 from classes.details.motherboard import Motherboard
@@ -21,10 +21,12 @@ import mysql.connector
 from mysql.connector import Error
 
 app = Flask(__name__)
-all_lists = []
-indeces = []
-prices = []
-keywords = []
+budget = 0
+just_one = 0
+total_price = 0
+data_fromDB, none_details = [], []
+indeces, prices, keywords = [], [], []
+
 
 @app.route('/indeces')
 def get_details():
@@ -35,66 +37,99 @@ def get_prices():
 @app.route('/cpus')
 def get_cpus():
     details_list = []
-    for detail in all_lists[0]:
+    for detail in data_fromDB[0]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
 @app.route('/coolers')
 def get_coolers():
     details_list = []
-    for detail in all_lists[1]:
+    for detail in data_fromDB[1]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
 @app.route('/motherboards')
 def get_motherboards():
     details_list = []
-    for detail in all_lists[2]:
+    for detail in data_fromDB[2]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
 @app.route('/rams')
 def get_rams():
     details_list = []
-    for detail in all_lists[3]:
+    for detail in data_fromDB[3]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
 @app.route('/gpus')
 def get_gpus():
     details_list = []
-    for detail in all_lists[4]:
+    for detail in data_fromDB[4]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
 @app.route('/ssds')
 def get_ssds():
     details_list = []
-    for detail in all_lists[5]:
+    for detail in data_fromDB[5]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
 @app.route('/hdds')
 def get_hdds():
     details_list = []
-    for detail in all_lists[6]:
+    for detail in data_fromDB[6]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
 @app.route('/powers')
 def get_powers():
     details_list = []
-    for detail in all_lists[7]:
+    for detail in data_fromDB[7]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
 @app.route('/casePCs')
 def get_casePCs():
     details_list = []
-    for detail in all_lists[8]:
+    for detail in data_fromDB[8]:
         detail_dict = {key: value for key, value in vars(detail).items()}
         details_list.append(detail_dict)
     return jsonify(details_list)
+
+@app.route('/sortByPrice', methods=['GET'])
+def sort_by_price():
+    global indeces
+    old_data = data_fromDB
+    sorted_data, new_indeces = [], []
+    for sublist in data_fromDB:
+        sorted_type = sorted(sublist, key=lambda x: x.price)
+        sorted_data.append(sorted_type)
+    for i, idx in enumerate(indeces):
+        element = old_data[i][idx]
+        element_index = sorted_data[i].index(element)
+        new_indeces.append(element_index)
+    sorted_data_response = []
+    for i,details in enumerate(sorted_data):
+        sorted_data_response.append([])
+        for detail in details:
+            detail_dict = {key: value for key, value in vars(detail).items()}
+            sorted_data_response[i].append(detail_dict)
+    indeces = new_indeces
+    response_data = {
+        "cpus": sorted_data_response[0],
+        "coolers": sorted_data_response[1],
+        "motherboards": sorted_data_response[2],
+        "rams": sorted_data_response[3],
+        "gpus": sorted_data_response[4],
+        "ssds": sorted_data_response[5],
+        "hdds": sorted_data_response[6],
+        "powers": sorted_data_response[7],
+        "casePCs": sorted_data_response[8]
+    }
+    return jsonify(response_data)
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -229,7 +264,16 @@ def check_configuration():
     else:
         return jsonify({'isSaved': True})
 
-
+@app.route('/updateBudget', methods=['POST'])
+def update_budget():
+    global indeces, prices, total_price, just_one, data_fromDB, none_details
+    try:
+        data = request.get_json()
+        budget = float(data.get('budget'))
+        main(budget, data_fromDB, none_details)  # Вызов функции main() с передачей значения budget
+        return {'success': True}
+    except Exception as e:
+        return {'success': False, 'error': str(e)}
 
 
 def getUserIdByUsername(cursor, username):
@@ -268,7 +312,6 @@ def cooler_logic(budget, coolers, cpu):
                         result.append(cooler)
     return result
 
-
 # Done
 def motherboard_logic(budget, motherboards, cpu):
     result = []
@@ -279,7 +322,6 @@ def motherboard_logic(budget, motherboards, cpu):
             else:
                 result.append(motherboard)
     return result
-
 
 # . Для мощных -- только RTX и выше
 def gpu_logic(budget, gpus, cpu, direction):
@@ -296,7 +338,6 @@ def gpu_logic(budget, gpus, cpu, direction):
                 else:
                     result.append(gpu)
     return result
-
 
 # Done
 def ram_logic(budget, motherboard, rams):
@@ -350,7 +391,6 @@ def hdd_logic(budget, hdds): # HDD опциональная опция)
                 result.append(hdd)
     return result
 
-
 # Done
 def power_logic(budget, powers, gpu):
     certificate_types = ["бронзовый", "серебряный", "золотой", "платиновый", "титановый"]
@@ -370,7 +410,6 @@ def power_logic(budget, powers, gpu):
                 result.append(power)
 
     return result
-
 
 #Done
 # корпус всегда брать без блока питания (если комп <= 1000, то комп без дискретного блока питания, только со встроенным)
@@ -397,8 +436,7 @@ def case_logic(budget, cases, motherboard, gpu, power):
                             result.append(case)
     return result
 
-
-def create_conf(details, idealPrice):
+def create_conf(details, idealPrice, maybeDontNeedDetail=False):
     filtered_details = []
     # for d in details:
         # if abs(idealPrice - d.price) <= 50:
@@ -407,13 +445,15 @@ def create_conf(details, idealPrice):
     print()
     # for s in sorted_details:
         # print(f"{s.price} raznnica= {idealPrice - d.price}")
-    if len(sorted_details) < 1:
-        print("При заданном бюждете невозможно составить конфигурацию, либо отсутствуют необходимые комплектующие из соответствующего ценового диапазона")
-        exit(3)
+    if maybeDontNeedDetail == False:
+        if len(sorted_details) < 1:
+            print("При заданном бюждете невозможно составить конфигурацию, либо отсутствуют необходимые комплектующие из соответствующего ценового диапазона")
+            exit(3)
+    if len(sorted_details) == 0:
+        return []
     return sorted_details[0]
 
     # return sorted_details[:5] # Возвращаем топ 5 совпадений
-
 
 def read_from_db(connection, table_name, my_class, keys):
     cursor = connection.cursor()
@@ -440,16 +480,7 @@ def create_tables(connection):
             cursor.close()
     cursor.close()
 
-
-def main():
-    global all_lists
-    global indeces
-    global prices
-    configurations = []
-    # 2. Read all trebovaniya from database (read all devices)
-
-# This part we do just once in the beginning
-    # 1. Connection to database
+def prepare_data():
     connection = None
     try:
         connection = mysql.connector.connect(
@@ -474,17 +505,27 @@ def main():
     hdds_fromDB, none_hdd = read_from_db(connection, "hdds", Hdd, constants.hhd_keys)
     powers_fromDB, none_power = read_from_db(connection, "powers", Power, constants.power_keys)
     cases_fromDB, none_case = read_from_db(connection, "cases", Case, constants.case_keys)
+    data_fromDB = cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB
+    none_details = none_cpu, none_cooler, none_motherboard, none_ram, none_gpu, none_ssd, none_hdd, none_power, none_case
+    for i, none_list in enumerate(none_details):
+        data_fromDB[i].insert(0, none_details[i])
+    return data_fromDB, none_details
+
+
+def main(budget, data_fromDB, none_details):
+    cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB = data_fromDB
+    none_cpu, none_cooler, none_motherboard, none_ram, none_gpu, none_ssd, none_hdd, none_power, none_case = none_details
+    print(f"I am main budget is {budget}")
+    global indeces
+    global prices
+    global total_price
+    configurations = []
 
     # get_details(cpus_fromDB)
 
-# Then we need to get only devices, that pass to customer requirements
-    budget = 900
-    # while budget.isdigit() == False or budget < 0: # *
-    #     budget = float(input()) # *
-
     cpu, cooler, motherboard, ram, gpu, ssd, hdd, power, casePC = None, None, None, None, None, None, None, None, None
     # CPU
-    cpus = cpu_logic(budget, cpus_fromDB)
+    cpus = cpu_logic(budget, cpus_fromDB[1:])
     if budget > 1400:
         cpu = create_conf(details=cpus, idealPrice=budget*0.20)
     elif budget < 1300: # если конфигурация слишком дешевая
@@ -496,14 +537,14 @@ def main():
 
     # Cooler
     if budget >= 1300:
-        coolers = cooler_logic(budget, coolers_fromDB, cpu)
-        cooler = create_conf(details=coolers, idealPrice=budget * 0.03)
+        coolers = cooler_logic(budget, coolers_fromDB[1:], cpu)
+        cooler = create_conf(details=coolers, idealPrice=budget * 0.03, maybeDontNeedDetail=True)
 
     # Motherboard
     # если проц со встроенное графикой или кулером (или, и то, и другое) и если конфигурация ДЕШЕВАЯ,
     # то половину из части бюджета, которую мы бы потратили на GPU или кулер мы тратим на CPU
     # и другую половину тратим на MB
-    motherboards = motherboard_logic(budget, motherboards_fromDB, cpu)
+    motherboards = motherboard_logic(budget, motherboards_fromDB[1:], cpu)
     if budget < 1400:
         motherboard = create_conf(details=motherboards, idealPrice=budget * (0.12 + 0.33 * 0.4))
     else:
@@ -511,7 +552,7 @@ def main():
 
 
     # RAM
-    rams = ram_logic(budget, motherboard, rams_fromDB)
+    rams = ram_logic(budget, motherboard, rams_fromDB[1:])
     if budget < 1400:
         ram = create_conf(details=rams, idealPrice=budget * (0.12 * 1.5))
     else:
@@ -520,30 +561,30 @@ def main():
     direction = ""
     # GPU
     # если комп НЕ слишком дешевый и процессор БЕЗ встроенной графики. И если дешевый комп, то должен выбраться процессор со встроенной графикой, тогда если у нас НЕ такой проц, то выбираем видеокарту
-    gpus = gpu_logic(budget, gpus_fromDB, cpu, direction)
+    gpus = gpu_logic(budget, gpus_fromDB[1:], cpu, direction)
     if len(gpus) > 0:
         if cpu.cooling_included == "Yes" and cooler is None: # если проц со встроенным кулером и отдельный кулер решили не брать
-            gpu = create_conf(details=gpus, idealPrice=budget * (0.33 + 0.03)) # то часть бюджета для кулера тратим на видеокарту
+            gpu = create_conf(details=gpus, idealPrice=budget * (0.33 + 0.03), maybeDontNeedDetail=True) # то часть бюджета для кулера тратим на видеокарту
         else:
-            gpu = create_conf(details=gpus, idealPrice=budget * 0.33)
+            gpu = create_conf(details=gpus, idealPrice=budget * 0.33, maybeDontNeedDetail=True)
 
     # SSD/HDD
-    ssds = ssd_logic(budget, ssds_fromDB, motherboard, itSeconfSSD=False)
-    hdds = hdd_logic(budget, hdds_fromDB)
+    ssds = ssd_logic(budget, ssds_fromDB[1:], motherboard, itSeconfSSD=False)
+    hdds = hdd_logic(budget, hdds_fromDB[1:])
     if budget >= 1400:
         ssd = create_conf(details=ssds, idealPrice=budget * 0.07)
-        hdd = create_conf(details=hdds, idealPrice=budget * 0.06)
+        hdd = create_conf(details=hdds, idealPrice=budget * 0.06, maybeDontNeedDetail=True)
     else: # если комп дешевый, то можно и только SSD
         ssd = create_conf(details=ssds, idealPrice=budget * (0.06 + 0.07) * 1.1)
 
     # power
-    powers = power_logic(budget, powers_fromDB, gpu)
-    if budget >= 1000: # если комп не совсем дешевый, то выбираем корпус без блока питания в комплекте
-        power = create_conf(details=powers, idealPrice=budget * 0.07)
+    powers = power_logic(budget, powers_fromDB[1:], gpu)
+    if budget >= 1000: # если комп не совсем дешевый, то надо взять отдельный блок питания (а не встроенный в корпус)
+        power = create_conf(details=powers, idealPrice=budget * 0.07, maybeDontNeedDetail=True)
 
 
     # case
-    cases = case_logic(budget, cases_fromDB, motherboard, gpu, power)
+    cases = case_logic(budget, cases_fromDB[1:], motherboard, gpu, power)
     if budget >= 1400:  # если комп не совсем дешевый, то выбираем корпус без блока питания в комплекте
         casePC = create_conf(details=cases, idealPrice=budget * 0.07)
     else:
@@ -552,8 +593,6 @@ def main():
     configurations.append(Configuration(cpu=cpu, cooler=cooler, motherboard=motherboard, ram=ram, gpu=gpu,
                   ssd=ssd, hdd=hdd, power=power, casePC=casePC))
 
-    none_lists = [none_cpu, none_cooler, none_motherboard, none_ram, none_gpu, none_ssd, none_hdd, none_power,
-                  none_case]
     cooler_idx = 0 if cooler is None else configurations[0].cooler.id + 1
     gpu_idx = 0 if gpu is None else configurations[0].gpu.id + 1
     hdd_idx = 0 if hdd is None else configurations[0].hdd.id + 1
@@ -580,7 +619,6 @@ def main():
     if (power_price is not None):
         print(power_name+f" {power_price}")
     print(configurations[0].casePC.name+f" {configurations[0].casePC.price}")
-
     indeces = [configurations[0].cpu.id+1, cooler_idx, configurations[0].motherboard.id+1, configurations[0].ram.id+1,
     gpu_idx, configurations[0].ssd.id+1, hdd_idx, power_idx, configurations[0].casePC.id+1]
     prices = [configurations[0].cpu.price, cooler_price, configurations[0].motherboard.price, configurations[0].ram.price,
@@ -590,20 +628,9 @@ def main():
         if price != None:
             total_price += price
     print(f"total_price = {total_price}")
-    print(5)
-    all_lists = [cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB]
-    for i,none_list in enumerate(none_lists):
-        all_lists[i].insert(0, none_lists[i])
 
 
 if __name__ == '__main__':
-    main()
+    data_fromDB, none_details = prepare_data()
     app.run()
-
-
-
-
-
-
-
 
