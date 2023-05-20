@@ -25,7 +25,7 @@ budget = 0
 just_one = 0
 total_price = 0
 data_fromDB, none_details = [], []
-indeces, prices, keywords = [], [], []
+indeces, selectedItems, prices, keywords = [], [], [], []
 
 
 @app.route('/indeces')
@@ -98,20 +98,34 @@ def get_casePCs():
         details_list.append(detail_dict)
     return jsonify(details_list)
 
+@app.route('/selectedItems', methods=['POST'])
+def getSelectedItems():
+    global selectedItems
+    selectedItems = request.get_json()  # Получаем данные postData из POST-запроса
+    response_data = {'message': 'Success'}  # Пример данных для ответа
+    return jsonify(response_data), 200  # Отправляем ответ в формате JSON
 @app.route('/sortByPrice', methods=['GET'])
 def sort_by_price():
     global indeces
     old_data = data_fromDB
-    sorted_data, new_indeces = [], []
-    for sublist in data_fromDB:
+    sorted_data, new_indeces, sorted_data_response = [], [], []
+    for sublist in data_fromDB: # Сортируем сами списки
         sorted_type = sorted(sublist, key=lambda x: x.price)
         sorted_data.append(sorted_type)
-    for i, idx in enumerate(indeces):
-        element = old_data[i][idx]
-        element_index = sorted_data[i].index(element)
+    for i, idx in enumerate(indeces): # Сортируем индексы от рекомендованной конфгурации
+        element_idxs = old_data[i][idx]
+        element_index = sorted_data[i].index(element_idxs)
         new_indeces.append(element_index)
-    sorted_data_response = []
-    for i,details in enumerate(sorted_data):
+    new_selectedItemsIndeces = []
+    for i, si in enumerate(selectedItems): # Сортируем индексы от рекомендованной конфгурации
+        for idx, item in enumerate(sorted_data[i]):
+            if item.name == si["name"]:
+                index = idx
+                break
+        new_selectedItemsIndeces.append(index)
+
+
+    for i,details in enumerate(sorted_data): # Отсортированные списки представляем в пересылаемом виде
         sorted_data_response.append([])
         for detail in details:
             detail_dict = {key: value for key, value in vars(detail).items()}
@@ -126,7 +140,9 @@ def sort_by_price():
         "ssds": sorted_data_response[5],
         "hdds": sorted_data_response[6],
         "powers": sorted_data_response[7],
-        "casePCs": sorted_data_response[8]
+        "casePCs": sorted_data_response[8],
+        "selectedItems": new_selectedItemsIndeces,
+        "numbers": new_indeces
     }
     return jsonify(response_data)
 
@@ -526,12 +542,12 @@ def main(budget, data_fromDB, none_details):
     cpu, cooler, motherboard, ram, gpu, ssd, hdd, power, casePC = None, None, None, None, None, None, None, None, None
     # CPU
     cpus = cpu_logic(budget, cpus_fromDB[1:])
-    if budget > 1400:
+    if budget >= 1400:
         cpu = create_conf(details=cpus, idealPrice=budget*0.20)
     elif budget < 1300: # если конфигурация слишком дешевая
-        cpu = create_conf(details=cpus, idealPrice=budget * (0.20 + 0.34 * 0.6 + 0.03 - 0.013))  # если процессор и со встроенной графикой, и со встроенным кулером
+        cpu = create_conf(details=cpus, idealPrice=budget * (0.20 + 0.26 + 0.03))  # если процессор и со встроенной графикой, и со встроенным кулером
     elif budget < 1400:  # если конфигурация дешевая
-        cpu = create_conf(details=cpus, idealPrice=budget*(0.20+0.34*0.60-0.013)) # если процессор со встроенной графикой
+        cpu = create_conf(details=cpus, idealPrice=budget*(0.20+0.26)) # если процессор со встроенной графикой
     if cpu is None: # Если ничего не подошло по цене
         print("При заданном бюджете невозможно составить выбранную конфигурацию CPU")
 
@@ -546,7 +562,7 @@ def main(budget, data_fromDB, none_details):
     # и другую половину тратим на MB
     motherboards = motherboard_logic(budget, motherboards_fromDB[1:], cpu)
     if budget < 1400:
-        motherboard = create_conf(details=motherboards, idealPrice=budget * (0.12 + 0.33 * 0.4))
+        motherboard = create_conf(details=motherboards, idealPrice=budget * (0.12 + 0.26))
     else:
         motherboard = create_conf(details=motherboards, idealPrice=budget * 0.12)
 
@@ -554,7 +570,7 @@ def main(budget, data_fromDB, none_details):
     # RAM
     rams = ram_logic(budget, motherboard, rams_fromDB[1:])
     if budget < 1400:
-        ram = create_conf(details=rams, idealPrice=budget * (0.12 * 1.5))
+        ram = create_conf(details=rams, idealPrice=budget * (0.12))
     else:
         ram = create_conf(details=rams, idealPrice=budget * 0.12)
 
@@ -564,9 +580,9 @@ def main(budget, data_fromDB, none_details):
     gpus = gpu_logic(budget, gpus_fromDB[1:], cpu, direction)
     if len(gpus) > 0:
         if cpu.cooling_included == "Yes" and cooler is None: # если проц со встроенным кулером и отдельный кулер решили не брать
-            gpu = create_conf(details=gpus, idealPrice=budget * (0.33 + 0.03), maybeDontNeedDetail=True) # то часть бюджета для кулера тратим на видеокарту
+            gpu = create_conf(details=gpus, idealPrice=budget * (0.26 + 0.03), maybeDontNeedDetail=True) # то часть бюджета для кулера тратим на видеокарту
         else:
-            gpu = create_conf(details=gpus, idealPrice=budget * 0.33, maybeDontNeedDetail=True)
+            gpu = create_conf(details=gpus, idealPrice=budget * 0.26, maybeDontNeedDetail=True)
 
     # SSD/HDD
     ssds = ssd_logic(budget, ssds_fromDB[1:], motherboard, itSeconfSSD=False)
@@ -575,7 +591,7 @@ def main(budget, data_fromDB, none_details):
         ssd = create_conf(details=ssds, idealPrice=budget * 0.07)
         hdd = create_conf(details=hdds, idealPrice=budget * 0.06, maybeDontNeedDetail=True)
     else: # если комп дешевый, то можно и только SSD
-        ssd = create_conf(details=ssds, idealPrice=budget * (0.06 + 0.07) * 1.1)
+        ssd = create_conf(details=ssds, idealPrice=budget * (0.06 + 0.07))
 
     # power
     powers = power_logic(budget, powers_fromDB[1:], gpu)
@@ -585,10 +601,10 @@ def main(budget, data_fromDB, none_details):
 
     # case
     cases = case_logic(budget, cases_fromDB[1:], motherboard, gpu, power)
-    if budget >= 1400:  # если комп не совсем дешевый, то выбираем корпус без блока питания в комплекте
+    if budget >= 1400 and power is not None:  # если комп не совсем дешевый, то выбираем отдельный блок питания
         casePC = create_conf(details=cases, idealPrice=budget * 0.07)
     else:
-        casePC = create_conf(details=cases, idealPrice=budget * (0.07 + 0.07)) # иначе с БП (часть бюджета для БП отдаем на корпус)
+        casePC = create_conf(details=cases, idealPrice=budget * (0.07 + 0.07)) # иначе выбираем корпус со встроенным БП (часть бюджета для БП отдаем на корпус)
 
     configurations.append(Configuration(cpu=cpu, cooler=cooler, motherboard=motherboard, ram=ram, gpu=gpu,
                   ssd=ssd, hdd=hdd, power=power, casePC=casePC))
