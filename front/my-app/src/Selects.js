@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Selects() {
+function Selects({ onSelectedItemsChange }) {
     const [cpus, setCpus] = useState([]);
     const [coolers, setCoolers] = useState([]);
     const [motherboards, setMotherboards] = useState([]);
@@ -85,13 +85,21 @@ function Selects() {
 
 
 
-    const handleComponentChange = (event, components, setOutput, setSelectedComponent, setPrice, i) => {
+    const handleComponentChange = (event, components, setOutput, setSelectedComponent, setPrice, i, selectedItems, onSelectedItemsChange, setSelectedItems) => {
         setOutput(0);
         const selectedComponent = components.find((component) => component.name === event.target.value);
         setSelectedComponent(selectedComponent);
         setPrice(selectedComponent.price);
-        setSelectedItems(prevSelectedItems => prevSelectedItems.map((item, index) => (index === i ? selectedComponent : item)));
+
+        const updatedSelectedItems = [...selectedItems]; // Создаем копию массива selectedItems
+        updatedSelectedItems[i] = selectedComponent; // Проинициализируем элемент под номером i значением selectedComponent
+        const selectedItemsProps = updatedSelectedItems.map((item) => item); // Создаем копию обновленного массива selectedItems
+        onSelectedItemsChange(selectedItemsProps);
+
+        setSelectedItems(selectedItemsProps);
     };
+
+
     
 
     const [output0, setOutput0] = useState(0);
@@ -151,6 +159,7 @@ function Selects() {
                 selectedPower,
                 selectedCasePC
             ]);
+           
         }
     };
 
@@ -273,7 +282,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="cpu" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Процессор</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, cpus, setOutput0, setSelectedCpu, setCpuPrice, 0)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, cpus, setOutput0, setSelectedCpu, setCpuPrice, 0, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {cpus.map((cpu, index) => (
                                     <option value={cpu.name} selected={cpu.name === output0?.name}>
                                         {cpu.name}
@@ -290,7 +299,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="coolers" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Кулер</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, coolers, setOutput1, setSelectedCooler, setCoolerPrice, 1)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, coolers, setOutput1, setSelectedCooler, setCoolerPrice, 1, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {coolers.map((cooler, index) => (
                                     <option value={cooler.name} selected={cooler.name === output1?.name}>
                                         {cooler.name}
@@ -307,7 +316,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="motherboards" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Мат. плата</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, motherboards, setOutput2, setSelectedMotherboard, setMotherboardPrice, 2)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, motherboards, setOutput2, setSelectedMotherboard, setMotherboardPrice, 2, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {motherboards.map((motherboard, index) => (
                                     <option value={motherboard.name} selected={motherboard.name === output2?.name}>
                                         {motherboard.name}
@@ -324,7 +333,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="rams" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>RAM</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, rams, setOutput3, setSelectedRam, setRamPrice, 3)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px", maxWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, rams, setOutput3, setSelectedRam, setRamPrice, 3, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px", maxWidth: "800px" }}>
                                 {rams.map((ram, index) => (
                                     <option value={ram.name} selected={ram.name === output3?.name}>
                                         {ram.name}
@@ -341,7 +350,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="gpus" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Видеокарта</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, gpus, setOutput4, setSelectedGpu, setGpuPrice, 4)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, gpus, setOutput4, setSelectedGpu, setGpuPrice, 4, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {gpus.map((gpu, index) => (
                                     <option value={gpu.name} selected={gpu.name === output4?.name}>
                                         {gpu.name}
@@ -357,7 +366,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="ssds" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>SSD</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, ssds, setOutput5, setSelectedSsd, setSsdPrice, 5)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, ssds, setOutput5, setSelectedSsd, setSsdPrice, 5, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {ssds.map((ssd, index) => (
                                     <option value={ssd.name} selected={ssd.name === output5?.name}>
                                         {ssd.name}
@@ -373,7 +382,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="hdds" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>HDD</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, hdds, setOutput6, setSelectedHdd, setHddPrice, 6)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, hdds, setOutput6, setSelectedHdd, setHddPrice, 6, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {hdds.map((hdd, index) => (
                                     <option value={hdd.name} selected={hdd.name === output6?.name}>
                                         {hdd.name}
@@ -389,7 +398,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="powers" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Блок питания</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, powers, setOutput7, setSelectedPower, setPowerPrice, 7)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
+                            <select onChange={(e) => handleComponentChange(e, powers, setOutput7, setSelectedPower, setPowerPrice, 7, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {powers.map((power, index) => (
                                     <option value={power.name} selected={power.name === output7?.name}>
                                         {power.name}
@@ -405,7 +414,7 @@ function Selects() {
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="casePCs" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Корпус</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <select onChange={(e) => handleComponentChange(e, casePCs, setOutput8, setSelectedCasePC, setCasePrice, 8)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px", marginRight: "50px" }}>
+                            <select onChange={(e) => handleComponentChange(e, casePCs, setOutput8, setSelectedCasePC, setCasePrice, 8, selectedItems, onSelectedItemsChange, setSelectedItems)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px", marginRight: "50px" }}>
                                 {casePCs.map((casePC, index) => (
                                     <option value={casePC.name} selected={casePC.name === output8?.name}>
                                         {casePC.name}
