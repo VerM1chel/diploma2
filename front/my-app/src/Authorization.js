@@ -118,16 +118,9 @@ function Authorization(selectedItems) {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSuccessful, setIsSuccessful] = useState(false);
     const [loggedInUser, setLoggedInUser] = useState("");
-    const [showConfigurationsWindow, setShowConfigurationsWindow] = useState(false);
     const [isShareClicked, setIsShareClicked] = useState(false);
-    const [showUsersConfigurations, setShowUsersConfigurations] = useState(false); // New state variable
-
-    function handleShareClick(event) {
-        setIsShareClicked(true);
-        if (!isSuccessful) {
-            setIsLoginModalOpen(true);
-        }
-    }
+    const [showUsersConfigurations, setShowUsersConfigurations] = useState(false);
+    const [configurationsButtonClicked, setConfigurationsButtonClicked] = useState(0); // New state variable
 
     function handleLoginModalClose(event) {
         setIsLoginModalOpen(false);
@@ -136,6 +129,24 @@ function Authorization(selectedItems) {
     function handleSuccessfulLogin(success, username) {
         setIsSuccessful(success);
         setLoggedInUser(username);
+    }
+
+    function handleShareClick(event) {
+        setIsShareClicked(true);
+        if (!isSuccessful) {
+            setIsLoginModalOpen(true);
+        }
+    }
+
+    function handleNewButtonClick() {
+        if (!isSuccessful) {
+            setIsLoginModalOpen(true);
+            setShowUsersConfigurations(true);
+            setConfigurationsButtonClicked(prevCount => prevCount + 1);
+        } else {
+            setShowUsersConfigurations(true);
+            setConfigurationsButtonClicked(prevCount => prevCount + 1);
+        }
     }
 
     useEffect(() => {
@@ -175,13 +186,6 @@ function Authorization(selectedItems) {
             });
     }
 
-
-    function handleNewButtonClick() {
-        if (!isSuccessful)
-            setIsLoginModalOpen(true);
-        setShowUsersConfigurations(prevState => !prevState); // Toggle the state value
-    }
-
     return (
         <div>
             <button
@@ -198,8 +202,8 @@ function Authorization(selectedItems) {
             >
                 Посмотреть чужие конфигурации
             </button>
+            {isSuccessful && showUsersConfigurations && <UsersConfigurations key={configurationsButtonClicked} />}
 
-            {showUsersConfigurations && <UsersConfigurations />} 
         </div>
     );
 }

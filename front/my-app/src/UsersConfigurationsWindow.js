@@ -66,10 +66,10 @@ function UsersConfigurations() {
             const response = await axios.get('/getConfigurations');
             const data = response.data;
             setConfigurations(data);
-            setIsModalOpen(true);
         } catch (error) {
             console.log('An error occurred while fetching configurations:', error);
         }
+        setIsModalOpen(true);
     };
 
     const closeModal = () => {
@@ -78,10 +78,12 @@ function UsersConfigurations() {
 
     return (
         <div>
-            <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
-                <ConfigurationList configurations={configurations} />
-                <button onClick={closeModal}>Close</button>
-            </Modal>
+            {isModalOpen && (
+                <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
+                    <ConfigurationList configurations={configurations} />
+                    <button onClick={closeModal}>Close</button>
+                </Modal>
+            )}
         </div>
     );
 }
