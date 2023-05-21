@@ -104,33 +104,44 @@ def getSelectedItems():
     selectedItems = request.get_json()  # Получаем данные postData из POST-запроса
     response_data = {'message': 'Success'}  # Пример данных для ответа
     return jsonify(response_data), 200  # Отправляем ответ в формате JSON
-@app.route('/sortByPrice', methods=['GET'])
-def sort_by_price():
-    global indeces
+@app.route('/sortBy/<sortType>', methods=['GET'])
+def sort_by_price(sortType):
+    global indeces, data_fromDB
     old_data = data_fromDB
-    sorted_data, new_indeces, sorted_data_response = [], [], []
+    sorted_data, new_indeces, sorted_data_response, new_selectedItemsIndeces, new_selectedItems_response = [], [], [], [], []
     for sublist in data_fromDB: # Сортируем сами списки
-        sorted_type = sorted(sublist, key=lambda x: x.price)
+        if sortType == 'price':
+            sorted_type = sorted(sublist, key=lambda x: x.price)
+        elif sortType == 'name':
+            sorted_type = sorted(sublist, key=lambda x: x.name)
+        elif sortType == 'id':
+            sorted_type = sorted(sublist, key=lambda x: x.id)
         sorted_data.append(sorted_type)
     for i, idx in enumerate(indeces): # Сортируем индексы от рекомендованной конфгурации
         element_idxs = old_data[i][idx]
         element_index = sorted_data[i].index(element_idxs)
         new_indeces.append(element_index)
-    new_selectedItemsIndeces = []
-    for i, si in enumerate(selectedItems): # Сортируем индексы от рекомендованной конфгурации
+
+    for i, si in enumerate(selectedItems): # Выбираем элементы, которые были текущими до сортировки
         for idx, item in enumerate(sorted_data[i]):
             if item.name == si["name"]:
                 index = idx
                 break
         new_selectedItemsIndeces.append(index)
-
-
+    new_selectedItems = []
+    for i,newItemsIdx in enumerate(new_selectedItemsIndeces):
+        new_selectedItems.append(sorted_data[i][newItemsIdx])
     for i,details in enumerate(sorted_data): # Отсортированные списки представляем в пересылаемом виде
         sorted_data_response.append([])
         for detail in details:
             detail_dict = {key: value for key, value in vars(detail).items()}
             sorted_data_response[i].append(detail_dict)
+
+    for nsi in new_selectedItems: # Также создаем список из текущих элементов для передачи
+        detail_dict = {key: value for key, value in vars(nsi).items()}
+        new_selectedItems_response.append(detail_dict)
     indeces = new_indeces
+    data_fromDB = sorted_data
     response_data = {
         "cpus": sorted_data_response[0],
         "coolers": sorted_data_response[1],
@@ -141,7 +152,7 @@ def sort_by_price():
         "hdds": sorted_data_response[6],
         "powers": sorted_data_response[7],
         "casePCs": sorted_data_response[8],
-        "selectedItems": new_selectedItemsIndeces,
+        "selectedItems": new_selectedItems_response,
         "numbers": new_indeces
     }
     return jsonify(response_data)

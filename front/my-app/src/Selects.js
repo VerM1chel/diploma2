@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Selects({ onSelectedItemsChange }) {
+function Selects() {
     const [cpus, setCpus] = useState([]);
     const [coolers, setCoolers] = useState([]);
     const [motherboards, setMotherboards] = useState([]);
@@ -90,7 +90,7 @@ function Selects({ onSelectedItemsChange }) {
         const selectedComponent = components.find((component) => component.name === event.target.value);
         setSelectedComponent(selectedComponent);
         setPrice(selectedComponent.price);
-        selectedItems[i] = selectedComponent;
+        setSelectedItems(prevSelectedItems => prevSelectedItems.map((item, index) => (index === i ? selectedComponent : item)));
     };
     
 
@@ -168,7 +168,40 @@ function Selects({ onSelectedItemsChange }) {
         axios
             .post('/selectedItems', selectedItems)
             .then(() => {
-                return axios.get('/sortByPrice');
+                return axios.get('/sortBy/price');
+            })
+            .then(response => {
+                setCpus(response.data.cpus);
+                setCoolers(response.data.coolers);
+                setMotherboards(response.data.motherboards);
+                setRams(response.data.rams);
+                setGpus(response.data.gpus);
+                setSsds(response.data.ssds);
+                setHdds(response.data.hdds);
+                setPowers(response.data.powers);
+                setCasePCs(response.data.casePCs);
+                setSelectedItems(response.data.selectedItems)
+                setNumbers(response.data.numbers)
+            })
+            .then(() => {                
+                setOutput0(selectedItems[0]);
+                setOutput1(selectedItems[1]);
+                setOutput2(selectedItems[2]);
+                setOutput3(selectedItems[3]);
+                setOutput4(selectedItems[4]);
+                setOutput5(selectedItems[5]);
+                setOutput6(selectedItems[6]);
+                setOutput7(selectedItems[7]);
+                setOutput8(selectedItems[8]);
+            })
+            .catch(error => console.log(error));
+    };
+
+    const handleSortByName = () => {
+        axios
+            .post('/selectedItems', selectedItems)
+            .then(() => {
+                return axios.get('/sortBy/name');
             })
             .then(response => {
                 setCpus(response.data.cpus);
@@ -184,7 +217,6 @@ function Selects({ onSelectedItemsChange }) {
                 setNumbers(response.data.numbers)
             })
             .then(() => {
-                
                 setOutput0(selectedItems[0]);
                 setOutput1(selectedItems[1]);
                 setOutput2(selectedItems[2]);
@@ -197,24 +229,12 @@ function Selects({ onSelectedItemsChange }) {
             })
             .catch(error => console.log(error));
     };
-
-    const handleSortByName = () => {
-        axios.get('/sortByName')
-            .then(response => {
-                setCpus(response.data.cpus);
-                setCoolers(response.data.coolers);
-                setMotherboards(response.data.motherboards);
-                setRams(response.data.rams);
-                setGpus(response.data.gpus);
-                setSsds(response.data.ssds);
-                setHdds(response.data.hdds);
-                setPowers(response.data.powers);
-                setCasePCs(response.data.casePCs);
-            })
-            .catch(error => console.log(error));
-    };
     const handleSortById = () => {
-        axios.get('/sortById')
+        axios
+            .post('/selectedItems', selectedItems)
+            .then(() => {
+                return axios.get('/sortBy/id');
+            })
             .then(response => {
                 setCpus(response.data.cpus);
                 setCoolers(response.data.coolers);
@@ -225,6 +245,19 @@ function Selects({ onSelectedItemsChange }) {
                 setHdds(response.data.hdds);
                 setPowers(response.data.powers);
                 setCasePCs(response.data.casePCs);
+                setSelectedItems(response.data.selectedItems)
+                setNumbers(response.data.numbers)
+            })
+            .then(() => {
+                setOutput0(selectedItems[0]);
+                setOutput1(selectedItems[1]);
+                setOutput2(selectedItems[2]);
+                setOutput3(selectedItems[3]);
+                setOutput4(selectedItems[4]);
+                setOutput5(selectedItems[5]);
+                setOutput6(selectedItems[6]);
+                setOutput7(selectedItems[7]);
+                setOutput8(selectedItems[8]);
             })
             .catch(error => console.log(error));
     };
@@ -259,7 +292,7 @@ function Selects({ onSelectedItemsChange }) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <select onChange={(e) => handleComponentChange(e, coolers, setOutput1, setSelectedCooler, setCoolerPrice, 1)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {coolers.map((cooler, index) => (
-                                    <option value={cooler.name} selected={index === output1?.id + 1}>
+                                    <option value={cooler.name} selected={cooler.name === output1?.name}>
                                         {cooler.name}
                                     </option>
                                 ))}
@@ -276,7 +309,7 @@ function Selects({ onSelectedItemsChange }) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <select onChange={(e) => handleComponentChange(e, motherboards, setOutput2, setSelectedMotherboard, setMotherboardPrice, 2)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {motherboards.map((motherboard, index) => (
-                                    <option value={motherboard.name} selected={index === output2?.id + 1}>
+                                    <option value={motherboard.name} selected={motherboard.name === output2?.name}>
                                         {motherboard.name}
                                     </option>
                                 ))}
@@ -293,7 +326,7 @@ function Selects({ onSelectedItemsChange }) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <select onChange={(e) => handleComponentChange(e, rams, setOutput3, setSelectedRam, setRamPrice, 3)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px", maxWidth: "800px" }}>
                                 {rams.map((ram, index) => (
-                                    <option value={ram.name} selected={index === output3?.id + 1}>
+                                    <option value={ram.name} selected={ram.name === output3?.name}>
                                         {ram.name}
                                     </option>
                                 ))}
@@ -310,7 +343,7 @@ function Selects({ onSelectedItemsChange }) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <select onChange={(e) => handleComponentChange(e, gpus, setOutput4, setSelectedGpu, setGpuPrice, 4)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {gpus.map((gpu, index) => (
-                                    <option value={gpu.name} selected={index === output4?.id + 1}>
+                                    <option value={gpu.name} selected={gpu.name === output4?.name}>
                                         {gpu.name}
                                     </option>
                                 ))}
@@ -326,7 +359,7 @@ function Selects({ onSelectedItemsChange }) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <select onChange={(e) => handleComponentChange(e, ssds, setOutput5, setSelectedSsd, setSsdPrice, 5)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {ssds.map((ssd, index) => (
-                                    <option value={ssd.name} selected={index === output5?.id + 1}>
+                                    <option value={ssd.name} selected={ssd.name === output5?.name}>
                                         {ssd.name}
                                     </option>
                                 ))}
@@ -342,7 +375,7 @@ function Selects({ onSelectedItemsChange }) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <select onChange={(e) => handleComponentChange(e, hdds, setOutput6, setSelectedHdd, setHddPrice, 6)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {hdds.map((hdd, index) => (
-                                    <option value={hdd.name} selected={index === output6?.id + 1}>
+                                    <option value={hdd.name} selected={hdd.name === output6?.name}>
                                         {hdd.name}
                                     </option>
                                 ))}
@@ -358,7 +391,7 @@ function Selects({ onSelectedItemsChange }) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <select onChange={(e) => handleComponentChange(e, powers, setOutput7, setSelectedPower, setPowerPrice, 7)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px" }}>
                                 {powers.map((power, index) => (
-                                    <option value={power.name} selected={index === output7?.id + 1}>
+                                    <option value={power.name} selected={power.name === output7?.name}>
                                         {power.name}
                                     </option>
                                 ))}
@@ -374,7 +407,7 @@ function Selects({ onSelectedItemsChange }) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <select onChange={(e) => handleComponentChange(e, casePCs, setOutput8, setSelectedCasePC, setCasePrice, 8)} style={{ fontSize: "20px", width: "33.33%", minWidth: "800px", maxWidth: "800px", marginRight: "50px" }}>
                                 {casePCs.map((casePC, index) => (
-                                    <option value={casePC.name} selected={index === output8?.id + 1}>
+                                    <option value={casePC.name} selected={casePC.name === output8?.name}>
                                         {casePC.name}
                                     </option>
                                 ))}
