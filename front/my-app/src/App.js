@@ -1,5 +1,8 @@
 ﻿import React, { useState } from 'react';
 import Selects from './Selects.js';
+import Directions from './Directions.js'
+import SaveAsText from './SaveAsText.js'
+import Keywords from './Keywords.js'
 import Authorization from './Authorization.js';
 import BudgetInput from './BudgetInput.js';
 
@@ -17,11 +20,20 @@ function App() {
 
     return (
         <div>
-            <Selects onSelectedItemsChange={handleSelectedItemsChange} />
+            <div style={{ display: 'flex' }}>
+                <Selects onSelectedItemsChange={handleSelectedItemsChange} />
+                <div style={{marginLeft: '-115px'}}>
+                    <Directions />
+                    <SaveAsText />
+                    <BudgetInput onBudgetChange={handleBudgetChange} />
+                </div>
+            </div>
+            <Keywords />
+           
             <Authorization selectedItems={selectedItemsIds} />
-            <BudgetInput onBudgetChange={handleBudgetChange} />
+            
         </div>
     );
-}
+} 
 
 export default App;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+п»їimport React, { useState } from 'react';
 import axios from 'axios';
 
 function Keywords() {
@@ -7,39 +7,40 @@ function Keywords() {
     function handleSubmit(event) {
         event.preventDefault();
 
-        // Отправка ключевых слов на сервер
+        // РћС‚РїСЂР°РІРєР° РєР»СЋС‡РµРІС‹С… СЃР»РѕРІ РЅР° СЃРµСЂРІРµСЂ
         axios.post('/keywords', { keywords })
             .then(response => {
-                // Обработка успешного ответа от сервера
+                // РћР±СЂР°Р±РѕС‚РєР° СѓСЃРїРµС€РЅРѕРіРѕ РѕС‚РІРµС‚Р° РѕС‚ СЃРµСЂРІРµСЂР°
                 console.log('Keywords submitted:', response.data);
-                // Дополнительные действия после отправки ключевых слов
+                // Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РґРµР№СЃС‚РІРёСЏ РїРѕСЃР»Рµ РѕС‚РїСЂР°РІРєРё РєР»СЋС‡РµРІС‹С… СЃР»РѕРІ
             })
             .catch(error => {
-                // Обработка ошибки
+                // РћР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РєРё
                 console.error('Error submitting keywords:', error);
             });
 
-        // Очистка поля ввода после отправки
+        // РћС‡РёСЃС‚РєР° РїРѕР»СЏ РІРІРѕРґР° РїРѕСЃР»Рµ РѕС‚РїСЂР°РІРєРё
         setKeywords('');
     }
 
     function handleChange(event) {
-        // Обновление состояния ключевых слов при изменении поля ввода
+        // РћР±РЅРѕРІР»РµРЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ РєР»СЋС‡РµРІС‹С… СЃР»РѕРІ РїСЂРё РёР·РјРµРЅРµРЅРёРё РїРѕР»СЏ РІРІРѕРґР°
         setKeywords(event.target.value);
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="keywords" style={{ fontSize: "24px", marginLeft: "25px" }}>Ключевые слова:</label>
+                <label htmlFor="keywords" style={{ fontSize: "24px", marginLeft: "25px" }}>РљР»СЋС‡РµРІС‹Рµ СЃР»РѕРІР°:</label>
                 <input
-                    style={{ marginLeft: "10px", width: "75%", marginTop: "15px" }}
+                    style={{ fontSize: "20px", marginLeft: "10px", width: "70%", marginTop: "15px", marginRight: "10px" }}
                     type="text"
                     id="keywords"
                     value={keywords}
                     onChange={handleChange}
+                    autocomplete="off"
                 />
-                <button type="submit">Отправить</button>
+                <button style={{ fontSize: "20px" }} type="submit">РћС‚РїСЂР°РІРёС‚СЊ</button>
             </form>
         </div>
     );

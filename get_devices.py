@@ -1,10 +1,5 @@
-import inspect
-
-import constants
-import time
-import re
-import random
-
+from sqlConfigAndQueries import config
+from sqlConfigAndQueries import queries
 from classes.details.cpu import Cpu
 from classes.details.cooler import Cooler
 from classes.details.motherboard import Motherboard
@@ -12,15 +7,23 @@ from classes.details.ram import Ram
 from classes.details.gpu import Gpu
 from classes.details.ssd import Ssd
 from classes.details.hdd import Hdd
-from classes.details.case_PC import Case
 from classes.details.power import Power
+from classes.details.case_PC import Case
+
+import inspect
+import constants
+import time
+import re
+import random
 
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 import mysql.connector
+from mysql.connector import Error
 
 def get_html(driver, main_devices_link, scrolls_number):
     driver.get(main_devices_link)
@@ -60,6 +63,19 @@ def getClassNamesAndValues(c):
             class_attributes_values = list(i[1].values())
             return class_attributes_names, class_attributes_values
 
+def create_tables(connection):
+    cursor = connection.cursor()
+    table_queries = [queries.create_cpus_table, queries.create_coolers_table, queries.create_motherboards_table, queries.create_rams_table,
+        queries.create_gpus_table, queries.create_ssds_table, queries.create_hhds_table, queries.create_powers_table, queries.create_cases_table,
+                     queries.create_min_reqs_table, queries.create_recommended_reqs_table, queries.create_configuration_table, queries.create_users_table]
+    for query in table_queries:
+        try:
+            cursor.execute(query)
+            print("Query executed succesfully")
+        except Error as err:
+            print(f"The error {err} occured")
+            cursor.close()
+    cursor.close()
 
 def write_devices(connection, cursor, page, i, tables_names, devices):
     if page == 0:
@@ -81,6 +97,18 @@ def write_devices(connection, cursor, page, i, tables_names, devices):
 
 def main():
     connection, cursor = None, None
+    try:
+        connection = mysql.connector.connect(
+            host=config.host,
+            user=config.user,
+            passwd=config.password,
+            database=config.database
+        )
+        print('Succesfull connected')
+    except mysql.connector.Error as error:
+        print(f'An error {error} occured')
+
+    create_tables(connection)
     main_devices_links = [constants.all_cpus_link, constants.all_coolers_link, constants.all_motherboards_link, constants.all_motherboards_link, constants.all_rams_link, constants.all_gpus_link, constants.all_ssds_link, constants.all_hdds_link, constants.all_powers_link,constants.all_cases_link]
     cpus, coolers, motherboards, motherboards, rams, gpus, ssds, hdds, powers, cases = [], [], [], [], [], [], [], [], [], []
     devices = [cpus, coolers, motherboards, motherboards, rams, gpus, ssds, hdds, powers, cases]
@@ -88,11 +116,11 @@ def main():
     tables_names = ["cpus", "coolers", "motherboards", "rams", "gpus", "ssds", "hdds", "powers", "cases"]
     time.sleep(5)
     for i, main_devices_link in enumerate(main_devices_links): # Для каждого типа комплектующих
-        driver = webdriver.Chrome()
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         clear_cache_cookies(driver) # Чистим кеш и cookies
         driver.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": UserAgent().random}) # Используем случайный user agent, чтобы избежать попадания в черный список сайта
         print(driver.execute_script("return navigator.userAgent;"))
-        page = 15
+        page = 0
         condition = True
         while condition: # Пока можно переходить на следующую страницу каталога
             time.sleep(5)
@@ -101,8 +129,6 @@ def main():
             time.sleep(3)
             soup = BeautifulSoup(driver.page_source, features="html.parser")
             device_links = soup.find_all('a', class_="js-product-title-link", href=True) # Получаем все нужные ссылки
-            # if i == 0: # Если кулер, то пропускаем всякую ерунду для охлождения (лопасти, вентиляторы на корпус и т.д.) #*
-            #     device_links = [device_link for device_link in device_links if "Кулер для процессора" in device_link.text]
             device_links = [device_link.attrs['href'] for device_link in device_links]  # Приводим их в вид, позволяющий работать с этими ссылками
             if len(device_links) < 30:
                 if cursor != None:
@@ -183,10 +209,10 @@ def main():
             if connection is None:
                 try:
                     connection = mysql.connector.connect(
-                        host="localhost",
-                        user="root",
-                        passwd="password",
-                        database="diploma"
+                        host=config.host,
+                        user=config.user,
+                        passwd=config.password,
+                        database=config.database
                     )
                     print('Succesfull connected')
                     cursor = connection.cursor()

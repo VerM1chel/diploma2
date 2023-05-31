@@ -275,10 +275,10 @@ function Selects({ onSelectedItemsChange }) {
 // Далее в компоненте будет использована функция createConfClick в качестве обработчика события клика на кнопку
 
     return (
-        <div style={{ marginLeft: "30px" }}>
+        <div style={{ marginLeft: "4px" }}>
             <div>
                 <div>
-                    <h2 style={{ marginLeft: "250px" }}> Названия комплектующих</h2>
+                    <h2 style={{ marginLeft: "182px" }}> Названия комплектующих</h2>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: "10px" }}>
                         <label htmlFor="cpu" style={{ fontSize: "20px", marginLeft: '30px', marginRight: '5px', width: '150px' }}>Процессор</label>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -426,13 +426,21 @@ function Selects({ onSelectedItemsChange }) {
                             <input type="number" id="casePrice" value={casePrice} selected={output8?.id + 1} readOnly style={{ width: '35%', fontSize: "20px" }} />
                         </div>
                     </div>
+                    <div style={{ fontSize: "22px", marginLeft: '1030px' }}>
+                        Итоговая цена: {(Number(cpuPrice) + Number(coolerPrice) + Number(motherboardPrice) + Number(ramPrice) + Number(gpuPrice) + Number(ssdPrice) + Number(hddPrice) + Number(powerPrice) + Number(casePrice)).toFixed(2)}
+                    </div>
+
                 </div>
-                <button style={{ width: "15%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }} onClick={createConfClick}>
-                    СОСТАВИТЬ КОНФИГУРАЦИЮ
-                </button>
-                <button onClick={handleSortByPrice}>Отсортировать по ценам</button>
-                <button onClick={handleSortByName}>Отсортировать по названиям</button>
-                <button onClick={handleSortById}>Отсортировать по давности появления в каталоге</button>
+                <div style={{marginLeft: '15px'}}>
+                        <button style={{ width: "23%", height: "3em", margin: "5px", fontSize: "20px" }} onClick={handleSortByPrice}>Отсортировать по ценам</button>
+                        <button style={{ width: "23%", height: "3em", margin: "5px", fontSize: "20px" }} onClick={handleSortByName}>Отсортировать по названиям</button>
+                        <button style={{ width: "23%", height: "3em", margin: "5px", fontSize: "20px" }} onClick={handleSortById}>Отсортировать по ID</button>
+                    </div>
+                <div style={{ position: "fixed", bottom: "20px", left: 0, right: 0, textAlign: "center" }}>
+                    <button style={{ width: "15%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }} onClick={createConfClick}>
+                        СОСТАВИТЬ КОНФИГУРАЦИЮ
+                    </button>
+                </div>
             </div>
         </div>
     );

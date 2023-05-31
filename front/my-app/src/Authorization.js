@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import UsersConfigurations from './UsersConfigurationsWindow';
+import UsersConfigurations from './UsersConfigurations.js';
 import axios from 'axios';
 
 function LoginModal(props) {
@@ -188,20 +188,23 @@ function Authorization(selectedItems) {
 
     return (
         <div>
-            <button
-                style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px", marginTop: "150px" }}
-                onClick={handleShareClick}
-            >
-                {"Поделиться своей конфигурацией с другими пользователями"}
-            </button>
-            {isLoginModalOpen && <LoginModal onClose={handleLoginModalClose} onSuccessfulLogin={handleSuccessfulLogin} />}
+            <div style={{ position: 'relative', marginTop: '135px' }}>
+                <button
+                    style={{ position: 'absolute', left: '25px', bottom: '5px', width: '25%', height: '3em', fontSize: '20px' }}
+                    onClick={handleShareClick}
+                >
+                    Поделиться своей конфигурацией с другими пользователями
+                </button>
+                {isLoginModalOpen && <LoginModal onClose={handleLoginModalClose} onSuccessfulLogin={handleSuccessfulLogin} />}
 
-            <button
-                style={{ width: "25%", height: "3em", margin: "5px", fontSize: "20px" }}
-                onClick={handleNewButtonClick}
-            >
-                Посмотреть чужие конфигурации
-            </button>
+                <button
+                    style={{ position: 'absolute', right: '25px', bottom: '5px', width: '25%', height: '3em', fontSize: '20px' }}
+                    onClick={handleNewButtonClick}
+                >
+                    Посмотреть чужие конфигурации
+                </button>
+            </div>
+
             {isSuccessful && showUsersConfigurations && <UsersConfigurations key={configurationsButtonClicked} />}
 
         </div>

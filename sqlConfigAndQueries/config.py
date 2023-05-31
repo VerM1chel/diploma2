@@ -1,5 +1,4 @@
 host = 'localhost'
 user = 'root'
 password = 'password'
-db_name = 'diploma'
-auth_plugin = 'mysql_native_password'
+database = 'diploma'
