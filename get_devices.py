@@ -78,10 +78,10 @@ def create_tables(connection):
     cursor.close()
 
 def write_devices(connection, cursor, page, i, tables_names, devices):
-    if page == 0:
+    if page == 44:
         tmp_index = 0
     else:
-        tmp_index = (page * 30) - 1
+        tmp_index = ((page-44) * 30) - 1
     for device in devices[i][tmp_index:]:  # Каждый элемент класса мы записываем как строку
         classAttributesNames, classAttributesValues = getClassNamesAndValues(device)
         placeholders = ', '.join(['%s'] * len(classAttributesValues))
@@ -97,6 +97,7 @@ def write_devices(connection, cursor, page, i, tables_names, devices):
 
 def main():
     connection, cursor = None, None
+    price = None
     try:
         connection = mysql.connector.connect(
             host=config.host,
@@ -104,23 +105,24 @@ def main():
             passwd=config.password,
             database=config.database
         )
+        cursor = connection.cursor()
         print('Succesfull connected')
     except mysql.connector.Error as error:
         print(f'An error {error} occured')
 
     create_tables(connection)
-    main_devices_links = [constants.all_cpus_link, constants.all_coolers_link, constants.all_motherboards_link, constants.all_motherboards_link, constants.all_rams_link, constants.all_gpus_link, constants.all_ssds_link, constants.all_hdds_link, constants.all_powers_link,constants.all_cases_link]
-    cpus, coolers, motherboards, motherboards, rams, gpus, ssds, hdds, powers, cases = [], [], [], [], [], [], [], [], [], []
-    devices = [cpus, coolers, motherboards, motherboards, rams, gpus, ssds, hdds, powers, cases]
-    Device_classes = [Cpu, Cooler, Motherboard, Ram, Gpu, Ssd, Hdd, Power, Case]
-    tables_names = ["cpus", "coolers", "motherboards", "rams", "gpus", "ssds", "hdds", "powers", "cases"]
+    main_devices_links = [constants.all_gpus_link, constants.all_coolers_link, constants.all_motherboards_link, constants.all_motherboards_link, constants.all_rams_link, constants.all_gpus_link, constants.all_ssds_link, constants.all_hdds_link, constants.all_powers_link,constants.all_cases_link]
+    gpus, coolers, motherboards, motherboards, rams, gpus, ssds, hdds, powers, cases = [], [], [], [], [], [], [], [], [], []
+    devices = [gpus, coolers, motherboards, motherboards, rams, gpus, ssds, hdds, powers, cases]
+    Device_classes = [Gpu, Cooler, Motherboard, Ram, Gpu, Ssd, Hdd, Power, Case]
+    tables_names = ["gpus", "coolers", "motherboards", "rams", "gpus", "ssds", "hdds", "powers", "cases"]
     time.sleep(5)
     for i, main_devices_link in enumerate(main_devices_links): # Для каждого типа комплектующих
         driver = webdriver.Chrome(ChromeDriverManager().install())
         clear_cache_cookies(driver) # Чистим кеш и cookies
         driver.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": UserAgent().random}) # Используем случайный user agent, чтобы избежать попадания в черный список сайта
         print(driver.execute_script("return navigator.userAgent;"))
-        page = 0
+        page = 44
         condition = True
         while condition: # Пока можно переходить на следующую страницу каталога
             time.sleep(5)
@@ -148,10 +150,11 @@ def main():
                 try:
                     price = little_soup.find('a', class_="offers-description__link offers-description__link_nodecor js-description-price-link").text.strip()
                 except:
-                    if cursor != None:
-                        write_devices(connection, cursor, page, i, tables_names, devices)
-                    condition = False
-                    break
+                    price = None
+                    # if cursor != None:
+                    #     write_devices(connection, cursor, page, i, tables_names, devices)
+                    # condition = False
+                    # break
                 ks.append("Название")
                 ks.append("Цена")
                 vs.append(device_name)

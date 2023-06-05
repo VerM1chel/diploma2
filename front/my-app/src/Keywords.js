@@ -18,9 +18,6 @@ function Keywords() {
                 // Обработка ошибки
                 console.error('Error submitting keywords:', error);
             });
-
-        // Очистка поля ввода после отправки
-        setKeywords('');
     }
 
     function handleChange(event) {

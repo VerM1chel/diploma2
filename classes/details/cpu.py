@@ -34,7 +34,8 @@ class Cpu:
     def __init__(self, keys, values, descriptions, reading=False):
         if reading == False:
             self.name = values[keys.index("Название")]
-            self.price = float(values[keys.index("Цена")].split()[0].replace(',', '.'))
+            try: self.price = float(values[keys.index("Цена")].split()[0].replace(',', '.'))
+            except: self.price = None
             if "Дата выхода на рынок" in keys:
                 self.market_launch_date = int(values[keys.index("Дата выхода на рынок")].split()[0])
             else:
@@ -88,7 +89,8 @@ class Cpu:
             else:
                 self.memory_support = None
             if "Количество каналов памяти" in keys:
-                self.num_memory_channels = int(values[keys.index("Количество каналов памяти")])
+                try: self.num_memory_channels = int(values[keys.index("Количество каналов памяти")])
+                except: self.num_memory_channels = int(values[keys.index("Количество каналов памяти")][0])
             else:
                 self.num_memory_channels = None
             if "Макс. частота памяти без разгона" in keys:

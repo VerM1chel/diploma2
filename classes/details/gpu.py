@@ -49,7 +49,8 @@ class Gpu:
     def __init__(self, keys, values, descriptions, reading=False):
         if reading == False:
             self.name = values[keys.index("Название")]
-            self.price = float(values[keys.index("Цена")].split()[0].replace(',', '.'))
+            try: self.price = float(values[keys.index("Цена")].split()[0].replace(',', '.'))
+            except: self.price = None
             if "Дата выхода на рынок" in keys:
                 self.market_launch_date = int(values[keys.index("Дата выхода на рынок")].split()[0])
             else:
@@ -107,7 +108,8 @@ class Gpu:
             else:
                 self.num_rt_cores = None
             if "Видеопамять" in keys:
-                self.video_memory = int(values[keys.index("Видеопамять")].split()[0])
+                try: self.video_memory = int(values[keys.index("Видеопамять")].split()[0])
+                except: self.video_memory = int(values[keys.index("Видеопамять")].split()[0][0])
             else:
                 self.video_memory = None
             if "Тип видеопамяти" in keys:
@@ -151,7 +153,7 @@ class Gpu:
             else:
                 self.cooling_system_thickness = None
             if "Количество вентиляторов" in keys:
-                self.num_fans = int(values[keys.index("Количество вентиляторов")])
+                self.num_fans = int(''.join(filter(str.isdigit, values[keys.index("Количество вентиляторов")])))
             else:
                 self.num_fans = None
             if "Длина видеокарты" in keys:

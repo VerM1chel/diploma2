@@ -11,8 +11,11 @@ from classes.details.hdd import Hdd
 from classes.details.case_PC import Case
 from classes.details.power import Power
 from classes.configuration import Configuration
+from classes.reqs import Requirements
 
 from flask import Flask, jsonify, request
+import re
+import difflib
 import mysql.connector
 
 
@@ -20,8 +23,9 @@ app = Flask(__name__)
 budget = 0
 just_one = 0
 total_price = 0
-data_fromDB, none_details = [], []
+data_fromDB, legacyDevices, none_details = [], [], []
 indeces, selectedItems, prices, keywords = [], [], [], []
+min_reqs, rec_reqs = [], []
 
 
 @app.route('/indeces')
@@ -256,6 +260,7 @@ def get_configurations():
 def handle_keywords():
     global keywords
     keywords = request.json.get('keywords')
+    keywords = [kword.strip() for kword in keywords.lower().split(",")]
     return {'message': 'Keywords received successfully'}
 
 @app.route('/checkConfiguration', methods=['POST'])
@@ -284,11 +289,11 @@ def check_configuration():
 
 @app.route('/updateBudget', methods=['POST'])
 def update_budget():
-    global indeces, prices, total_price, just_one, data_fromDB, none_details
+    global indeces, prices, total_price, just_one, data_fromDB, legacyDevices, none_details
     try:
         data = request.get_json()
         budget = float(data.get('budget'))
-        main(budget, data_fromDB, none_details)  # Вызов функции main() с передачей значения budget
+        main(budget, data_fromDB, legacyDevices, none_details)  # Вызов функции main() с передачей значения budget
         return {'success': True}
     except Exception as e:
         return {'success': False, 'error': str(e)}
@@ -307,6 +312,160 @@ def getUserIdByUsername(cursor, username):
         user_id = result[0]
     print(f"user_id {user_id}")
     return user_id
+
+def longest_common_subsequence(str1, str2):
+    m = len(str1)
+    n = len(str2)
+    lcs = [[0] * (n + 1) for _ in range(m + 1)] # Создаем матрицу размером (m+1) x (n+1)
+    for i in range(1, m + 1): # Заполняем матрицу по правилам алгоритма LCS
+        for j in range(1, n + 1):
+            if str1[i - 1] == str2[j - 1]:
+                lcs[i][j] = lcs[i - 1][j - 1] + 1
+            else:
+                lcs[i][j] = max(lcs[i - 1][j], lcs[i][j - 1])
+    return lcs[m][n]
+
+def string_similarity(str1, str2):
+    lcs_length = longest_common_subsequence(str1, str2)
+    similarity = lcs_length / len(str2)
+    return similarity
+#
+# def check_common_element(list0, list1):
+#     ratio = 0.0
+#     for item0 in list0:
+#         for item1 in list1:
+#             ratio12 = string_similarity(item0, item1)
+#             ratio21 = string_similarity(item1, item0)
+#             if ratio12 > 0.8 or ratio21 > 0.8:
+#                 return True
+#     return False
+#
+# def check_element_in_str(list0, string):
+#     ratio = 0.0
+#     for item in list0:
+#         ratio12 = string_similarity(item, string)
+#         ratio21 = string_similarity(string, item)
+#         if ratio12 > 0.8 or ratio21 > 0.8:
+#             return True
+#     return False
+#
+# def find_reqs_by_keywords():
+#     global min_reqs, rec_reqs, keywords
+#     result_min, result_req = [], []
+#     keywords = [k.lower() for k in keywords]
+#     for mr in min_reqs:
+#         if mr.program_name == 'the witcher 2: assassins of kings enhanced edition':
+#             print(9)
+#         if check_element_in_str(keywords, mr.program_name) or check_common_element(keywords, mr.keywords):
+#             result_min.append(mr)
+#     for rr in rec_reqs:
+#         if mr.program_name == 'the witcher 2: assassins of kings enhanced edition':
+#             print(9)
+#         if check_element_in_str(keywords, rr.program_name) or check_common_element(keywords, rr.keywords):
+#             result_req.append(rr)
+#     return result_min, result_req
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def check_common_element(list0, list1):
+    coincidences = 0
+    for item0 in list0:
+        for item1 in list1:
+            if item0 in item1:
+                coincidences += 1
+    return coincidences
+
+def check_element_in_str(list0, string):
+    coincidences = 0
+    for item0 in list0:
+        if item0 in string:
+            coincidences += 1
+    return coincidences
+
+def find_reqs_by_keywords():
+    global min_reqs, rec_reqs, keywords
+    result_min, result_rec = [], []
+    last_max_sum_min, last_max_sum_rec = 0, 0
+    for mr in min_reqs:
+        coincidences_by_name = check_element_in_str(keywords, mr.program_name)
+        coincidences_by_keywords = check_common_element(keywords, mr.keywords)
+        if coincidences_by_name or coincidences_by_keywords:
+            if coincidences_by_name + coincidences_by_keywords > last_max_sum_min:
+                result_min = mr
+                last_max_sum_min = coincidences_by_name + coincidences_by_keywords
+    for rr in rec_reqs:
+        coincidences_by_name = check_element_in_str(keywords, rr.program_name)
+        coincidences_by_keywords = check_common_element(keywords, rr.keywords)
+        if coincidences_by_name or coincidences_by_keywords:
+            if coincidences_by_name + coincidences_by_keywords > last_max_sum_rec:
+                result_rec = rr
+            last_max_sum_rec = coincidences_by_name + coincidences_by_keywords
+    return result_min, result_rec
+
+def get_specified_cpu(cpus, suitable_cpu_name_min, suitable_cpu_name_rec):
+    delimiters = [' or ', ' или ']
+    for delimiter in delimiters:
+        suitable_cpu_name_min = suitable_cpu_name_min.replace(delimiter, '/')
+        suitable_cpu_name_rec = suitable_cpu_name_rec.replace(delimiter, '/')
+    suitable_cpu_min = [item.strip().lower() for item in suitable_cpu_name_min.split('/')]
+    suitable_cpu_rec = [item.strip().lower() for item in suitable_cpu_name_rec.split('/')]
+    for cpu in cpus:
+        cpu.name = cpu.name.lower()
+        if "процессор " in cpu.name:
+            cpu.name = cpu.name.replace("процессор ", "")
+        for scr in suitable_cpu_rec:
+            if cpu.name in scr:
+                return cpu
+        for scm in suitable_cpu_min:
+            if cpu.name in scm:
+                return cpu
+    return None
+
+def get_same_cpu(requiredLegacyCpu, cpus): # Функция для нахождения процессора, аналогичного процессору, указанному в требоваинях
+    min_difference = float('inf')
+    selected_cpu = None
+    suitableCpus = []
+    for cpu in cpus:
+        if (cpu.num_cores >= requiredLegacyCpu.num_cores and
+                cpu.max_threads >= requiredLegacyCpu.max_threads and
+                cpu.base_clock >= requiredLegacyCpu.base_clock and
+                cpu.l2_cache >= requiredLegacyCpu.l2_cache and
+                cpu.l3_cache >= requiredLegacyCpu.l3_cache and
+                cpu.estimated_thermal_power >= requiredLegacyCpu.estimated_thermal_power):
+            suitableCpus.append(cpu)
+    for sCpu in suitableCpus:
+        difference = (abs(sCpu.num_cores - requiredLegacyCpu.num_cores) +
+                      abs(sCpu.max_threads - requiredLegacyCpu.max_threads) +
+                      abs(sCpu.base_clock - requiredLegacyCpu.base_clock) +
+                      abs(sCpu.l2_cache - requiredLegacyCpu.l2_cache) +
+                      abs(sCpu.l3_cache - requiredLegacyCpu.l3_cache) +
+                      abs(sCpu.estimated_thermal_power - requiredLegacyCpu.estimated_thermal_power))
+        if difference < min_difference:
+            min_difference = difference
+            selected_cpu = sCpu
+    return selected_cpu
+
+def get_same_gpu(requiredLegacyGpu, gpus):
+    min_difference = float('inf')
+    selected_gpu = None
+    suitableGpus = []
+    for gpu in gpus:
+        if (gpu.video_memory >= requiredLegacyGpu.video_memory and
+                gpu.gpu_base_frequency >= requiredLegacyGpu.gpu_base_frequency and
+                gpu.cooling == requiredLegacyGpu.cooling and
+                gpu.num_stream_processors == requiredLegacyGpu.num_stream_processors and
+                gpu.memory_bandwidth == requiredLegacyGpu.memory_bandwidth):
+            suitableGpus.append(gpu)
+    for sGpu in suitableGpus:
+        difference = (abs(sGpu.video_memory - requiredLegacyGpu.video_memory) +
+                      abs(sGpu.gpu_base_frequency - requiredLegacyGpu.gpu_base_frequency) +
+                      int(sGpu.cooling != requiredLegacyGpu.cooling) +
+                      abs(sGpu.num_stream_processors - requiredLegacyGpu.num_stream_processors) +
+                      abs(sGpu.memory_bandwidth - requiredLegacyGpu.memory_bandwidth))
+        if difference < min_difference:
+            min_difference = difference
+            selected_gpu = sGpu
+    return selected_gpu
+
 # Done
 def cpu_logic(budget, cpus): # Функция возвращает список потенциально возможных комплектующих
     result = []
@@ -475,13 +634,16 @@ def create_conf(details, idealPrice, maybeDontNeedDetail=False):
 def read_from_db(connection, table_name, my_class, keys):
     cursor = connection.cursor()
     cursor.execute(f"SELECT * FROM {table_name}")
-    my_class_list = []
+    my_class_list, legacyDevices = [], []
     none_item = my_class(keys, [0] + ["None"] + [0] + [None] * (len(keys) - 2), [], reading=True) # Пустая запись, пока ничего не выбрано
     for row in cursor:
         values = list(row)
-        # values = [str(v) for v in values]
-        my_class_list.append(my_class(keys, values, [], reading=True))
-    return my_class_list, none_item
+        if values[keys.index("Цена")] is not None:
+            my_class_list.append(my_class(keys, values, [], reading=True))
+        elif (my_class == Cpu or my_class == Gpu) and values[keys.index("Цена")] is None:
+            legacyDevices.append(my_class(keys, values, [], reading=True))
+    cursor.close()
+    return my_class_list, legacyDevices, none_item
 
 def prepare_data():
     connection = None
@@ -497,23 +659,35 @@ def prepare_data():
         print(f'An error {error} occured')
 
     # 3. Read all devices from database
-    cpus_fromDB, none_cpu = read_from_db(connection, "cpus", Cpu, constants.cpu_keys)
-    coolers_fromDB, none_cooler = read_from_db(connection, "coolers", Cooler, constants.cooler_keys)
-    motherboards_fromDB, none_motherboard = read_from_db(connection, "motherboards", Motherboard, constants.motherboard_keys)
-    rams_fromDB, none_ram = read_from_db(connection, "rams", Ram, constants.ram_keys)
-    gpus_fromDB, none_gpu = read_from_db(connection, "gpus", Gpu, constants.gpu_keys)
-    ssds_fromDB, none_ssd = read_from_db(connection, "ssds", Ssd, constants.ssd_keys)
-    hdds_fromDB, none_hdd = read_from_db(connection, "hdds", Hdd, constants.hhd_keys)
-    powers_fromDB, none_power = read_from_db(connection, "powers", Power, constants.power_keys)
-    cases_fromDB, none_case = read_from_db(connection, "cases", Case, constants.case_keys)
+    cpus_fromDB, legacy_cpus, none_cpu = read_from_db(connection, "cpus", Cpu, constants.cpu_keys)
+    coolers_fromDB, _, none_cooler = read_from_db(connection, "coolers", Cooler, constants.cooler_keys)
+    motherboards_fromDB, _, none_motherboard = read_from_db(connection, "motherboards", Motherboard, constants.motherboard_keys)
+    rams_fromDB, _, none_ram = read_from_db(connection, "rams", Ram, constants.ram_keys)
+    gpus_fromDB, legacy_gpus, none_gpu = read_from_db(connection, "gpus", Gpu, constants.gpu_keys)
+    ssds_fromDB, _, none_ssd = read_from_db(connection, "ssds", Ssd, constants.ssd_keys)
+    hdds_fromDB, _, none_hdd = read_from_db(connection, "hdds", Hdd, constants.hhd_keys)
+    powers_fromDB, _, none_power = read_from_db(connection, "powers", Power, constants.power_keys)
+    cases_fromDB, _, none_case = read_from_db(connection, "cases", Case, constants.case_keys)
     data_fromDB = cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB
+    legacy_datails = legacy_cpus, legacy_gpus
     none_details = none_cpu, none_cooler, none_motherboard, none_ram, none_gpu, none_ssd, none_hdd, none_power, none_case
     for i, none_list in enumerate(none_details):
         data_fromDB[i].insert(0, none_details[i])
-    return data_fromDB, none_details
+
+    min_reqs, rec_reqs = [], []
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT program_name, cpu, ram, gpu, ssd, directions FROM min_reqs")
+    for row in cursor:
+        values = list(row)
+        min_reqs.append(Requirements(program_name=values[0], cpu=values[1], ram=values[2], gpu=values[3], ssd=values[4], keywords=values[5]))
+    cursor.execute(f"SELECT program_name, cpu, ram, gpu, ssd, directions FROM recommended_reqs")
+    for row in cursor:
+        values = list(row)
+        rec_reqs.append(Requirements(program_name=values[0], cpu=values[1], ram=values[2], gpu=values[3], ssd=values[4], keywords=values[5]))
+    return data_fromDB, legacy_datails, none_details, min_reqs, rec_reqs
 
 
-def main(budget, data_fromDB, none_details):
+def main(budget, data_fromDB, legacyDevices, none_details):
     cpus_fromDB, coolers_fromDB, motherboards_fromDB, rams_fromDB, gpus_fromDB, ssds_fromDB, hdds_fromDB, powers_fromDB, cases_fromDB = data_fromDB
     none_cpu, none_cooler, none_motherboard, none_ram, none_gpu, none_ssd, none_hdd, none_power, none_case = none_details
     print(f"I am main budget is {budget}")
@@ -524,8 +698,17 @@ def main(budget, data_fromDB, none_details):
 
     # get_details(cpus_fromDB)
 
+
+    suitable_req_min, suitable_req_rec = find_reqs_by_keywords()
+
     cpu, cooler, motherboard, ram, gpu, ssd, hdd, power, casePC = None, None, None, None, None, None, None, None, None
     # CPU
+
+    specified_cpu = get_specified_cpu(cpus_fromDB[1:], suitable_req_min.cpu, suitable_req_rec.cpu)
+    if specified_cpu is None:
+        specified_cpu = get_same_cpu(suitable_req_rec, cpus_fromDB[1:])
+        if specified_cpu is None:
+            specified_cpu = get_same_cpu(suitable_req_min, cpus_fromDB[1:])
     cpus = cpu_logic(budget, cpus_fromDB[1:])
     if budget >= 1400:
         cpu = create_conf(details=cpus, idealPrice=budget*0.20)
@@ -632,5 +815,5 @@ def main(budget, data_fromDB, none_details):
 
 
 if __name__ == '__main__':
-    data_fromDB, none_details = prepare_data()
+    data_fromDB, legacyDevices, none_details, min_reqs, rec_reqs = prepare_data()
     app.run()
