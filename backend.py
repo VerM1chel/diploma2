@@ -107,7 +107,7 @@ def getSelectedItems():
     return jsonify(response_data), 200  # Отправляем ответ в формате JSON
 @app.route('/sortBy/<sortType>', methods=['GET'])
 def sort_by_price(sortType):
-    global indeces, data_fromDB, selectedItems
+    global indeces, data_fromDB, selectedItemsx
     old_data = data_fromDB
     sorted_data, new_indeces, sorted_data_response, new_selectedItemsIndeces, new_selectedItems_response = [], [], [], [], []
     for sublist in data_fromDB: # Сортируем сами списки
@@ -418,18 +418,18 @@ def get_specified_cpu(cpus, suitable_cpu_name_min, suitable_cpu_name_rec):
     if suitable_cpu_name_rec != None:
         suitable_cpu_rec = [item.strip().lower() for item in suitable_cpu_name_rec.split('/')]
     for cpu in cpus:
-        cpu.name = cpu.name.lower()
-        if "процессор " in cpu.name:
-            cpu.name = cpu.name.replace("процессор ", "")
-        if " core " in cpu.name:
-            cpu.name = cpu.name.replace(" core", "")
+        cpu_name = cpu.name.lower()
+        if "процессор " in cpu_name:
+            cpu_name = cpu_name.replace("процессор ", "")
+        if " core " in cpu_name:
+            cpu_name = cpu_name.replace(" core", "")
         if suitable_cpu_name_rec != None:
             for scr in suitable_cpu_rec:
-                if scr in cpu.name:
+                if scr in cpu_name:
                     return cpu
         if suitable_cpu_name_min != None:
             for scm in suitable_cpu_min:
-                if scm in cpu.name:
+                if scm in cpu_name:
                     return cpu
     return None
 
@@ -449,18 +449,18 @@ def get_specified_gpu(gpus, suitable_gpu_name_min, suitable_gpu_name_rec):
     if suitable_gpu_name_rec != None:
         suitable_gpu_rec = [item.strip().lower() for item in suitable_gpu_name_rec.split('/')]
     for gpu in gpus:
-        if "amd" in gpu.name or "radeon" in gpu.name: # Видеокарты от AMD в данный момент не стоят своих денег и уступают по функционалу Intel
+        gpu_name = gpu.name.lower()
+        if "amd" in gpu_name or "radeon" in gpu_name: # Видеокарты от AMD в данный момент не стоят своих денег и уступают по функционалу Intel
             continue
-        gpu.name = gpu.name.lower()
-        if "nvidia " in gpu.name:
-            gpu.name = gpu.name.replace("nvidia ", "")
+        if "nvidia " in gpu_name:
+            gpu_name = gpu_name.replace("nvidia ", "")
         if suitable_gpu_name_rec != None:
             for scr in suitable_gpu_rec:
-                if scr in gpu.name:
+                if scr in gpu_name:
                     return gpu
         if suitable_gpu_name_min != None:
             for scm in suitable_gpu_min:
-                if scm in gpu.name:
+                if scm in gpu_name:
                     return gpu
     return None
 
@@ -525,8 +525,8 @@ def get_same_gpu(requiredLegacyGpu, gpus):
         if (gpu.video_memory >= requiredLegacyGpu.video_memory and
                 gpu.gpu_base_frequency >= requiredLegacyGpu.gpu_base_frequency and
                 gpu.cooling == requiredLegacyGpu.cooling and
-                gpu.num_stream_processors == requiredLegacyGpu.num_stream_processors and
-                gpu.memory_bandwidth == requiredLegacyGpu.memory_bandwidth):
+                gpu.num_stream_processors >= requiredLegacyGpu.num_stream_processors and
+                gpu.memory_bandwidth >= requiredLegacyGpu.memory_bandwidth):
             suitableGpus.append(gpu)
     min_price = float('inf')
     for sGpu in suitableGpus:
@@ -596,25 +596,29 @@ def ram_logic(budget, motherboard, suitable_req_min, rams):
     result = []
     if suitable_req_min != []:
         srm_volume = suitable_req_min.ram
+        srm_volume = int(re.sub(" gb", "", srm_volume))
     else:
         srm_volume = 0
-    for ram in rams:
-        if ram.overall_volume == None:
-            ram.overall_volume = 0
-        if ram.overall_volume > srm_volume:
-            # SO-DIMM -- для ноутбуков, их пропускаем
-            if "DDR4" in ram.ram_type and "SO-DIMM" not in ram.ram_type:  # DDR3 устарели, а DDR5 -- неоправдано дорогие (переплачиваем за отдельное питание на модуле памяти, за бесполезное ЕСС, за маркетинг, а получаете большие задержки и отсутствие практического смысла от слова совсем)
-                if not (ram.kit == 1 and ram.overall_volume == 4): # Одна планка памяти на 4 Гб это слишком мало, т.е. нужно чтобы DDR была на 8+ Гб
-                    if budget > 1700: # если комп от 600 баксов, то частота DDR минимум 3000
-                        if ram.frequency >= 3000 and ram.frequency < 4200: # Но слишком большая частота избыточна
-                            if motherboard.num_of_memory_slots >= ram.kit and motherboard.max_memory >= ram.overall_volume: # Материнская плата должна обеспечивать то, что планки памяти. До частоты 3200 оперативной памяти, частота материнской платы может быть существенно ниже, но после значения в 3400 у RAM значения частоты не должны сильно различаться
-                                if ram.frequency >= 3200 and (motherboard.max_memory_frequency - ram.frequency) > -100:
-                                    result.append(ram)
-                                elif ram.frequency < 3200:
-                                    result.append(ram)
-                    else:
-                        if motherboard.num_of_memory_slots >= ram.kit and motherboard.max_memory >= ram.overall_volume and ram.frequency <= 3200:
-                            result.append(ram)
+    try:
+        for ram in rams:
+            if ram.overall_volume == None:
+                ram.overall_volume = 0
+            if ram.overall_volume > srm_volume:
+                # SO-DIMM -- для ноутбуков, их пропускаем
+                if "DDR4" in ram.ram_type and "SO-DIMM" not in ram.ram_type:  # DDR3 устарели, а DDR5 -- неоправдано дорогие (переплачиваем за отдельное питание на модуле памяти, за бесполезное ЕСС, за маркетинг, а получаете большие задержки и отсутствие практического смысла от слова совсем)
+                    if not (ram.kit == 1 and ram.overall_volume == 4): # Одна планка памяти на 4 Гб это слишком мало, т.е. нужно чтобы DDR была на 8+ Гб
+                        if budget > 1700: # если комп от 600 баксов, то частота DDR минимум 3000
+                            if ram.frequency >= 3000 and ram.frequency < 4200: # Но слишком большая частота избыточна
+                                if motherboard.num_of_memory_slots >= ram.kit and motherboard.max_memory >= ram.overall_volume: # Материнская плата должна обеспечивать то, что планки памяти. До частоты 3200 оперативной памяти, частота материнской платы может быть существенно ниже, но после значения в 3400 у RAM значения частоты не должны сильно различаться
+                                    if ram.frequency >= 3200 and (motherboard.max_memory_frequency - ram.frequency) > -100:
+                                        result.append(ram)
+                                    elif ram.frequency < 3200:
+                                        result.append(ram)
+                        else:
+                            if motherboard.num_of_memory_slots >= ram.kit and motherboard.max_memory >= ram.overall_volume and ram.frequency <= 3200:
+                                result.append(ram)
+    except:
+        print(10)
     return result
 
 # Done
@@ -809,12 +813,12 @@ def main(budget, data_fromDB, legacyDevices, none_details):
                 cpu = specified_cpu
     if cpu == None: # Если ничего не подошло по цене
         print("Не хватает бюджета на CPU")
-        exit(11)
+        # exit(11)
 
     # Cooler
-    if budget < 1300 and cpu.delivery_type.lower() != "box":
-        coolers = cooler_logic(budget, coolers_fromDB[1:], cpu)
-        cooler = create_conf(details=coolers, idealPrice=budget * 0.03, maybeDontNeedDetail=True)
+    # if budget < 1300 and cpu.delivery_type.lower() != "box":
+    #     coolers = cooler_logic(budget, coolers_fromDB[1:], cpu)
+    #     cooler = create_conf(details=coolers, idealPrice=budget * 0.03, maybeDontNeedDetail=True)
     if budget >= 1300:
         coolers = cooler_logic(budget, coolers_fromDB[1:], cpu)
         cooler = create_conf(details=coolers, idealPrice=budget * 0.03, maybeDontNeedDetail=True)
@@ -854,8 +858,8 @@ def main(budget, data_fromDB, legacyDevices, none_details):
                 gpu = create_conf(details=gpus, idealPrice=budget * 0.26, maybeDontNeedDetail=True)
     else:
         if budget >= 1400:
-            if specified_cpu.price <= budget * 0.20:
-                cpu = specified_cpu
+            if specified_gpu.price <= budget * 0.20:
+                gpu = specified_gpu
 
     # SSD/HDD
     ssds = ssd_logic(budget, ssds_fromDB[1:], motherboard, itSeconfSSD=False)
@@ -878,6 +882,9 @@ def main(budget, data_fromDB, legacyDevices, none_details):
         casePC = create_conf(details=cases, idealPrice=budget * 0.07)
     else:
         casePC = create_conf(details=cases, idealPrice=budget * (0.07 + 0.07)) # иначе выбираем корпус со встроенным БП (часть бюджета для БП отдаем на корпус)
+
+
+
 
     configurations.append(Configuration(cpu=cpu, cooler=cooler, motherboard=motherboard, ram=ram, gpu=gpu,
                   ssd=ssd, hdd=hdd, power=power, casePC=casePC))

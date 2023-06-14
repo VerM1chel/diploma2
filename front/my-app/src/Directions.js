@@ -26,7 +26,6 @@ function Directions() {
                     <option value="design">Графический дизайн</option>
                     <option value="3d">3D</option>
                     <option value="video editing">Монтаж видео</option>
-                    <option value="video editing">Профессиональная</option>
                     <option value="office">Для офисных задач</option>
                     <option value="other">Другое</option>
                 </select>

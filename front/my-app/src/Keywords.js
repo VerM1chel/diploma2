@@ -30,7 +30,7 @@ function Keywords() {
             <form onSubmit={handleSubmit}>
                 <label htmlFor="keywords" style={{ fontSize: "24px", marginLeft: "25px" }}>Ключевые слова:</label>
                 <input
-                    style={{ fontSize: "20px", marginLeft: "10px", width: "70%", marginTop: "15px", marginRight: "10px" }}
+                    style={{ fontSize: "20px", position: "relative", marginLeft: "10px", width: "70%", marginTop: "15px", marginRight: "10px", zIndex: 999 }}
                     type="text"
                     id="keywords"
                     value={keywords}

@@ -8,6 +8,10 @@ function BudgetInput({ onBudgetChange }) {
 
     const sendBudgetToServer = async () => {
         try {
+            if (budget < 400) {
+                alert('Пожалуйста, увеличьте бюджет!');
+                return;
+            }
             const response = await axios.post('/updateBudget', { budget: budget });
             console.log('Значение бюджета отправлено на сервер');
         } catch (error) {
